@@ -5,6 +5,8 @@ import {
   ToastAndroid,
   TouchableOpacity,
   View,
+  PanResponder,
+  ImageBackground,
 } from 'react-native';
 import Color from '../Assets/Utilities/Color';
 import CustomStatusBar from '../Components/CustomStatusBar';
@@ -18,6 +20,11 @@ import {ScrollView} from 'native-base';
 import {Post} from '../Axios/AxiosInterceptorFunction';
 import {validateEmail} from '../Config';
 import {setSelectedRole, setUserData} from '../Store/slices/common';
+import {
+  setMilageRing,
+  setUserToken,
+  setWalkThrough,
+} from '../Store/slices/auth';
 import {useDispatch, useSelector} from 'react-redux';
 import DropDownSingleSelect from '../Components/DropDownSingleSelect';
 import navigationService from '../navigationService';
@@ -115,14 +122,23 @@ const LoginScreen = () => {
         }
         barStyle={'light-content'}
       />
-     <LinearGradient
-        start={{x: 0.0, y: 0.25}}
-        end={{x: 0.5, y: 1.0}}
-        colors={selectedRole == 'Customer' ?[ '#16222A','#3A6073',]:selectedRole == 'Vendor' ? ['#1f4037'   ,'#99f2c8' ] : ['#000046' , '#1CB5E0' , ]}
-        style={styles.container}>
 
 
-        <ScrollView
+<ImageBackground
+        style={{
+          flex: 1,
+          alignItems: 'center',
+        }}
+        resizeMode={'stretch'}
+        source={
+          selectedRole == 'Customer' 
+            ? require('../Assets/Images/bg3.png')
+            : userRole == 'Vendor'
+            ? require('../Assets/Images/bg2.png')
+            : require('../Assets/Images/bg1.png')
+        }>
+      
+      <ScrollView
           showsVerticalScrollIndicator={false}
           removeClippedSubviews={true}
           contentContainerStyle={{
@@ -246,9 +262,18 @@ const LoginScreen = () => {
 
       
         </ScrollView>
+      </ImageBackground>
+{/* 
+     <LinearGradient
+        start={{x: 0.0, y: 0.25}}
+        end={{x: 0.5, y: 1.0}}
+        colors={selectedRole == 'Customer' ?[ '#16222A','#3A6073',]:selectedRole == 'Vendor' ? ['#1f4037'   ,'#99f2c8' ] : ['#000046' , '#1CB5E0' , ]}
+        style={styles.container}>
 
 
-        </LinearGradient>
+
+
+        </LinearGradient> */}
 
 
 

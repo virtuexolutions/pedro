@@ -1,9 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  View,
-FlatList,
-} from 'react-native';
+import {ActivityIndicator, View, FlatList, ImageBackground} from 'react-native';
 import Color from '../Assets/Utilities/Color';
 import CustomStatusBar from '../Components/CustomStatusBar';
 
@@ -14,10 +10,14 @@ import {useDispatch, useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import SearchContainer from '../Components/SearchContainer';
 import JobCard from '../Components/JobCard';
+import Header from '../Components/Header';
+import CustomImage from '../Components/CustomImage';
+import CustomText from '../Components/CustomText';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
   const userRole = useSelector(state => state.commonReducer.selectedRole);
+  console.log('🚀 ~ HomeScreen ~ userRole:', userRole);
 
   const [isLoading, setIsLoading] = useState(false);
   const [selectedRole, setSelectedType] = useState(
@@ -44,7 +44,7 @@ const HomeScreen = () => {
 
     {
       id: 3,
-      name: 'chris jordan' ,
+      name: 'chris jordan',
       jobdescription: 'hfdjhadjfhkadfkhadfjhadkfh',
       price: '10$',
       image: require('../Assets/Images/dummyman1.png'),
@@ -56,38 +56,36 @@ const HomeScreen = () => {
       price: '10$',
       image: require('../Assets/Images/dummyman1.png'),
     },
-    
+
     {
-        id: 3,
-        name: 'chris jordan' ,
-        jobdescription: 'hfdjhadjfhkadfkhadfjhadkfh',
-        price: '10$',
-        image: require('../Assets/Images/dummyman1.png'),
-      },
-      {
-        id: 4,
-        name: 'arron john',
-        jobdescription: 'hfdjhadjfsdfsdfhkadfkhadfjhadkfh',
-        price: '10$',
-        image: require('../Assets/Images/dummyman1.png'),
-      },
-      
+      id: 3,
+      name: 'chris jordan',
+      jobdescription: 'hfdjhadjfhkadfkhadfjhadkfh',
+      price: '10$',
+      image: require('../Assets/Images/dummyman1.png'),
+    },
     {
-        id: 3,
-        name: 'chris jordan' ,
-        jobdescription: 'hfdjhadjfhkadfkhadfjhadkfh',
-        price: '10$',
-        image: require('../Assets/Images/dummyman1.png'),
-      },
-      {
-        id: 4,
-        name: 'arron john',
-        jobdescription: 'hfdjhadjfsdfsdfhkadfkhadfjhadkfh',
-        price: '10$',
-        image: require('../Assets/Images/dummyman1.png'),
-      },
-      
- 
+      id: 4,
+      name: 'arron john',
+      jobdescription: 'hfdjhadjfsdfsdfhkadfkhadfjhadkfh',
+      price: '10$',
+      image: require('../Assets/Images/dummyman1.png'),
+    },
+
+    {
+      id: 3,
+      name: 'chris jordan',
+      jobdescription: 'hfdjhadjfhkadfkhadfjhadkfh',
+      price: '10$',
+      image: require('../Assets/Images/dummyman1.png'),
+    },
+    {
+      id: 4,
+      name: 'arron john',
+      jobdescription: 'hfdjhadjfsdfsdfhkadfkhadfjhadkfh',
+      price: '10$',
+      image: require('../Assets/Images/dummyman1.png'),
+    },
   ];
 
   return (
@@ -102,17 +100,52 @@ const HomeScreen = () => {
         }
         barStyle={'light-content'}
       />
-      <LinearGradient
-        start={{x: 0.0, y: 0.25}}
-        end={{x: 0.5, y: 1.0}}
-        colors={
-          selectedRole == 'Customer'
-            ? ['#16222A', '#3A6073']
-            : selectedRole == 'Vendor'
-            ? ['#1f4037', '#99f2c8']
-            : ['#000046', '#1CB5E0']
-        }
-        style={styles.container}>
+      <ImageBackground
+        style={{
+          flex: 1,
+          alignItems: 'center',
+        }}
+        resizeMode={'stretch'}
+        source={
+          userRole == 'Customer'
+            ? require('../Assets/Images/bg3.png')
+            : userRole == 'Vendor'
+            ? require('../Assets/Images/bg2.png')
+            : require('../Assets/Images/bg1.png')
+        }>
+        {/* <Header
+          showBack={true}
+          headerColor={['#FFFFFF00', '#FFFFFF00', '#FFFFFF00']}
+        //   headerColor={ [Color.themeColor, 'red','green']}
+
+        /> */}
+{/* 
+        <View style={styles.Header}>
+          <View style={styles.imagecontainer}>
+            <CustomImage
+              style={{
+                height: '100%',
+                width: '100%',
+                overflow: 'hidden',
+              }}
+              source={require('../Assets/Images/dummyman1.png')}
+            />
+          </View>
+          <CustomText
+            style={{
+              color: Color.white,
+              width: windowWidth * 0.7,
+              backgroundColor: 'green',
+            //   textAlign:'center',
+            
+              fontSize: moderateScale(20, 0.6),
+            //   paddingRight: moderateScale(20, 0.6),
+            }}>
+           LOGOHERE
+          </CustomText>
+          <></>
+        </View> */}
+
         <ScrollView
           showsVerticalScrollIndicator={false}
           removeClippedSubviews={true}
@@ -125,7 +158,6 @@ const HomeScreen = () => {
             paddingTop: windowHeight * 0.05,
           }}>
           <SearchContainer
-       
             width={windowWidth * 0.8}
             inputStyle={{
               height: windowHeight * 0.05,
@@ -139,11 +171,11 @@ const HomeScreen = () => {
             setData={setSearchData}
             input={true}
           />
-
           <FlatList
             data={dummyArray}
-            numColumns={2}
+            numColumns={1}
             contentContainerStyle={{
+              paddingTop: moderateScale(25, 0.6),
               paddingHorizontal: moderateScale(15, 0.3),
               width: windowWidth,
             }}
@@ -152,7 +184,7 @@ const HomeScreen = () => {
             }}
           />
         </ScrollView>
-      </LinearGradient>
+      </ImageBackground>
     </>
   );
 };
@@ -163,14 +195,22 @@ const styles = ScaledSheet.create({
     height: windowHeight,
     width: windowWidth,
   },
- 
-
- 
-
-
-
- 
-  
- });
+  Header: {
+    height: windowHeight * 0.15,
+    width: windowWidth,
+    flexDirection: 'row',
+    backgroundColor:'red',
+    alignItems:'center'
+  },
+  imagecontainer: {
+    height: windowHeight * 0.05,
+    width: windowHeight * 0.05,
+    borderRadius: (windowHeight * 0.05) / 2,
+    overflow: 'hidden',
+    // backgroundColor:'red',
+    marginHorizontal: moderateScale(6, 0.3),
+    marginVertical: moderateScale(5, 0.3),
+  },
+});
 
 export default HomeScreen;

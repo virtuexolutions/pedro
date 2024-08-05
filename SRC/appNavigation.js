@@ -10,6 +10,7 @@ import DrawerScreen from './Screens/DrawerScreen';
 import HomeScreen from './Screens/HomeScreen';
 import JobDetails from './Screens/JobDetails';
 import Color from './Assets/Utilities/Color';
+import ContactNow from './Screens/ContactNow';
 
 const AppNavigator = () => {
   // const isLogin = false;
@@ -52,6 +53,7 @@ const AppNavigator = () => {
           <RootNav.Screen name="Signup" component={Signup} />
           <RootNav.Screen name="HomeScreen" component={HomeScreen} />
           <RootNav.Screen name="JobDetails" component={JobDetails} />
+          <RootNav.Screen name="ContactNow" component={ContactNow} />
         </RootNav.Navigator>
       </NavigationContainer>
     );

@@ -20,274 +20,118 @@ import {useSelector} from 'react-redux';
 import numeral from 'numeral';
 import {Post} from '../Axios/AxiosInterceptorFunction';
 import ImageView from 'react-native-image-viewing';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
+import {color} from 'react-native-reanimated';
+import RatingComponent from './RatingComponent';
 
 const JobCard = ({fromSeeAll, style, onPress, item, getProposal}) => {
-  const navigation= useNavigation()
-  const token = useSelector(state => state.authReducer.token);
+  const navigation = useNavigation();
   const userRole = useSelector(state => state.commonReducer.selectedRole);
-
-  const [loading, setLoading] = useState(false);
-  const [declineLoading, setDeclineLoading] = useState(false);
-  const [imageModal, setImageModal] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-
-
-  const imagesArray = (
-    item?.images ? item?.images : item?.quote_info?.images
-  )?.map(item => {
-    return {uri: item?.image};
-  });
-
-  // const changeStatus = async value => {
-  //   const url = `auth/negotiator/hiring/update/${item?.id}`;
-  //   value == 'onGoing' ? setLoading(true) : setDeclineLoading(true);
-  //   const response = await Post(url, {status: value}, apiHeader(token));
-  //   value == 'onGoing' ? setLoading(false) : setDeclineLoading(false);
-  //   if (response != undefined) {
-     
-  //     setModalVisible(false);
-  //     getProposal()
-  //   }
-  // };
+  console.log('🚀 ~ JobCard ~ userRole:', userRole);
 
   return (
-    <>
-      <TouchableOpacity
-        // onPress={() => {
-        //   onPress ? onPress() : setModalVisible(!modalVisible);
-        // }}
-        activeOpacity={0.9}
-        style={[
-          styles.joccard,
-          fromSeeAll && {
-            width: windowWidth * 0.46,
-            paddingVertical: moderateScale(10, 0.6),
-          },
-          style,
-        ]}>
+    <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('ContactNow')}>
+      <LinearGradient
+        start={{x: 0.0, y: 0.25}}
+        end={{x: 0.5, y: 1.0}}
+        colors={['#FFFFFF', '#FFFFFF89', '#FFFFFF00']}
+        style={styles.container}>
+        <View style={styles.imagecontainer}>
+          <CustomImage
+            style={{
+              height: '100%',
+              width: '100%',
+              overflow: 'hidden',
+            }}
+            source={require('../Assets/Images/dummyman1.png')}
+          />
+        </View>
         <View
           style={{
-            flexDirection: 'row',
-            alignItems: 'center',
+            paddingTop: moderateScale(10, 0.6),
+            paddingHorizontal: moderateScale(10, 0.6),
           }}>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            style={{
-              width: fromSeeAll
-                ? moderateScale(50, 0.3)
-                : moderateScale(36, 0.3),
-              height: fromSeeAll
-                ? moderateScale(50, 0.3)
-                : moderateScale(36, 0.3),
-              borderRadius: fromSeeAll
-                ? moderateScale(25, 0.3)
-                : moderateScale(18, 0.3),
-
-              overflow: 'hidden',
-            }}>
-            <CustomImage
-              source={item?.images?.length > 0 ? {uri:item?.images[0]?.image} :
-                item?.quote_info?.images.length > 0
-                  ? {uri: item?.quote_info?.images[0]?.image}
-                  : require('../Assets/Images/man1.jpg')
-              }
-              resizeMode={'cover'}
-              style={{
-                width: '100%',
-                height: '100%',
-              }}
-            />
-          </TouchableOpacity>
           <CustomText
             isBold
-            numberOfLines={2}
             style={{
-              width: windowWidth * 0.2,
-              fontSize: fromSeeAll
-                ? moderateScale(11, 0.6)
-                : moderateScale(9, 0.6),
-              marginLeft: moderateScale(5, 0.3),
+              fontSize: moderateScale(15, 0.6),
             }}>
-            {item?.name}
-          </CustomText>
-        </View>
-        <CustomText
-          numberOfLines={3}
-          style={{
-            fontSize: fromSeeAll
-              ? moderateScale(9, 0.6)
-              : moderateScale(8, 0.6),
-            color: '#575757',
-            marginTop: moderateScale(5, 0.3),
-          }}>
-          {item?.notes ? item?.notes : item?.quote_info?.notes}
-        </CustomText>
-        <View style={styles.row}>
-          <View>
-            <CustomText
-              isBold
-              style={{
-                fontSize: moderateScale(9, 0.6),
-              }}>
-              {numeral(
-                item?.price
-              ).format('$0,0a')}
-            </CustomText>
-            <CustomText
-            numberOfLines={2}
-              style={{
-                fontSize: moderateScale(8, 0.6),
-                width:windowWidth*0.4,
-              }}>
-           {item?.jobdescription}
-            </CustomText>
-          </View>
-          {/* <View
-            style={{
-              alignItems: 'center',
-              marginRight: moderateScale(2, 0.3),
-            }}>
-            <CustomText
-              isBold
-              style={{
-                fontSize: moderateScale(9, 0.6),
-              }}>
-              {`${
-                item?.offering_percentage
-                  ? item?.offering_percentage
-                  : item?.quote_info?.offering_percentage
-              }%`}
-            </CustomText>
-            <CustomText
-              style={{
-                fontSize: moderateScale(8, 0.6),
-              }}>
-              Offering
-            </CustomText>
-          </View> */}
-        </View>
-
-        <CustomButton
-          text={'View Details'}
-          textColor={Color.white}
-          width={fromSeeAll && windowWidth * 0.19}
-          height={fromSeeAll && windowHeight * 0.04}
-          marginTop={moderateScale(10, 0.3)}
-          onPress={() => {
-          navigation.navigate('JobDetails')  
-          }}
-          bgColor={
-            userRole == 'Qbid Member'
-              ? Color.blue
-              : userRole == 'Qbid Negotiator'
-              ? Color.themeColor
-              : Color.black
-          }
-          borderRadius={moderateScale(30, 0.3)}
-          alignSelf={'flex-start'}
-          fontSize={fromSeeAll ? moderateScale(8, 0.6) : moderateScale(8, 0.6)}
-        />
-      </TouchableOpacity>
-
-      <Modal
-        isVisible={modalVisible}
-        onBackdropPress={() => {
-          setModalVisible(false);
-        }}>
-        <View style={styles.mainViewModal}>
-          <View style={styles.container}>
-            <CustomImage
-              source={require('../Assets/Images/Avatar2.jpg')}
-              resizeMode="cover"
-              style={styles.image}
-            />
-          </View>
-          <CustomText style={[styles.text, {}]} isBold>
-            {item?.title}
-          </CustomText>
-          <CustomText style={styles.text}>
-            {item?.coverletter ? item?.coverletter : item?.notes}
+            chris
           </CustomText>
           <CustomText
-            onPress={() => {
-              if (
-                (item?.images
-                  ? item?.images.length
-                  : item?.quote_info?.images.length) > 0
-              ) {
-                setImageModal(true);
-              } else {
-                Platform.OS == 'android'
-                  ? ToastAndroid.show('No attachments', ToastAndroid.SHORT)
-                  : Alert.alert('No attachments');
-              }
-            }}
-            style={[styles.text, {color: Color.blue}]}>
-            attachments...
-          </CustomText>
-
-
-          <View
             style={{
-              width: windowWidth * 0.6,
-              flexDirection: 'row',
-              justifyContent: 'space-evenly',
-              marginTop: moderateScale(10, 0.3),
-              marginBottom: moderateScale(10, 0.3),
+              fontSize: moderateScale(13, 0.6),
             }}>
-            <CustomButton
+            chris@gmail.com
+          </CustomText>
+          <View style={styles.row}>
+            <CustomText
               isBold
-              text={
-                loading ? (
-                  <ActivityIndicator color={Color.white} size={'small'} />
-                ) : (
-                  'Accept'
-                )
-              }
-              textColor={Color.white}
-              width={windowWidth * 0.25}
-              height={windowHeight * 0.04}
-              marginTop={moderateScale(10, 0.3)}
-              bgColor={Color.themeColor}
-              borderRadius={moderateScale(30, 0.3)}
-              fontSize={moderateScale(11, 0.6)}
-              onPress={() => {
-                changeStatus('onGoing');
-                // setModalVisible(false);
-              }}
-            />
-            <CustomButton
+              style={{
+                color: Color.black,
+                fontSize: moderateScale(12, 0.6),
+              }}>
+              vendor :
+            </CustomText>
+            <CustomText
               isBold
-              text={
-                declineLoading ? (
-                  <ActivityIndicator color={Color.white} size={'small'} />
-                ) : (
-                  'Decline'
-                )
-              }
-              textColor={Color.white}
-              width={windowWidth * 0.25}
-              height={windowHeight * 0.04}
-              marginTop={moderateScale(10, 0.3)}
-              bgColor={Color.red}
-              borderRadius={moderateScale(30, 0.3)}
-              fontSize={moderateScale(11, 0.6)}
-              onPress={() => {
-                changeStatus('rejected');
-                // setModalVisible(false);
-              }}
-            />
+              style={{
+                fontSize: moderateScale(12, 0.6),
+                color: Color.black,
+              }}>
+              $500.00
+            </CustomText>
+          </View>
+          <View style={styles.row}>
+            <CustomText
+              isBold
+              style={{
+                color: Color.black,
+                fontSize: moderateScale(12, 0.6),
+              }}>
+              Negotiator :
+            </CustomText>
+            <CustomText
+              isBold
+              style={{
+                fontSize: moderateScale(12, 0.6),
+                color: Color.black,
+              }}>
+              $400.00
+            </CustomText>
+          </View>
+          <RatingComponent
+            disable={true}
+            rating={5}
+            starColor={'#ffa534'}
+            starStyle={{
+              marginRight: moderateScale(1, 0.3),
+              marginTop: moderateScale(1, 0.3),
+            }}
+            starSize={moderateScale(9, 0.3)}
+          />
+          <View style={styles.timeRow}>
+            <CustomText
+              style={{
+                color: Color.black,
+                fontSize: moderateScale(9, 0.6),
+            paddingRight:moderateScale(10,.6),
+              }}>
+              10/06/2022
+            </CustomText>
+            <CustomText
+              
+              style={{
+                fontSize: moderateScale(9, 0.6),
+                color: Color.black,
+              }}>
+              07:43 PM
+            </CustomText>
           </View>
         </View>
-      </Modal>
-      <ImageView
-        images={imagesArray}
-        imageIndex={0}
-        visible={imageModal}
-        onRequestClose={() => setImageModal(false)}
-      />
-    </>
+      </LinearGradient>
+    </TouchableOpacity>
   );
 };
 
@@ -310,6 +154,11 @@ const styles = ScaledSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: moderateScale(2, 0.6),
   },
+  timeRow: {
+    flexDirection: 'row',
+    // justifyContent: 'space-between',
+    paddingHorizontal: moderateScale(2, 0.6),
+  },
   mainViewModal: {
     width: windowWidth * 0.75,
     paddingVertical: moderateScale(20, 0.6),
@@ -330,16 +179,26 @@ const styles = ScaledSheet.create({
     elevation: 3,
   },
   container: {
-    width: windowWidth * 0.2,
-    height: windowWidth * 0.2,
-    borderRadius: (windowWidth * 0.2) / 2,
-    borderWidth: 2,
-    borderColor: Color.blue,
-    overflow: 'hidden',
+    height: windowHeight * 0.14,
+    //  backgroundColor:'red',
+    borderWidth: 1,
+    borderColor: 'white',
+    width: windowWidth * 0.9,
+    borderTopLeftRadius: moderateScale(55, 0.6),
+    borderBottomLeftRadius: moderateScale(55, 0.6),
+    marginBottom: moderateScale(10, 0.3),
+    borderTopRightRadius: moderateScale(5, 0.6),
+    borderBottomRightRadius: moderateScale(5, 0.6),
+    flexDirection: 'row',
   },
-  image: {
-    height: '100%',
-    width: '100%',
+  imagecontainer: {
+    height: windowHeight * 0.125,
+    width: windowHeight * 0.125,
+    borderRadius: (windowHeight * 0.125) / 2,
+    overflow: 'hidden',
+    // backgroundColor:'red',
+    marginHorizontal: moderateScale(6, 0.3),
+    marginVertical: moderateScale(5, 0.3),
   },
   text: {
     paddingHorizontal: moderateScale(10, 0.6),
