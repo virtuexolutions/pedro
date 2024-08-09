@@ -100,7 +100,7 @@ elevation: 9,},
           }}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
-          colors={[Color.white, Color.white]}
+          colors={bgColor ? bgColor :[Color.white, Color.white]}
         >
           {loader && (
             <ActivityIndicator

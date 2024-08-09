@@ -59,19 +59,19 @@ const App = () => {
         </NativeBaseProvider>
       </PersistGate>
     </Provider>
-  // <StripeProvider
-  //   publishableKey={'pk_test_qblFNYngBkEdjEZ16jxxoWSM'}
-  //   // merchantIdentifier="merchant.identifier" // required for Apple Pay
-  //   // urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
-  // >
-  //   <Provider store={store}>
-  //     <PersistGate loading={null} persistor={persistor}>
-  //       <NativeBaseProvider>
-  //         <MainContainer />
-  //       </NativeBaseProvider>
-  //     </PersistGate>
-  //   </Provider>
-  // </StripeProvider>
+    // <StripeProvider
+    //   publishableKey={'pk_test_qblFNYngBkEdjEZ16jxxoWSM'}
+    //   // merchantIdentifier="merchant.identifier" // required for Apple Pay
+    //   // urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
+    // >
+    //   <Provider store={store}>
+    //     <PersistGate loading={null} persistor={persistor}>
+    //       <NativeBaseProvider>
+    //         <MainContainer />
+    //       </NativeBaseProvider>
+    //     </PersistGate>
+    //   </Provider>
+    // </StripeProvider>
   );
 };
 

@@ -1,46 +1,35 @@
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {Icon} from 'native-base';
+import React, {useState} from 'react';
 import {
+  ActivityIndicator,
   Alert,
   FlatList,
   Platform,
-  StyleSheet,
-  Text,
+  ScrollView,
   ToastAndroid,
-  TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import ScreenBoiler from '../Components/ScreenBoiler';
-import LinearGradient from 'react-native-linear-gradient';
-import {ScrollView} from 'react-native';
-import {moderateScale, ScaledSheet} from 'react-native-size-matters';
-import {useSelector} from 'react-redux';
-import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
-import CustomImage from '../Components/CustomImage';
-import CustomText from '../Components/CustomText';
-import Color from '../Assets/Utilities/Color';
-import ShowMoreAndShowLessText from '../Components/ShowMoreAndShowLessText';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Entypo from 'react-native-vector-icons/Entypo';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import {Center, Icon} from 'native-base';
-import MarkCheckWithText from '../Components/MarkCheckWithText';
-import TextInputWithTitle from '../Components/TextInputWithTitle';
-import CustomButton from '../Components/CustomButton';
-import {ActivityIndicator} from 'react-native';
-import ReviewCard from '../Components/ReviewCard';
-import BidderDetail from '../Components/BidderDetail';
-import Detailcards from '../Components/Detailcards';
-import Modal from 'react-native-modal';
-import DropDownSingleSelect from '../Components/DropDownSingleSelect';
-import {Get, Post} from '../Axios/AxiosInterceptorFunction';
-import numeral from 'numeral';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
-import NoData from '../Components/NoData';
-import {validateEmail} from '../Config';
 import ImageView from 'react-native-image-viewing';
-import ImagePickerModal from '../Components/ImagePickerModal';
+import LinearGradient from 'react-native-linear-gradient';
+import Modal from 'react-native-modal';
+import {moderateScale, ScaledSheet} from 'react-native-size-matters';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {useSelector} from 'react-redux';
+import Color from '../Assets/Utilities/Color';
+import CustomButton from '../Components/CustomButton';
+import CustomImage from '../Components/CustomImage';
 import CustomStatusBar from '../Components/CustomStatusBar';
+import CustomText from '../Components/CustomText';
+import Detailcards from '../Components/Detailcards';
+import DropDownSingleSelect from '../Components/DropDownSingleSelect';
 import Header from '../Components/Header';
+import ImagePickerModal from '../Components/ImagePickerModal';
+import ShowMoreAndShowLessText from '../Components/ShowMoreAndShowLessText';
+import TextInputWithTitle from '../Components/TextInputWithTitle';
+import {windowHeight, windowWidth} from '../Utillity/utils';
 
 const JobDetails = props => {
   const data1 = props?.route?.params?.item;
@@ -53,7 +42,7 @@ const JobDetails = props => {
     state => state.commonReducer.servicesArray,
   );
 
-  const navigation =useNavigation()
+  const navigation = useNavigation();
   const [data, setData] = useState(data1);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
@@ -72,7 +61,6 @@ const JobDetails = props => {
     userRole ? userRole : 'Customer',
   );
   const [attachmentImage, setAttachmentImage] = useState({});
-
 
   return (
     <>
@@ -93,7 +81,12 @@ const JobDetails = props => {
             ? ['#1f4037', '#99f2c8']
             : ['#000046', '#1CB5E0']
         }>
-        <View style={styles.header}>
+        <Header
+          showList={true}
+          title={'Job Details'}
+          headerColor={['#FFFFFF00', '#FFFFFF00', '#FFFFFF00']}
+        />
+        {/* <View style={styles.header}>
           <View
             style={{
               height: moderateScale(30, 0.3),
@@ -151,7 +144,7 @@ const JobDetails = props => {
         
         </TouchableOpacity>
 
-        </View>
+        </View> */}
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={{height: windowHeight * 0.8}}
@@ -805,9 +798,9 @@ const styles = ScaledSheet.create({
   header: {
     // backgroundColor:'red',
     height: windowHeight * 0.09,
-    alignItems:'center',
-    paddingHorizontal :moderateScale(12,.6),
-    flexDirection:'row',
-    justifyContent:'space-between'
+    alignItems: 'center',
+    paddingHorizontal: moderateScale(12, 0.6),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });

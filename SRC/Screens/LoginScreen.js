@@ -29,11 +29,11 @@ import {useDispatch, useSelector} from 'react-redux';
 import DropDownSingleSelect from '../Components/DropDownSingleSelect';
 import navigationService from '../navigationService';
 import LinearGradient from 'react-native-linear-gradient';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const LoginScreen = () => {
   const dispatch = useDispatch();
-  const navigation =useNavigation()
+  const navigation = useNavigation();
   const userRole = useSelector(state => state.commonReducer.selectedRole);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -43,9 +43,7 @@ const LoginScreen = () => {
     userRole ? userRole : 'Customer',
   );
 
-  const servicesArray = ['Manager', 'Vendor','Customer'];
-
-
+  const servicesArray = ['Manager', 'Vendor', 'Customer'];
 
   // const Login = async () => {
   //   const body = {
@@ -123,22 +121,20 @@ const LoginScreen = () => {
         barStyle={'light-content'}
       />
 
-
-<ImageBackground
+      <ImageBackground
         style={{
           flex: 1,
           alignItems: 'center',
         }}
         resizeMode={'stretch'}
         source={
-          selectedRole == 'Customer' 
+          selectedRole == 'Customer'
             ? require('../Assets/Images/bg3.png')
             : userRole == 'Vendor'
             ? require('../Assets/Images/bg2.png')
             : require('../Assets/Images/bg1.png')
         }>
-      
-      <ScrollView
+        <ScrollView
           showsVerticalScrollIndicator={false}
           removeClippedSubviews={true}
           contentContainerStyle={{
@@ -152,9 +148,7 @@ const LoginScreen = () => {
           }}>
           <View style={[styles?.textContainer]}>
             <CustomImage
-              source={
-              require('../Assets/Images/logo.png')
-              }
+              source={require('../Assets/Images/logo.png')}
               resizeMode={'contain'}
               style={[styles.bottomImage]}
             />
@@ -210,9 +204,7 @@ const LoginScreen = () => {
             onPress={() => {
               navigationService.navigate('EnterPhone', {fromForgot: true});
             }}
-            style={
-              styles.txt3
-            }>
+            style={styles.txt3}>
             {'Forgot Password?'}
           </CustomText>
 
@@ -229,12 +221,11 @@ const LoginScreen = () => {
             height={windowHeight * 0.07}
             marginTop={moderateScale(10, 0.3)}
             onPress={() => {
-                  navigation.navigate('HomeScreen')
+              // navigation.navigate('Tabnavigation');
+              navigation.navigate('MyDrawer');
               // Login();
             }}
-            bgColor={Color.black
-            }
-      
+            bgColor={Color.black}
             borderRadius={moderateScale(30, 0.3)}
           />
 
@@ -251,19 +242,16 @@ const LoginScreen = () => {
                 style={[
                   styles.txt4,
                   {
-                  color: Color.black,
+                    color: Color.black,
                   },
                 ]}>
                 {'Sign Up'}
               </CustomText>
             </TouchableOpacity>
           </View>
-        
-
-      
         </ScrollView>
       </ImageBackground>
-{/* 
+      {/* 
      <LinearGradient
         start={{x: 0.0, y: 0.25}}
         end={{x: 0.5, y: 1.0}}
@@ -274,13 +262,9 @@ const LoginScreen = () => {
 
 
         </LinearGradient> */}
-
-
-
     </>
   );
 };
-
 
 const styles = ScaledSheet.create({
   container: {

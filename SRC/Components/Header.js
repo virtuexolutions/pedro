@@ -12,7 +12,7 @@ const {height, width} = Dimensions.get('window');
 import Foundation from 'react-native-vector-icons/Foundation';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
+import Entypo from 'react-native-vector-icons/Entypo';
 import Modal from 'react-native-modal';
 
 import {useDispatch, useSelector} from 'react-redux';
@@ -57,107 +57,110 @@ const Header = props => {
       colors={
         headerColor ? headerColor : [Color.themeColor, '#83D475', '#ABE098']
       }>
-      {/* <View
-      style={[
-        styles.header2,
-        headerColor && {
-          backgroundColor: headerColor,
-        },
-      ]}> */}
-
       <View
-        style={{
-          height: moderateScale(30, 0.3),
-          width: moderateScale(30, 0.3),
-          borderRadius: moderateScale(5, 0.3),
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: showBack || showList ? 'white' : 'transparent',
-        }}>
-        {showBack ? (
-          <Icon
-            name={'arrowleft'}
-            as={AntDesign}
-            size={moderateScale(22, 0.3)}
-            color={
-              userRole == 'Qbid Member'
-                ? Color.blue
-                : userRole == 'Qbid Negotiator'
-                ? Color.themeColor
-                : Color.black
-            }
-            onPress={() => {
-              navigationN.goBack();
-            }}
-          />
-        ) : showList ? (
-          <CustomImage
-            resizeMode={'contain'}
-            style={{
-              width: windowWidth * 0.05,
-            }}
-            source={require('../Assets/Images/menu.png')}
-          />
-        ) : (
-          <View></View>
-        )}
-      </View>
-      <CustomImage
-        resizeMode={'contain'}
-        style={{
-          width: windowWidth * 0.21,
-          // backgroundColor : 'red' ,
-          height: windowHeight * 0.05,
-        }}
-        source={
-          userRole == 'Qbid Member'
-            ? require('../Assets/Images/logoSplash.png')
-            : require('../Assets/Images/logoSplash2.png')
-        }
-      />
-      {!hideUser ? (
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => {
-            userRole == 'Qbid Member'
-              ? navigationN.navigate('MyAccounts')
-              : navigationN.navigate('NegotiatorPortfolio');
-          }}
-          style={{
-            width: moderateScale(40, 0.3),
-            height: moderateScale(40, 0.3),
-            borderRadius: moderateScale(20, 0.3),
-            backgroundColor: Color.white,
-            overflow: userRole == 'Qbid Member' ? 'visible' : 'hidden',
-          }}>
-          <CustomImage
+        style={[
+          styles.header2,
+          headerColor && {
+            backgroundColor: headerColor,
+          },
+        ]}>
+        {!hideUser ? (
+          <TouchableOpacity
+            activeOpacity={0.8}
             onPress={() => {
               userRole == 'Qbid Member'
-                ? alert('Action required')
+                ? navigationN.navigate('MyAccounts')
                 : navigationN.navigate('NegotiatorPortfolio');
             }}
-            source={
-              userRole == 'Qbid Member'
-              ? require('../Assets/Images/Group.png')
-              :
-              user?.photo
-                ? {uri: `${user?.photo}`}
-                : require('../Assets/Images/man1.jpg')
-            }
-            resizeMode={'cover'}
             style={{
-              width: '100%',
-              height: '100%',
-            }}
-          />
-        
-        </TouchableOpacity>
-      ) : (
+              width: moderateScale(40, 0.3),
+              height: moderateScale(40, 0.3),
+              borderRadius: moderateScale(20, 0.3),
+              backgroundColor: Color.white,
+              overflow: userRole == 'Qbid Member' ? 'visible' : 'hidden',
+            }}>
+            <CustomImage
+              // onPress={() => {
+              //   userRole == 'Qbid Member'
+              //     ? alert('Action required')
+              //     : navigationN.navigate('NegotiatorPortfolio');
+              // }}
+              source={
+                userRole == 'Qbid Member'
+                  ? require('../Assets/Images/Group.png')
+                  : user?.photo
+                  ? {uri: `${user?.photo}`}
+                  : require('../Assets/Images/man1.jpg')
+              }
+              resizeMode={'cover'}
+              style={{
+                width: '100%',
+                height: '100%',
+              }}
+            />
+          </TouchableOpacity>
+        ) : (
+          <View
+            style={{
+              width: moderateScale(40, 0.3),
+            }}></View>
+        )}
+
+        <CustomImage
+          resizeMode={'contain'}
+          style={{
+            width: windowWidth * 0.21,
+            // backgroundColor : 'red' ,
+            height: windowHeight * 0.05,
+          }}
+          source={require('../Assets/Images/logo.png')}
+        />
+
         <View
           style={{
-            width: moderateScale(40, 0.3),
-          }}></View>
-      )}
+            height: moderateScale(35, 0.3),
+            width: moderateScale(35, 0.3),
+            borderRadius: moderateScale(25, 0.3),
+            marginHorizontal: moderateScale(10, 0.3),
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: showBack || showList ? 'white' : 'transparent',
+          }}>
+          {showBack ? (
+            <Icon
+              name={'arrowleft'}
+              as={AntDesign}
+              size={moderateScale(22, 0.3)}
+              color={
+                userRole == 'Qbid Member'
+                  ? Color.blue
+                  : userRole == 'Qbid Negotiator'
+                  ? Color.themeColor
+                  : Color.black
+              }
+              onPress={() => {
+                navigationN.goBack();
+              }}
+            />
+          ) : showList ? (
+            <Icon
+              name={'menu'}
+              as={Entypo}
+              size={moderateScale(22, 0.3)}
+              color={
+                userRole == 'Qbid Member'
+                  ? Color.blue
+                  : userRole == 'Qbid Negotiator'
+                  ? Color.themeColor
+                  : Color.black
+              }
+              onPress={() => navigationN.toggleDrawer()}
+            />
+          ) : (
+            <View></View>
+          )}
+        </View>
+      </View>
     </LinearGradient>
   );
 };
@@ -199,15 +202,15 @@ const styles = ScaledSheet.create({
   },
   header2: {
     width: windowWidth,
-    height: windowHeight * 0.1,
+    height: windowHeight * 0.08,
     backgroundColor: Color.themeColor,
     // justifyContent: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: moderateScale(20, 0.3),
+    paddingHorizontal: moderateScale(8, 0.3),
     paddingTop: moderateScale(15, 0.3),
     alignItems: 'center',
-    // backgroundColor: 'red',
+    backgroundColor: 'transparent',
   },
   notificationCircle: {
     position: 'absolute',

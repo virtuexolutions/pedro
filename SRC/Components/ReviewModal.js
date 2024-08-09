@@ -1,63 +1,60 @@
-import { StyleSheet, Text, View, TouchableOpacity,  FlatList, Platform, ToastAndroid, Alert} from 'react-native';
-import React, {useRef, useState} from 'react';
-import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
+import React, { useState } from 'react';
+import {
+  StyleSheet,
+  View
+} from 'react-native';
+import { AirbnbRating } from 'react-native-ratings';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import CustomText from '../Components/CustomText';
-import {Icon} from 'native-base';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {TextInput} from 'react-native';
-import {moderateScale} from 'react-native-size-matters';
+import { moderateScale } from 'react-native-size-matters';
+import { useSelector } from 'react-redux';
 import Color from '../Assets/Utilities/Color';
-import {AirbnbRating} from 'react-native-ratings';
-import TextInputWithTitle from './TextInputWithTitle';
-import {Post} from '../Axios/AxiosInterceptorFunction';
-import {useSelector} from 'react-redux';
+import CustomText from '../Components/CustomText';
+import { windowHeight, windowWidth } from '../Utillity/utils';
 import CustomButton from './CustomButton';
-import { ActivityIndicator } from 'react-native';
+import TextInputWithTitle from './TextInputWithTitle';
 
-const ReviewModal = ({setRef,rbRef, item, setbuttonName}) => {
+const ReviewModal = ({setRef, rbRef, item, setbuttonName}) => {
   const token = useSelector(state => state.authReducer.token);
   const [loading, setLoading] = useState(false);
   const [review, setReview] = useState('');
   const [rating, setRating] = useState(0);
 
-  const sendReview = async () => {
-    const url = 'auth/review';
-    const body = {rating: rating, quote_id: item?.id, text: review};
-    for (let key in body) {
-      if (body[key] == '') {
-        return Platform.OS == 'android'
-          ? ToastAndroid.show(`${key} is required`, ToastAndroid.SHORT)
-          : Alert.alert(`${key} is required`);
-      }
-    }
-    setLoading(true);
-    const response = await Post(url, body, apiHeader(token));
-    setLoading(false);
-    if (response != undefined) {
-    
-      Platform.OS == 'android'? ToastAndroid.show('Review sent',ToastAndroid.SHORT) : Alert.alert('Review sent')
-     setRating(0)
-    setReview('')
-    setbuttonName('reviewed')
-     rbRef.close()
-    }
+  // const sendReview = async () => {
+  //   const url = 'auth/review';
+  //   const body = {rating: rating, quote_id: item?.id, text: review};
+  //   for (let key in body) {
+  //     if (body[key] == '') {
+  //       return Platform.OS == 'android'
+  //         ? ToastAndroid.show(`${key} is required`, ToastAndroid.SHORT)
+  //         : Alert.alert(`${key} is required`);
+  //     }
+  //   }
+  //   setLoading(true);
+  //   const response = await Post(url, body, apiHeader(token));
+  //   setLoading(false);
+  //   if (response != undefined) {
 
-  };
+  //     Platform.OS == 'android'? ToastAndroid.show('Review sent',ToastAndroid.SHORT) : Alert.alert('Review sent')
+  //    setRating(0)
+  //   setReview('')
+  //   setbuttonName('reviewed')
+  //    rbRef.close()
+  //   }
+
+  // };
 
   return (
     <RBSheet
-    closeOnDragDown={true}
+      closeOnDragDown={true}
       ref={ref => setRef(ref)}
-      height={450}
+      height={300}
       dragFromTopOnly={true}
       openDuration={250}
-      // closeOnPressMask={true}
       customStyles={{
         container: {
           borderTopRightRadius: 25,
           borderTopLeftRadius: 25,
-          height: windowHeight * 0.65,
+          height: windowHeight * 0.55,
         },
       }}>
       <View
@@ -65,19 +62,12 @@ const ReviewModal = ({setRef,rbRef, item, setbuttonName}) => {
           alignItems: 'center',
           backgroundColor: Color.white,
         }}>
-        <View
-          style={{
-            backgroundColor: Color.white,
-            width: windowWidth * 0.2,
-            height: windowHeight * 0.01,
-            borderRadius: 10,
-            marginTop: 10,
-          }}></View>
-        <CustomText style={styles.Text}>What is you rate? </CustomText>
+        <CustomText isBold style={styles.Text}>
+          What is you rate?{' '}
+        </CustomText>
         <View
           style={{
             flexDirection: 'row',
-            paddingVertical: 20,
           }}>
           <AirbnbRating
             reviews={['OK', 'Good', 'Very Good', 'Wow', 'Amazing']}
@@ -89,14 +79,7 @@ const ReviewModal = ({setRef,rbRef, item, setbuttonName}) => {
           />
         </View>
 
-        <CustomText
-          style={{
-            width: windowWidth * 0.6,
-            fontSize: 17,
-            textAlign: 'center',
-          }}>
-          Please share your opinion about the product
-        </CustomText>
+        <CustomText style={styles.txt}>Please share your opinion</CustomText>
         <TextInputWithTitle
           multiline={true}
           secureText={false}
@@ -107,7 +90,7 @@ const ReviewModal = ({setRef,rbRef, item, setbuttonName}) => {
           viewWidth={0.75}
           inputWidth={0.66}
           border={1}
-          borderColor={Color.green}
+          borderColor={Color.blue}
           backgroundColor={'#FFFFFF'}
           marginTop={moderateScale(15, 0.6)}
           color={Color.themeColor}
@@ -116,13 +99,14 @@ const ReviewModal = ({setRef,rbRef, item, setbuttonName}) => {
         />
 
         <CustomButton
-          text={loading ? <ActivityIndicator size={'small'}  color={'white'}/>:'send review'}
+          text={'send review'}
           textColor={Color.white}
-          width={windowWidth * 0.55}
-          height={windowHeight * 0.08}
-          marginTop={moderateScale(15, 0.3)}
-          onPress={() => {sendReview()}}
-          bgColor={Color.themeColor}
+          width={windowWidth * 0.75}
+          height={windowHeight * 0.07}
+          marginTop={moderateScale(25, 0.3)}
+          onPress={() => {}}
+          isGradient
+          bgColor={Color.CustomerColor}
           borderRadius={moderateScale(30, 0.3)}
           fontSize={moderateScale(15, 0.3)}
         />
@@ -140,7 +124,9 @@ const styles = StyleSheet.create({
   Text: {
     fontSize: 18,
     textAlign: 'center',
-    paddingTop: moderateScale(30, 0.3),
+    paddingTop: moderateScale(10, 0.3),
+    color: Color.darkGray,
+    letterSpacing: 0.9,
   },
   input: {
     backgroundColor: Color.lightGrey,
@@ -153,5 +139,13 @@ const styles = StyleSheet.create({
   btnText: {
     color: Color.white,
     fontSize: moderateScale(17, 0.3),
+  },
+  txt: {
+    letterSpacing: 0.5,
+    color: Color.mediumGray,
+    width: windowWidth * 0.6,
+    fontSize: moderateScale(14, 0.6),
+    textAlign: 'center',
+    paddingTop: moderateScale(10, 0.6),
   },
 });

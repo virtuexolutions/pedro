@@ -9,11 +9,11 @@ import { moderateScale, ScaledSheet } from "react-native-size-matters";
 import ScreenBoiler from "../Components/ScreenBoiler";
 
 const SplashScreen = () => {
-  const backgroundImage = require("../Assets/Images/logoSplash.png");
+  const backgroundImage = require("../Assets/Images/logo.png");
   return (
     <ScreenBoiler
      
-      statusBarBackgroundColor={Color.themeColor}
+      statusBarBackgroundColor={'#2c3e50'}
       statusBarContentStyle={"light-content"}
     >
  <ImageBackground
@@ -26,7 +26,7 @@ const SplashScreen = () => {
          
         }}
         resizeMode={'stretch'}
-        source={require('../Assets/Images/backgroundImage.png')}>
+        source={require('../Assets/Images/bg3.png')}>
      
         <Animatable.View
           animation="zoomInUp"

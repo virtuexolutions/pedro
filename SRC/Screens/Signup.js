@@ -33,11 +33,13 @@ import ImagePickerModal from '../Components/ImagePickerModal';
 import {setSelectedRole, setUserData} from '../Store/slices/common';
 import {validateEmail} from '../Config';
 import {Post} from '../Axios/AxiosInterceptorFunction';
+import { useNavigation } from '@react-navigation/native';
 
 const Signup = () => {
   const servicesArray = useSelector(state => state.commonReducer.servicesArray);
   const userRole = useSelector(state => state.commonReducer.selectedRole);
   const dispatch = useDispatch();
+  const navigation =useNavigation()
 
   const [image, setImage] = useState({});
   const [selectedRole, setselectedRole] = useState(
@@ -61,122 +63,123 @@ const Signup = () => {
   const [showModal, setShowModal] = useState(false);
   const [checked, setChecked] = useState(false);
 
-  const formData = new FormData();
-  const Register = async () => {
-    const body = {
-      first_name: firstName,
-      last_name: lastName,
-      email: email,
-      phone: contact,
-      address: address,
-      city: city,
-      state: state,
-      zip: zipCode,
-      password: password,
-      confirm_password: confirmPassword,
-      role: selectedRole,
-      company_name :companyName,
-    };
+  // const formData = new FormData();
+  // const Register = async () => {
+  //   const body = {
+  //     first_name: firstName,
+  //     last_name: lastName,
+  //     email: email,
+  //     phone: contact,
+  //     address: address,
+  //     city: city,
+  //     state: state,
+  //     zip: zipCode,
+  //     password: password,
+  //     confirm_password: confirmPassword,
+  //     role: selectedRole,
+  //     company_name :companyName,
+  //   };
 
-    for (let key in body) {
-      if (body[key] == '') {
-        return Platform.OS == 'android'
-          ? ToastAndroid.show(` ${key} field is empty`, ToastAndroid.SHORT)
-          : Alert.alert(` ${key} field is empty`);
-      }
-      formData.append(key, body[key]);
-    }
+  //   for (let key in body) {
+  //     if (body[key] == '') {
+  //       return Platform.OS == 'android'
+  //         ? ToastAndroid.show(` ${key} field is empty`, ToastAndroid.SHORT)
+  //         : Alert.alert(` ${key} field is empty`);
+  //     }
+  //     formData.append(key, body[key]);
+  //   }
 
-    if (Object.keys(image).length > 0) {
-      formData.append('photo', image);
-    } else {
-      return Platform.OS == 'android'
-        ? ToastAndroid.show(`Profile image is required`, ToastAndroid.SHORT)
-        : Alert.alert(`Profile image is required`);
-    }
+  //   if (Object.keys(image).length > 0) {
+  //     formData.append('photo', image);
+  //   } else {
+  //     return Platform.OS == 'android'
+  //       ? ToastAndroid.show(`Profile image is required`, ToastAndroid.SHORT)
+  //       : Alert.alert(`Profile image is required`);
+  //   }
 
-    if (isNaN(zipCode)) {
-      return Platform.OS == 'android'
-        ? ToastAndroid.show('zipCode is not a number', ToastAndroid.SHORT)
-        : Alert.alert('zipCode is not a number');
-    }
-    if (isNaN(contact)) {
-      return Platform.OS == 'android'
-        ? ToastAndroid.show('phone is not a number', ToastAndroid.SHORT)
-        : Alert.alert('phone is not a number');
-    }
-    if (!validateEmail(email)) {
-      return Platform.OS == 'android'
-        ? ToastAndroid.show('email is not validate', ToastAndroid.SHORT)
-        : Alert.alert('email is not validate');
-    }
-    if (password.length < 8) {
-      return Platform.OS == 'android'
-        ? ToastAndroid.show(
-            'Password should atleast 8 character long',
-            ToastAndroid.SHORT,
-          )
-        : Alert.alert('Password should atleast 8 character long');
-    }
-    if (password != confirmPassword) {
-      return Platform.OS == 'android'
-        ? ToastAndroid.show('Password does not match', ToastAndroid.SHORT)
-        : Alert.alert('Password does not match');
-    }
+  //   if (isNaN(zipCode)) {
+  //     return Platform.OS == 'android'
+  //       ? ToastAndroid.show('zipCode is not a number', ToastAndroid.SHORT)
+  //       : Alert.alert('zipCode is not a number');
+  //   }
+  //   if (isNaN(contact)) {
+  //     return Platform.OS == 'android'
+  //       ? ToastAndroid.show('phone is not a number', ToastAndroid.SHORT)
+  //       : Alert.alert('phone is not a number');
+  //   }
+  //   if (!validateEmail(email)) {
+  //     return Platform.OS == 'android'
+  //       ? ToastAndroid.show('email is not validate', ToastAndroid.SHORT)
+  //       : Alert.alert('email is not validate');
+  //   }
+  //   if (password.length < 8) {
+  //     return Platform.OS == 'android'
+  //       ? ToastAndroid.show(
+  //           'Password should atleast 8 character long',
+  //           ToastAndroid.SHORT,
+  //         )
+  //       : Alert.alert('Password should atleast 8 character long');
+  //   }
+  //   if (password != confirmPassword) {
+  //     return Platform.OS == 'android'
+  //       ? ToastAndroid.show('Password does not match', ToastAndroid.SHORT)
+  //       : Alert.alert('Password does not match');
+  //   }
 
-    if (selectedRole == 'Qbid Negotiator' || selectedRole == 'Business Qbidder' ) {
-      if (companyName == '') {
-        return Platform.OS == 'android'
-          ? ToastAndroid.show(
-              'company name is required',
-              ToastAndroid.SHORT,
-            )
-          : Alert.alert('company name required');
-      }
-    }
+  //   if (selectedRole == 'Qbid Negotiator' || selectedRole == 'Business Qbidder' ) {
+  //     if (companyName == '') {
+  //       return Platform.OS == 'android'
+  //         ? ToastAndroid.show(
+  //             'company name is required',
+  //             ToastAndroid.SHORT,
+  //           )
+  //         : Alert.alert('company name required');
+  //     }
+  //   }
 
-    if (
-      selectedRole != 'Qbid Member' &&
-      (language.length == 0 || services.length == 0)
-    ) {
-      return Platform.OS == 'android'
-        ? ToastAndroid.show(
-            'Languages and expertise are required',
-            ToastAndroid.SHORT,
-          )
-        : Alert.alert('Languages and expertise are required');
-    } else {
-      language?.map((item, index) =>
-        formData.append(`language[${index}]`, item),
-      );
-      services?.map((item, index) =>
-        formData.append(`expertise[${index}]`, item),
-      );
-    }
+  //   if (
+  //     selectedRole != 'Qbid Member' &&
+  //     (language.length == 0 || services.length == 0)
+  //   ) {
+  //     return Platform.OS == 'android'
+  //       ? ToastAndroid.show(
+  //           'Languages and expertise are required',
+  //           ToastAndroid.SHORT,
+  //         )
+  //       : Alert.alert('Languages and expertise are required');
+  //   } else {
+  //     language?.map((item, index) =>
+  //       formData.append(`language[${index}]`, item),
+  //     );
+  //     services?.map((item, index) =>
+  //       formData.append(`expertise[${index}]`, item),
+  //     );
+  //   }
 
-    if (!checked) {
-      return Platform.OS == 'android'
-        ? ToastAndroid.show(
-            'Please accept terms and conditions',
-            ToastAndroid.SHORT,
-          )
-        : Alert.alert('Please accept terms and conditions');
-    }
+  //   if (!checked) {
+  //     return Platform.OS == 'android'
+  //       ? ToastAndroid.show(
+  //           'Please accept terms and conditions',
+  //           ToastAndroid.SHORT,
+  //         )
+  //       : Alert.alert('Please accept terms and conditions');
+  //   }
 
-    const url = 'register';
-    setIsLoading(true);
-    const response = await Post(url, formData, apiHeader());
-    setIsLoading(false);
-    if (response != undefined) {
-      dispatch(setUserData(response?.data?.user_info));
-      dispatch(setSelectedRole(response?.data?.user_info?.role));
-      dispatch(setUserLogin(response?.data?.token));
-      dispatch(setUserToken({token: response?.data?.token}));
-      dispatch(setMilageRing(false));
-    }
-  };
+  //   const url = 'register';
+  //   setIsLoading(true);
+  //   const response = await Post(url, formData, apiHeader());
+  //   setIsLoading(false);
+  //   if (response != undefined) {
+  //     dispatch(setUserData(response?.data?.user_info));
+  //     dispatch(setSelectedRole(response?.data?.user_info?.role));
+  //     dispatch(setUserLogin(response?.data?.token));
+  //     dispatch(setUserToken({token: response?.data?.token}));
+  //     dispatch(setMilageRing(false));
+  //   }
+  // };
+  // const UserRoleArray = [ 'Qbid Member', 'Business Qbidder'];
 
-  const UserRoleArray = [ 'Qbid Member', 'Business Qbidder'];
+  const UserRoleArray = ['Manager', 'Vendor','Customer'];
   useEffect(() => {
     dispatch(setSelectedRole(selectedRole));
   }, [selectedRole]);
@@ -200,11 +203,11 @@ const Signup = () => {
         }}
         resizeMode={'stretch'}
         source={
-          userRole == 'Qbid Member'
-            ? require('../Assets/Images/backgroundImage.png')
-            : userRole == 'Qbid Negotiator'
-            ? require('../Assets/Images/backgroungNegotiator.png')
-            : require('../Assets/Images/businessQibd.png')
+          userRole == 'Customer'
+            ? require('../Assets/Images/bg3.png')
+            : userRole == 'Vendor'
+            ? require('../Assets/Images/bg2.png')
+            : require('../Assets/Images/bg1.png')
         }>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -463,7 +466,7 @@ const Signup = () => {
                   height: windowHeight * 0.07,
                 }}
               />
-              <CustomDropDownMultiSelect
+              {/* <CustomDropDownMultiSelect
                 title={'Pick Expertise'}
                 array={servicesArray}
                 item={services}
@@ -473,10 +476,10 @@ const Signup = () => {
                   width: windowWidth * 0.9,
                   height: windowHeight * 0.07,
                 }}
-              />
+              /> */}
             </>
           )}
-          <View
+          {/* <View
             style={{
               flexDirection: 'row',
               width: windowWidth * 0.85,
@@ -520,7 +523,7 @@ const Signup = () => {
                 </CustomText>
               }
             </CustomText>
-          </View>
+          </View> */}
           <CustomButton
             text={
               isLoading ? (
@@ -534,7 +537,8 @@ const Signup = () => {
             height={windowHeight * 0.07}
             marginTop={moderateScale(10, 0.3)}
             onPress={() => {
-              Register();
+              // Register();
+              navigation.navigate('HomeScreen')
             }}
             bgColor={
               userRole == 'Qbid Member'
