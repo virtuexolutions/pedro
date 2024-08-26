@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.6",
     "@react-native-community/blur": "^4.3.0",
+    "@react-native-community/geolocation": "3.3.0",
     "@react-native-masked-view/masked-view": "^0.2.7",
     "@react-navigation/bottom-tabs": "^6.4.0",
     "@react-navigation/drawer": "^6.4.1",
@@ -21,6 +22,7 @@
     "axios": "^0.21.4",
     "babel-plugin-r-if": "^0.0.3",
     "deprecated-react-native-prop-types": "^4.2.1",
+    "geolib": "^3.3.4",
     "i": "^0.3.7",
     "lottie-react-native": "^5.1.6",
     "moment": "^2.29.3",
@@ -35,6 +37,7 @@
     "react-native-confirmation-code-field": "^7.3.0",
     "react-native-draggable-reanimated": "^1.0.5",
     "react-native-fast-image": "^8.6.3",
+    "react-native-geolocation-service": "^5.3.1",
     "react-native-gesture-handler": "^2.4.2",
     "react-native-get-location": "^3.0.1",
     "react-native-image-picker": "^4.8.4",

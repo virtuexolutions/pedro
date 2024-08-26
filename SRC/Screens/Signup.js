@@ -43,7 +43,7 @@ const Signup = () => {
 
   const [image, setImage] = useState({});
   const [selectedRole, setselectedRole] = useState(
-    userRole ? userRole : 'Qbid Member',
+    userRole ? userRole : 'Customer',
   );
   console.log('hfjsdhfjsdjkf' ,selectedRole)
   const [firstName, setFirstName] = useState('');
@@ -227,7 +227,7 @@ const Signup = () => {
             ) : (
               <CustomImage
                 style={styles.image}
-                source={require('../Assets/Images/user3.jpg')}
+                source={require('../Assets/Images/dummyUser.png')}
               />
             )}
             <TouchableOpacity
@@ -237,12 +237,7 @@ const Signup = () => {
               style={[
                 styles.edit,
                 {
-                  backgroundColor:
-                    userRole == 'Qbid Member'
-                      ? Color.blue
-                      : userRole == 'Qbid Negotiator'
-                      ? Color.themeColor
-                      : Color.black,
+                  backgroundColor:Color.black,
                 },
               ]}>
               <Icon
@@ -446,7 +441,7 @@ const Signup = () => {
             placeholderColor={Color.themeLightGray}
             borderRadius={moderateScale(25, 0.3)}
           />
-          {userRole != 'Qbid Member' && (
+         {/*  {userRole != 'Qbid Member' && (
             <>
               <CustomDropDownMultiSelect
                 title={'Pick Languages'}
@@ -466,7 +461,7 @@ const Signup = () => {
                   height: windowHeight * 0.07,
                 }}
               />
-              {/* <CustomDropDownMultiSelect
+              <CustomDropDownMultiSelect
                 title={'Pick Expertise'}
                 array={servicesArray}
                 item={services}
@@ -476,9 +471,9 @@ const Signup = () => {
                   width: windowWidth * 0.9,
                   height: windowHeight * 0.07,
                 }}
-              /> */}
+              />
             </>
-          )}
+          )} */}
           {/* <View
             style={{
               flexDirection: 'row',

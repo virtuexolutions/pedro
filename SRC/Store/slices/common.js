@@ -47,6 +47,8 @@ const initialState = {
   location: '',
   checkin: false,
   workUpload:false,
+  address :'',
+LocationPermission:''
 };
 
 const CommonSlice = createSlice({
@@ -63,7 +65,11 @@ const CommonSlice = createSlice({
     },
     setUserLogOut(state, action) {
       state.userData = {};
-      state.selectedRole = '';
+      // state.selectedRole = '';
+      console.log(
+        '🚀 ~ logout from common ~ action.payload: ================>',
+        action.payload,
+      );
     },
     setServiceCategories(state, action) {
       state.categories = action?.payload;
@@ -79,10 +85,20 @@ const CommonSlice = createSlice({
     },
     setLocation(state, action) {
       state.location = action.payload;
+      console.log("🚀 ~ setLocation ~ action.payload:", action.payload)
     },
+    setAddress(state, action) {
+      state.address = action.payload;
+      console.log("🚀 ~ setLocation ~ action.payload:", action.payload)
+    },
+    
     setworkUpload(state, action) {
       state.workUpload = action.payload;
       console.log("🚀 ~ setworkUpload ~  action.payload:",  action.payload)
+    },
+
+    setLocationPermission(state ,action){
+      state.LocationPermission = action.payload
     },
   
   },
@@ -99,6 +115,9 @@ export const {
   setLocation,
   setworkUpload,
   setUserchekin,
+  setAddress,
+  setLocationPermission
+  
 } = CommonSlice.actions;
 
 export default CommonSlice.reducer;

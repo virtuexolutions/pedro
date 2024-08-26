@@ -10,22 +10,36 @@ import CustomImage from './CustomImage';
 import CustomText from './CustomText';
 import RatingComponent from './RatingComponent';
 import {color} from 'native-base/lib/typescript/theme/styled-system';
+import moment from 'moment';
 
 const JobCard = ({fromSeeAll, style, onPress, item, getProposal}) => {
   const navigation = useNavigation();
   const userRole = useSelector(state => state.commonReducer.selectedRole);
 
   return (
-    <TouchableOpacity
-      style={styles.container}
-      onPress={() => navigation.navigate('JobDetail')}>
-      <LinearGradient
-        start={{x: 0.0, y: 0.25}}
-        end={{x: 0.5, y: 1.0}}
-        colors={['#FFFFFF', '#FFFFFF89', '#FFFFFF00']}
-        style={styles.container}>
+    <LinearGradient
+      start={{x: 0.0, y: 0.25}}
+      end={{x: 0.5, y: 1.0}}
+      colors={['#FFFFFF', '#FFFFFF89', '#FFFFFF00']}
+      style={styles.container}>
+      <TouchableOpacity
+        style={{
+          flexDirection: 'row',
+        }}
+        onPress={() =>
+          navigation.navigate('DetailScreen', {
+            job_id: item?.id,
+            jobStatus: item?.status,
+          })
+        }>
         <View style={styles.imagecontainer}>
           <CustomImage
+            onPress={() =>
+              navigation.navigate('DetailScreen', {
+                job_id: item?.id,
+                jobStatus: item?.status,
+              })
+            }
             style={{
               height: '100%',
               width: '100%',
@@ -56,18 +70,17 @@ const JobCard = ({fromSeeAll, style, onPress, item, getProposal}) => {
         <CustomText
           // isBold
           style={{
-            // paddingVertical :moderateScale(2,.6) ,
             paddingHorizontal: moderateScale(10, 0.6),
             backgroundColor:
               item?.status == 'waiting for approval'
                 ? '#fac637'
-                : item?.status == 'accept'
-                ? '#91E7BF'
-                : item?.status == 'reject'
+                : item?.status == 'accepted'
+                ? '#fac637'
+                : item?.status == 'decline'
                 ? 'red'
-                : '#9CCFE7',
+                : '#91de2c',
             borderRadius: moderateScale(10, 0.6),
-            fontSize: moderateScale(9, 0.6),
+            fontSize: moderateScale(11, 0.6),
             color: Color.black,
             position: 'absolute',
             right: 10,
@@ -77,38 +90,26 @@ const JobCard = ({fromSeeAll, style, onPress, item, getProposal}) => {
         </CustomText>
         <View
           style={{
-            paddingTop: moderateScale(10, 0.6),
-            paddingHorizontal: moderateScale(10, 0.6),
+            paddingTop: moderateScale(25, 0.6),
           }}>
-          <CustomText
-            isBold
-            style={{
-              fontSize: moderateScale(15, 0.6),
-            }}>
-            chris
-          </CustomText>
-          <CustomText
-            style={{
-              fontSize: moderateScale(13, 0.6),
-            }}>
-            chris@gmail.com
-          </CustomText>
           <View style={styles.row}>
             <CustomText
               isBold
               style={{
                 color: Color.black,
-                fontSize: moderateScale(12, 0.6),
+                fontSize: moderateScale(14, 0.6),
               }}>
-              vendor :
+              payment info :
             </CustomText>
             <CustomText
               isBold
               style={{
-                fontSize: moderateScale(12, 0.6),
+                marginHorizontal: moderateScale(5, 0.3),
+                fontSize: moderateScale(14, 0.6),
                 color: Color.black,
+                width: windowWidth * 0.2,
               }}>
-              $500.00
+              {item?.payment_info}
             </CustomText>
           </View>
           <View style={styles.row}>
@@ -116,20 +117,67 @@ const JobCard = ({fromSeeAll, style, onPress, item, getProposal}) => {
               isBold
               style={{
                 color: Color.black,
-                fontSize: moderateScale(12, 0.6),
+                fontSize: moderateScale(14, 0.6),
               }}>
-              Negotiator :
+              priority :
             </CustomText>
             <CustomText
               isBold
               style={{
-                fontSize: moderateScale(12, 0.6),
+                marginHorizontal: moderateScale(5, 0.3),
+                fontSize: moderateScale(14, 0.6),
                 color: Color.black,
+                width: windowWidth * 0.2,
               }}>
-              $400.00
+              {item?.priority}
             </CustomText>
           </View>
-          <RatingComponent
+          <View style={styles.timeRow}>
+            <CustomText
+              isBold
+              style={{
+                color: Color.black,
+                fontSize: moderateScale(14, 0.6),
+                paddingRight: moderateScale(10, 0.6),
+              }}>
+              deadline :
+            </CustomText>
+            <CustomText
+              isBold
+              style={{
+                fontSize: moderateScale(14, 0.6),
+                color: Color.black,
+              }}>
+              {moment(item?.deadline).format('l')}
+              07:43 PM
+            </CustomText>
+          </View>
+          <View
+            style={[
+              styles.row,
+              {
+                paddingVertical: moderateScale(2, 0.6),
+              },
+            ]}>
+            <CustomText
+              isBold
+              style={{
+                color: Color.black,
+                fontSize: moderateScale(14, 0.6),
+              }}>
+              note :
+            </CustomText>
+            <CustomText
+              numberOfLines={2}
+              style={{
+                width: windowWidth * 0.45,
+                color: Color.black,
+                fontSize: moderateScale(14, 0.6),
+              }}>
+              {item?.note}
+            </CustomText>
+          </View>
+          {/* <RatingComponent
             key={item => item?.id}
             disable={true}
             rating={5}
@@ -139,27 +187,10 @@ const JobCard = ({fromSeeAll, style, onPress, item, getProposal}) => {
               marginTop: moderateScale(1, 0.3),
             }}
             starSize={moderateScale(9, 0.3)}
-          />
-          <View style={styles.timeRow}>
-            <CustomText
-              style={{
-                color: Color.black,
-                fontSize: moderateScale(9, 0.6),
-                paddingRight: moderateScale(10, 0.6),
-              }}>
-              10/06/2022
-            </CustomText>
-            <CustomText
-              style={{
-                fontSize: moderateScale(9, 0.6),
-                color: Color.black,
-              }}>
-              07:43 PM
-            </CustomText>
-          </View>
+          /> */}
         </View>
-      </LinearGradient>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </LinearGradient>
   );
 };
 
@@ -179,7 +210,7 @@ const styles = ScaledSheet.create({
   },
   row: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     paddingHorizontal: moderateScale(2, 0.6),
   },
   timeRow: {
@@ -210,13 +241,14 @@ const styles = ScaledSheet.create({
     //  backgroundColor:'red',
     borderWidth: 1,
     borderColor: 'white',
-    width: windowWidth * 0.9,
+    // width: windowWidth * 0.9,
     borderTopLeftRadius: moderateScale(55, 0.6),
     borderBottomLeftRadius: moderateScale(55, 0.6),
-    marginBottom: moderateScale(10, 0.3),
+    marginBottom: moderateScale(15, 0.3),
     borderTopRightRadius: moderateScale(5, 0.6),
     borderBottomRightRadius: moderateScale(5, 0.6),
-    flexDirection: 'row',
+    // flexDirection: 'row',
+    // justifyContent:'center'
   },
   imagecontainer: {
     height: windowHeight * 0.14,

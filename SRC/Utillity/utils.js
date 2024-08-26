@@ -1,10 +1,14 @@
 import React from 'react';
 import {Dimensions, PermissionsAndroid} from 'react-native';
+import {useDispatch} from 'react-redux';
+import {setLocation, setLocationPermission} from '../Store/slices/common';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const requestLocationPermission = async () => {
+  const dispatch = useDispatch();
+  console.log('🚀 ~ location permission');
   try {
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -13,11 +17,13 @@ const requestLocationPermission = async () => {
         message: 'This App needs to Access your location',
       },
     );
+    console.log("🚀 ~ ====== >>>>>> >> >>>>> >> > >granted:", granted)
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
       console.log('You can use the Location');
     } else {
       console.log('Location permission denied');
     }
+    dispatch(setLocationPermission(granted));
   } catch (err) {
     console.warn(err);
   }
@@ -32,9 +38,9 @@ const requestCameraPermission = async () => {
         message:
           'Qbid needs access to your camera ' +
           'so you can take awesome pictures.',
-          
       },
     );
+    console.log('🚀 ~ requestCameraPermission ~ granted:', granted);
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
       console.log('You can use the Camera');
     } else {
@@ -120,8 +126,6 @@ const requestNotificationPermission = async () => {
 };
 // import {PermissionsAndroid} from 'react-native';
 // PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
-
-
 
 const apiHeader = (token, isFormData) => {
   if (token && !isFormData) {

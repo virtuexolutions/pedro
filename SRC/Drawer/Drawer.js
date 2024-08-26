@@ -1,40 +1,35 @@
+import { useNavigation } from '@react-navigation/native';
+import { Icon } from 'native-base';
+import React from 'react';
 import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
   ImageBackground,
+  StyleSheet,
+  TouchableOpacity,
+  View
 } from 'react-native';
-import React, {useState, useRef} from 'react';
-import Color from '../Assets/Utilities/Color';
-import CustomImage from '../Components/CustomImage';
-import {windowHeight, windowWidth} from '../Utillity/utils';
-import {moderateScale, ScaledSheet} from 'react-native-size-matters';
-import ScreenBoiler from '../Components/ScreenBoiler';
-import CustomText from '../Components/CustomText';
-import {Icon} from 'native-base';
-import Feather from 'react-native-vector-icons/Feather';
+import { moderateScale } from 'react-native-size-matters';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {useNavigation} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import Color from '../Assets/Utilities/Color';
+import CustomImage from '../Components/CustomImage';
+import CustomText from '../Components/CustomText';
+import ScreenBoiler from '../Components/ScreenBoiler';
 import {
-  SetUserRole,
-  setIsVerifed,
-  setUserLogoutAuth,
+  setUserLogoutAuth
 } from '../Store/slices/auth';
-import {setUserLogOut} from '../Store/slices/common';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import {background} from 'native-base/lib/typescript/theme/styled-system';
+import { setUserLogOut } from '../Store/slices/common';
+import { windowHeight, windowWidth } from '../Utillity/utils';
 
 const Drawer = () => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
   const userData = useSelector(state => state.commonReducer.userData);
 
   const userRole = useSelector(state => state.commonReducer.selectedRole);
-  const navigation = useNavigation();
-  const dispatch = useDispatch();
 
   const data = [
     {
@@ -46,7 +41,7 @@ const Drawer = () => {
         navigation.navigate('HomeScreen');
       },
     },
-   
+
     // {
     //   id: 2,
     //   name: 'post new job',
@@ -71,7 +66,7 @@ const Drawer = () => {
       iconName: 'key',
       iconType: Entypo,
       onPress: () => {
-        // navigation.navigate('ChangePassword');
+        navigation.navigate('ChangePassword');
       },
     },
     {
@@ -118,23 +113,15 @@ const Drawer = () => {
         style={{backgroundColor: 'red'}}
         statusBarBackgroundColor={'black'}
         statusBarContentStyle={'light-content'}>
-        {/* <View
-          style={{
-            overflow: 'hidden',
-            width: windowWidth * 0.71,
-            backgroundColor: '#D3D3D3',
-            height: windowHeight*.97,
-            borderBottomRightRadius: moderateScale(35, 0.6),
-          }}> */}
         <ImageBackground
           style={{
             height: windowHeight * 0.25,
             justifyContent: 'center',
           }}
           source={
-            userRole == 'Customer'
+            userRole == 'User'
               ? require('../Assets/Images/bg3.png')
-              : userRole == 'Vendor'
+              : userRole == 'vendor'
               ? require('../Assets/Images/bg2.png')
               : require('../Assets/Images/bg1.png')
           }>
@@ -193,8 +180,10 @@ const Drawer = () => {
         <View style={styles.btnView}>
           <TouchableOpacity
             onPress={() => {
+              console.log('logout');
               dispatch(setUserLogoutAuth());
               dispatch(setUserLogOut());
+              // navigation.navigate('LoginScreen')
             }}
             style={styles.btn}>
             <Icon
@@ -210,7 +199,6 @@ const Drawer = () => {
             </CustomText>
           </TouchableOpacity>
         </View>
-        {/* </View> */}
       </ScreenBoiler>
     </>
   );
@@ -251,7 +239,6 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     alignItems: 'center',
-    // backgroundColor:'red',
     flexDirection: 'row',
     marginTop: moderateScale(20, 0.3),
     alignItems: 'center',
@@ -265,10 +252,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   btn2View: {
-    // paddingTop: moderateScale(5, 0.6),
-    // marginTop: moderateScale(60, 0.3),
     height: windowHeight * 0.85,
-    // backgroundColor:'red'
   },
   text3: {
     width: windowWidth * 0.4,
@@ -276,7 +260,6 @@ const styles = StyleSheet.create({
     color: Color.black,
   },
   back: {
-    // backgroundColor: 'red',
     width: windowWidth * 0.1,
     marginVertical: moderateScale(10, 0.3),
     marginHorizontal: moderateScale(10, 0.3),

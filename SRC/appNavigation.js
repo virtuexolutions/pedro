@@ -10,7 +10,7 @@ import Drawer from './Drawer/Drawer';
 import HomeScreen from './Screens/HomeScreen';
 import JobDetails from './Screens/JobDetails';
 import Color from './Assets/Utilities/Color';
-import ContactNow from './Screens/ContactNow';
+// import ContactNow from './Screens/ContactNow';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import CreateNew from './Screens/CreateNew';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -27,6 +27,11 @@ import NotificationsScreen from './Screens/NotificationsScreen';
 import ChatScreen from './Screens/ChatScreen';
 import Settings from './Screens/Settings';
 import JobDetail from './Screens/JobDetail';
+import ChangePassword from './Screens/ChangePassword';
+import EnterPhone from './Screens/EnterPhone';
+import VerifyNumber from './Screens/VerifyNumber';
+import ResetPassword from './Screens/ResetPassword';
+import DetailScreen from './Screens/DetailScreen';
 
 const AppNavigator = () => {
   // const isLogin = false;
@@ -40,7 +45,7 @@ const AppNavigator = () => {
   const RootNavLogged = createNativeStackNavigator();
 
   const AppNavigatorContainer = () => {
-    const firstScreen = 'LoginScreen';
+    // const firstScreen = 'LoginScreen';
     // walkThrough == false
     //   ? 'Walkthrough'
     //   : token != null &&
@@ -50,26 +55,30 @@ const AppNavigator = () => {
     //   : token != null
     //   ? ''
     //   : 'LoginScreen';
-    // const firstScreen =
-    // walkThrough == false
-    // ? 'WalkThroughScreen'
-    // : token == null
-    // ? 'LoginScreen'
-    // : 'drawer';
+    const firstScreen =
+      // walkThrough == false
+      //   ? 'WalkThroughScreen'
+         token == null
+        ? 'LoginScreen'
+        : 'drawer';
 
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
           initialRouteName={firstScreen}
           screenOptions={{headerShown: false}}>
-          <RootNav.Screen name="ContactNow" component={ContactNow} />
-          <RootNav.Screen name="TabNavigation" component={TabNavigation} />
+          <RootNav.Screen name="MyDrawer" component={MyDrawer} />
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
-          {/* <RootNav.Screen name="Walkthrough" component={Walkthrough} /> */}
-          {/* <RootNav.Screen name="Signup" component={Signup} /> */}
+          <RootNav.Screen name="Signup" component={Signup} />
+          <RootNav.Screen name="DetailScreen" component={DetailScreen} />
           <RootNav.Screen name="JobDetail" component={JobDetail} />
           <RootNav.Screen name="CreateNew" component={CreateNew} />
-          <RootNav.Screen name="MyDrawer" component={MyDrawer} />
+          <RootNav.Screen name="ChangePassword" component={ChangePassword} />
+          <RootNav.Screen name="EnterPhone" component={EnterPhone} />
+          <RootNav.Screen name="VerifyNumber" component={VerifyNumber} />
+          <RootNav.Screen name="ResetPassword" component={ResetPassword} />
+
+
         </RootNav.Navigator>
       </NavigationContainer>
     );
@@ -223,20 +232,24 @@ export const MyDrawer = () => {
   return (
     <DrawerNavigation.Navigator
       drawerContent={props => <Drawer {...props} />}
-      initialRouteName={'TabNavigation'}
+      initialRouteName={'HomeScreen'}
       screenOptions={{
         headerShown: false,
       }}>
-      <DrawerNavigation.Screen
+      {/* <DrawerNavigation.Screen
         name={'TabNavigation'}
         component={TabNavigation}
-      />
-      <DrawerNavigation.Screen name={'ContactNow'} component={ContactNow} />
+      /> */}
       <DrawerNavigation.Screen name={'HomeScreen'} component={HomeScreen} />
+      <DrawerNavigation.Screen name={'DetailScreen'} component={DetailScreen} />
+      <DrawerNavigation.Screen name={'JobDetail'} component={JobDetail} />
       <DrawerNavigation.Screen name={'CreateNew'} component={CreateNew} />
 
-      {/* <DrawerNavigation.Screen name={'Signup'} component={Signup} />
-      <DrawerNavigation.Screen name={'LoginScreen'} component={LoginScreen} /> */}
+      {/* {/* <DrawerNavigation.Screen name={'Signup'} component={Signup} /> */}
+      <DrawerNavigation.Screen
+        name={'ChangePassword'}
+        component={ChangePassword}
+      />
     </DrawerNavigation.Navigator>
   );
 };

@@ -16,7 +16,8 @@ const AuthSlice = createSlice({
   initialState: initialState,
   reducers: {
     setUserToken(state, action) {
-      state.token = action?.payload?.token;
+      state.token = action?.payload;
+      console.log("🚀 ~ setUserToken ~ action?.payload:", action?.payload)
     },
 
     SetFCMToken(state, action) {
@@ -28,6 +29,10 @@ const AuthSlice = createSlice({
     setUserLogoutAuth(state, action) {
       state.token = null;
       state.fcmToken = null;
+      console.log(
+        '🚀 ~ logout from auth ~ action.payload: ================>',
+        action.payload,
+      );
     },
     setWalkThrough(state, action) {
       state.userWalkThrough = action.payload;

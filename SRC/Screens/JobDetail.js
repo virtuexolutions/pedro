@@ -18,19 +18,18 @@ import NotificationModal from '../Components/NotificationModal';
 import ReviewModal from '../Components/ReviewModal';
 import WorkUploadModal from '../Components/WorkUploadModal';
 import {setUserCheckin, setUserchekin} from '../Store/slices/auth';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const JobDetail = () => {
   const dispatch = useDispatch();
   const userRole = useSelector(state => state.commonReducer.selectedRole);
   const checkin = useSelector(state => state.authReducer.checkin);
-  console.log('===================>', checkin == true ? 'meerab' : 'kinza');
   const workdone = useSelector(state => state.commonReducer.workUpload);
   const RBSheet = useRef();
-  // const dispatch =useDispatch()
 
   const [isLoading, setIsLoading] = useState(false);
   const [selectedRole, setSelectedType] = useState(
-    userRole ? userRole : 'Qbid Member',
+    userRole ? userRole : 'User',
   );
   const [selectedData, setSelectedData] = useState('');
   const [searchData, setSearchData] = useState('');
@@ -48,13 +47,7 @@ const JobDetail = () => {
   return (
     <>
       <CustomStatusBar
-        backgroundColor={
-          userRole == 'Qbid Member'
-            ? Color.blue
-            : userRole == 'Qbid Negotiator'
-            ? Color.themeColor
-            : Color.black
-        }
+        backgroundColor={Color.black}
         barStyle={'light-content'}
       />
 
@@ -65,15 +58,16 @@ const JobDetail = () => {
         }}
         resizeMode={'stretch'}
         source={
-          userRole == 'Customer'
+          userRole == 'User'
             ? require('../Assets/Images/bg3.png')
-            : userRole == 'Vendor'
+            : userRole == 'vendor'
             ? require('../Assets/Images/bg2.png')
             : require('../Assets/Images/bg1.png')
         }>
         <Header
           showList={true}
           title={'logo here'}
+          hideUser={true}
           headerColor={['#FFFFFF00', '#FFFFFF00', '#FFFFFF00']}
         />
         <View
@@ -90,7 +84,7 @@ const JobDetail = () => {
                 width: '100%',
                 overflow: 'hidden',
               }}
-              source={require('../Assets/Images/working_image.png')}
+              source={require('../Assets/Images/workImage.jpg')}
             />
           </View>
           <View style={styles.row}>
@@ -107,6 +101,8 @@ const JobDetail = () => {
             <View
               style={{
                 paddingTop: moderateScale(3, 0.6),
+                // backgroundColor:'red',
+                width: windowWidth * 0.32,
               }}>
               <CustomText isBold={true} style={styles.txtname}>
                 Charles A. Lee
@@ -131,19 +127,29 @@ const JobDetail = () => {
                 size={moderateScale(14, 0.6)}
                 color={'#00ADEF'}
               />
-              <CustomText style={styles.txt1}>job delivery time</CustomText>
+              <CustomText style={styles.txt1}>deadline</CustomText>
               <CustomText style={styles.txt1}>3 days</CustomText>
             </View>
             <View style={styles.lineview} />
             <View style={{alignItems: 'center'}}>
               <Icon
-                name="checkcircle"
-                as={AntDesign}
+                name="user-circle-o"
+                as={FontAwesome}
                 size={moderateScale(14, 0.6)}
                 color={'#00ADEF'}
               />
-              <CustomText style={styles.txt1}>Last job delivery</CustomText>
-              <CustomText style={styles.txt1}>Yesterday</CustomText>
+              <CustomText
+                style={[
+                  styles.txt1,
+                  {
+                    width: windowWidth * 0.15,
+                    // backgroundColor:'red',
+                    textAlign: 'center',
+                    // alignItem:'center'
+                  },
+                ]}>
+                assitent vendor{' '}
+              </CustomText>
             </View>
           </View>
         </View>
@@ -153,36 +159,205 @@ const JobDetail = () => {
               flexDirection: 'row',
               width: windowWidth * 0.9,
               alignItems: 'center',
-              justifyContent: 'flex-end',
-              paddingTop: moderateScale(8, 0.6),
+              justifyContent: 'space-between',
+              // backgroundColor: 'red',
+              marginTop: moderateScale(12, 0.6),
             }}>
-            <View
-              style={[
-                styles.statusColor,
-                {backgroundColor: checkin == false ? 'green' : 'yellow'},
-              ]}></View>
-            <CustomText
-              isBold
-              style={[styles.txt3, {paddingHorizontal: moderateScale(5, 0.6)}]}>
-              {(checkin == false ? 'pending' : 'inprocess') ||
-              (checkin == false && workdone)
-                ? 'waiting for approval'
-                : 'approved'}
+            <CustomText isBold style={styles.heading}>
+              Job Detail
             </CustomText>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                paddingTop: moderateScale(3, 0.6),
+              }}>
+              <View
+                style={[
+                  styles.statusColor,
+                  {backgroundColor: checkin == false ? 'green' : 'yellow'},
+                ]}></View>
+              <CustomText
+                isBold
+                style={[
+                  styles.txt3,
+                  {
+                    paddingHorizontal: moderateScale(5, 0.6),
+                    fontSize: moderateScale(11, 0.6),
+                  },
+                ]}>
+                {(checkin == false ? 'pending' : 'inprocess') ||
+                (checkin == false && workdone)
+                  ? 'waiting for approval'
+                  : 'approved'}
+              </CustomText>
+            </View>
           </View>
         )}
         <View
           style={[
             styles.card,
+            styles.shadowprops,
             {
               marginTop: moderateScale(10, 0.6),
-              height: windowHeight * 0.2,
+              height: windowHeight * 0.134,
+              paddingVertical: moderateScale(5, 0.6),
+              paddingHorizontal: moderateScale(10, 0.6),
             },
           ]}>
-          <CustomText isBold style={styles.heading}>
-            package include
-          </CustomText>
-          <FlatList
+          <View
+            style={{
+              flexDirection: 'row',
+              // backgroundColor: 'red',
+              width: '100%',
+            }}>
+            <CustomText
+              isBold
+              style={[
+                styles.des,
+                {
+                  paddingHorizontal: moderateScale(8, 0.6),
+                  color: Color.black,
+                },
+              ]}>
+              job name :
+            </CustomText>
+            <CustomText
+              style={[
+                styles.des,
+                {
+                  color: Color.black,
+                  paddingHorizontal: moderateScale(0, 0.6),
+                  width: windowWidth * 0.7,
+                  // backgroundColor: 'red',
+                },
+              ]}>
+              Donec Imperdiet Ipsum At Volutpat Interdum.
+            </CustomText>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              // backgroundColor: 'red',
+              width: '100%',
+            }}>
+            <CustomText
+              isBold
+              style={[
+                styles.des,
+                {
+                  paddingHorizontal: moderateScale(8, 0.6),
+                  color: Color.black,
+                },
+              ]}>
+              assitent manager :
+            </CustomText>
+            <CustomText
+              style={[
+                styles.des,
+                {
+                  color: Color.black,
+                  paddingHorizontal: moderateScale(0, 0.6),
+                  width: windowWidth * 0.7,
+                  // backgroundColor: 'red',
+                },
+              ]}>
+              Donec Imperdiet .
+            </CustomText>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              // backgroundColor: 'red',
+              width: '100%',
+            }}>
+            <CustomText
+              isBold
+              style={[
+                styles.des,
+                {
+                  paddingHorizontal: moderateScale(8, 0.6),
+                  color: Color.black,
+                },
+              ]}>
+              assitent vendor :
+            </CustomText>
+            <CustomText
+              style={[
+                styles.des,
+                {
+                  color: Color.black,
+                  paddingHorizontal: moderateScale(0, 0.6),
+                  width: windowWidth * 0.7,
+                  // backgroundColor: 'red',
+                },
+              ]}>
+              Donec Imperdiet .
+            </CustomText>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              // backgroundColor: 'red',
+              width: '100%',
+            }}>
+            <CustomText
+              isBold
+              style={[
+                styles.des,
+                {
+                  paddingHorizontal: moderateScale(8, 0.6),
+                  color: Color.black,
+                },
+              ]}>
+              quote price :
+            </CustomText>
+            <CustomText
+              style={[
+                styles.des,
+                {
+                  color: Color.black,
+                  paddingHorizontal: moderateScale(0, 0.6),
+                  width: windowWidth * 0.7,
+                  // backgroundColor: 'red',
+                },
+              ]}>
+              $80
+            </CustomText>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              // backgroundColor: 'red',
+              width: '100%',
+            }}>
+            <CustomText
+              isBold
+              style={[
+                styles.des,
+                {
+                  paddingHorizontal: moderateScale(8, 0.6),
+                  color: Color.black,
+                },
+              ]}>
+              final price :
+            </CustomText>
+            <CustomText
+              style={[
+                styles.des,
+                {
+                  color: Color.black,
+                  paddingHorizontal: moderateScale(0, 0.6),
+                  width: windowWidth * 0.7,
+                  // backgroundColor: 'red',
+                },
+              ]}>
+              $70
+            </CustomText>
+          </View>
+
+          {/* <FlatList
             showsVerticalScrollIndicat={false}
             data={dummyArray}
             scrollEnabled={false}
@@ -194,9 +369,9 @@ const JobDetail = () => {
                 </View>
               );
             }}
-          />
+          /> */}
         </View>
-        <CustomText style={styles.des}>
+        <CustomText style={[styles.des, {paddingTop: moderateScale(10, 0.6)}]}>
           Donec Imperdiet Ipsum At Volutpat Interdum. Morbi Ante Nulla, Tempor
           Id Magna Ac, Ultrices Dignissim Felis. Donec In Dignissim Nibh, Sed
           Malesuada Ena.
@@ -222,6 +397,8 @@ const JobDetail = () => {
               width: windowWidth,
               justifyContent: 'space-between',
               // backgroundColor:'red',
+              position: 'absolute',
+              bottom: 30,
               paddingHorizontal: moderateScale(10, 0.6),
             }}>
             <CustomButton
@@ -265,11 +442,6 @@ const JobDetail = () => {
             setModalVisible={setModalVisible}
           />
         )}
-        {/* <ReviewModal rbRef={rbRef} setRef={setRef} /> */}
-        <WorkUploadModal
-          uploadModal={modal_visible}
-          setUploadModal={setModalVisible}
-        />
       </ImageBackground>
     </>
   );
@@ -279,8 +451,8 @@ export default JobDetail;
 
 const styles = StyleSheet.create({
   card: {
-    height: windowHeight * 0.35,
-    width: windowWidth * 0.98,
+    height: windowHeight * 0.33,
+    width: windowWidth * 0.95,
     backgroundColor: '#FFFFFF',
     borderRadius: moderateScale(10, 6),
     overflow: 'hidden',
@@ -298,7 +470,7 @@ const styles = StyleSheet.create({
     color: Color.white,
     fontSize: moderateScale(12, 0.6),
     paddingHorizontal: moderateScale(15, 0.6),
-    paddingTop: moderateScale(5, 0.6),
+    paddingTop: moderateScale(0, 0.6),
   },
   txt: {
     color: Color.black,
@@ -321,9 +493,9 @@ const styles = StyleSheet.create({
   },
   heading: {
     color: Color.black,
-    fontSize: moderateScale(18, 0.6),
-    paddingHorizontal: moderateScale(20, 0.6),
+    fontSize: moderateScale(16, 0.6),
     paddingTop: moderateScale(5, 0.6),
+    letterSpacing: 0.7,
   },
   txtname: {
     color: Color.black,
@@ -349,11 +521,9 @@ const styles = StyleSheet.create({
   userimage: {
     width: windowWidth * 0.95,
     height: windowHeight * 0.25,
-    backgroundColor: 'green',
+    // backgroundColor: 'green',
     overflow: 'hidden',
     marginHorizontal: moderateScale(5, 0.3),
-    marginVertical: moderateScale(5, 0.3),
-    borderRadius: moderateScale(10, 0.6),
     alignSelf: 'center',
   },
   txt3: {
@@ -364,5 +534,15 @@ const styles = StyleSheet.create({
     height: windowHeight * 0.01,
     width: windowHeight * 0.01,
     borderRadius: (windowHeight * 0.01) / 2,
+  },
+  shadowprops: {
+    shadowColor: Color.black,
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4.84,
+    elevation: 5,
   },
 });

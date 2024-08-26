@@ -1,10 +1,10 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {FlatList} from 'native-base';
 import CustomText from './CustomText';
 import Color from '../Assets/Utilities/Color';
 import {moderateScale} from 'react-native-size-matters';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import Modal from 'react-native-modal';
 import ImagePickerModal from './ImagePickerModal';
 import {Icon} from 'native-base';
@@ -13,8 +13,9 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CustomImage from './CustomImage';
 import CustomButton from './CustomButton';
 import TimingModal from './TimingModal';
-import { useDispatch, useSelector } from 'react-redux';
-import { setworkUpload } from '../Store/slices/common';
+import {useDispatch, useSelector} from 'react-redux';
+import {setworkUpload} from '../Store/slices/common';
+import {Post, Put} from '../Axios/AxiosInterceptorFunction';
 
 const WorkUploadModal = ({
   title,
@@ -26,12 +27,38 @@ const WorkUploadModal = ({
   uploadModal,
   setUploadModal,
   setData,
+  job_id,
 }) => {
+  const workdone = useSelector(state => state.commonReducer.workUpload);
+  const token = useSelector(state => state.authReducer.token);
+
+  const dispatch = useDispatch();
   const [multiImages, setMultiImages] = useState([]);
   const [showMultiImageModal, setShowMultiImageModal] = useState(false);
   const [isvisible, setIsVisible] = useState(false);
-  const dispatch =useDispatch()
-  const workdone = useSelector(state=>state.commonReducer.workUpload) 
+  const [isLoading, setIsLoading] = useState(false);
+
+  const formData = new FormData();
+  const workupload = async () => {
+    const url = `vendor/upload/${job_id}`;
+
+    multiImages?.map((item, index) => {
+      formData.append(`image[${index}]`, item);
+    });
+    setIsLoading(true);
+    const response = await Put(url, formData, apiHeader(token));
+    setIsLoading(false);
+    console.log(
+      '🚀 ~ workupload ~ ================ > > >>> > >> > response:',
+      response?.data,
+    );
+    if (response != undefined) {
+      setUploadModal(false);
+      setMultiImages([]);
+      dispatch(setworkUpload(true));
+    }
+  };
+
   return (
     <Modal
       hasBackdrop={true}
@@ -50,8 +77,7 @@ const WorkUploadModal = ({
           width: windowWidth * 0.9,
           backgroundColor: 'white',
           alignItems: 'center',
-          // padding:moderateScale(10,.6),
-          // height: windowHeight * 0.6,
+          
           paddingBottom: moderateScale(10, 0.3),
         }}>
         <View style={styles.header}>
@@ -140,15 +166,19 @@ const WorkUploadModal = ({
           }}
         /> */}
         <CustomButton
-          text={'submit'}
+          text={
+            isLoading ? (
+              <ActivityIndicator size={'small'} color={'white'} />
+            ) : (
+              'submit'
+            )
+          }
           textColor={Color.white}
           width={windowWidth * 0.75}
           height={windowHeight * 0.07}
           marginTop={moderateScale(25, 0.3)}
           onPress={() => {
-            setUploadModal(false);
-            setMultiImages([]);
-            dispatch(setworkUpload(true))
+            workupload();
           }}
           isGradient
           bgColor={Color.vendorColor}
@@ -177,7 +207,7 @@ export default WorkUploadModal;
 const styles = StyleSheet.create({
   headerText: {
     color: Color.white,
-    fontSize: moderateScale(15, 0.6),
+    fontSize: moderateScale(18, 0.6),
     fontWeight: 'bold',
     letterSpacing: 0.7,
   },
@@ -204,19 +234,21 @@ const styles = StyleSheet.create({
     marginLeft: moderateScale(10, 0.3),
     flexWrap: 'wrap',
     flexDirection: 'row',
+    paddingVertical:moderateScale(5,.6)
     // borderWidth: 1,
     // alignItems: 'center',
     // justifyContent: 'center',
     // // borderRadius: moderateScale(5, 0.6),
     // // borderColor: Color.green,
+    // backgroundColor:'red'
   },
   addImageContainer: {
-    width: windowWidth * 0.19,
+    width: windowWidth * 0.25,
     backgroundColor: Color.white,
     borderRadius: moderateScale(5, 0.3),
     borderWidth: 2,
     borderColor: Color.blue,
-    height: windowHeight * 0.12,
+    height: windowHeight * 0.15,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: moderateScale(10, 0.3),

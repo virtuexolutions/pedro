@@ -9,17 +9,16 @@ import {PermissionsAndroid} from 'react-native';
 import {NativeBaseProvider} from 'native-base';
 import {store, persistor} from './SRC/Store/index';
 // import {stripeKey} from './SRC/Config';
-// import {
-//   requestCameraPermission,
-//   requestLocationPermission,
-//   requestManagePermission,
-//   requestNotificationPermission,
-//   requestReadPermission,
-//   requestWritePermission,
-// } from './SRC/Utillity/utils';
+import {
+  requestCameraPermission,
+  requestLocationPermission,
+  requestManagePermission,
+  requestNotificationPermission,
+  requestReadPermission,
+  requestWritePermission,
+} from './SRC/Utillity/utils';
 import SplashScreen from './SRC/Screens/SplashScreen';
 import AppNavigator from './SRC/appNavigation';
-// import AddCard from './SRC/Screens/AddCard';
 
 const App = () => {
   // const [publishableKey, setPublishableKey] = useState('');
@@ -132,31 +131,32 @@ const MainContainer = () => {
   //                                }, []);
   // fcm ends
 
-  // useEffect(() => {
-  //     async function GetPermission() {
-  //       await requestCameraPermission();
-  //       await requestWritePermission();
-  //       await requestLocationPermission();
-  //       await requestReadPermission();
-  //     await  requestUserPermission
-  //   //  await   requestNotificationPermission()
-  //       // await requestManagePermission();
+  useEffect(() => {
+    async function GetPermission() {
+      await requestLocationPermission();
+      await requestCameraPermission();
+      await requestWritePermission();
+      await requestReadPermission();
 
-  //     }
-  //     console.log('>hererererer');
-  //      messaging().getToken()
-  //        .then((_token) => {
-  //          console.log("🚀 ~mg here ================  .then ~ _token:", _token)
-  //         //  dispatch(SetFCMToken(_token));
-  //        })
-  //        .catch(() => console.log("token error"));
-  //     GetPermission();
-  //   }, []);
+      //  await   requestNotificationPermission()
+      // await requestManagePermission();
+    }
+    console.log('>hererererer');
+    // messaging()
+    //   .getToken()
+    //   .then(_token => {
+    //     console.log('🚀 ~mg here ================  .then ~ _token:', _token);
+    //     //  dispatch(SetFCMToken(_token));
+    //   })
+    //   .catch(() => console.log('token error'));
+    GetPermission();
+  }, []);
 
   const [isloading] = useloader(true);
   if (isloading == true) {
     return <SplashScreen />;
   }
+  // return <ContactNow/>
   return <AppNavigator />;
 };
 

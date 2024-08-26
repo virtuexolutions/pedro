@@ -30,6 +30,7 @@ import DropDownSingleSelect from '../Components/DropDownSingleSelect';
 import navigationService from '../navigationService';
 import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
+import { color } from 'native-base/lib/typescript/theme/styled-system';
 
 const LoginScreen = () => {
   const dispatch = useDispatch();
@@ -45,64 +46,77 @@ const LoginScreen = () => {
 
   const servicesArray = ['Manager', 'Vendor', 'Customer'];
 
-  // const Login = async () => {
-  //   const body = {
-  //     email: email,
-  //     password: password,
-  //   };
+  const Login = async () => {
+    const body = {
+      email: email,
+      password: password,
+      // userRole:
+    };
 
-  //   for (let key in body) {
-  //     if (body[key] == '') {
-  //       return Platform.OS == 'android'
-  //         ? ToastAndroid.show(` ${key} field is empty`, ToastAndroid.SHORT)
-  //         : Alert.alert(` ${key} field is empty`);
-  //     }
-  //   }
+    for (let key in body) {
+      if (body[key] == '') {
+        return Platform.OS == 'android'
+          ? ToastAndroid.show(` ${key} field is empty`, ToastAndroid.SHORT)
+          : Alert.alert(` ${key} field is empty`);
+      }
+    }
 
-  //   if (!validateEmail(email)) {
-  //     return Platform.OS == 'android'
-  //       ? ToastAndroid.show('email is not validate', ToastAndroid.SHORT)
-  //       : Alert.alert('email is not validate');
-  //   }
-  //   if (password.length < 8) {
-  //     return Platform.OS == 'android'
-  //       ? ToastAndroid.show(
-  //           'Password should atleast 8 character long',
-  //           ToastAndroid.SHORT,
-  //         )
-  //       : Alert.alert('Password should atleast 8 character long');
-  //   }
+    if (!validateEmail(email)) {
+      return Platform.OS == 'android'
+        ? ToastAndroid.show('email is not validate', ToastAndroid.SHORT)
+        : Alert.alert('email is not validate');
+    }
+    if (password.length < 8) {
+      return Platform.OS == 'android'
+        ? ToastAndroid.show(
+            'Password should atleast 8 character long',
+            ToastAndroid.SHORT,
+          )
+        : Alert.alert('Password should atleast 8 character long');
+    }
 
-  //   const url = 'login';
-  //   setIsLoading(true);
-  //   const response = await Post(url, body, apiHeader());
-  //   setIsLoading(false);
-  //   if (response != undefined) {
-  //     if (selectedRole == response?.data?.user_info?.role) {
-  //       dispatch(
-  //         setUserData({
-  //           ...response?.data?.user_info,
-  //           average_rating: response?.data?.average_rating,
-  //         }),
-  //       );
-  //       dispatch(setSelectedRole(response?.data?.user_info?.role));
-  //       dispatch(setUserToken({token: response?.data?.token}));
-  //       dispatch(
-  //         setMilageRing(
-  //           ['', null, 'null', undefined, 0].includes(
-  //             response?.data?.user_info?.radius,
-  //           )
-  //             ? false
-  //             : true,
-  //         ),
-  //       );
-  //     } else {
-  //       return Platform.OS == 'android'
-  //         ? ToastAndroid.show('unauthenticated', ToastAndroid.SHORT)
-  //         : Alert.alert('unauthenticated');
-  //     }
-  //   }
-  // };
+    const url = 'login';
+    setIsLoading(true);
+    const response = await Post(url, body, apiHeader());
+    
+    setIsLoading(false);
+    if (response != undefined) {
+    console.log("🚀 ~ Login ~ body:", body ,response?.data?.token) 
+      console.log("🚀 ~ Login ~ response:", response?.data)
+      if (response != undefined) {
+        dispatch(setUserData(response?.data?.user_info));
+        dispatch(setSelectedRole(response?.data?.role));
+        dispatch(setUserToken(response?.data?.token));
+      } else {
+        return Platform.OS == 'android'
+          ? ToastAndroid.show('unauthenticated', ToastAndroid.SHORT)
+          : Alert.alert('unauthenticated');
+      }
+      // if (selectedRole == response?.data?.user_info?.role) {
+      //   dispatch(
+      //     setUserData({
+      //       ...response?.data?.user_info,
+      //       average_rating: response?.data?.average_rating,
+      //     }),
+      //   );
+      //   dispatch(setSelectedRole(response?.data?.user_info?.role));
+      //   dispatch(setUserToken({token: response?.data?.token}));
+      //   // dispatch(
+      //   //   setMilageRing(
+      //   //     ['', null, 'null', undefined, 0].includes(
+      //   //       response?.data?.user_info?.radius,
+      //   //     )
+      //   //       ? false
+      //   //       : true,
+      //   //   ),
+      //   // );
+      // } else {
+      //   return Platform.OS == 'android'
+      //     ? ToastAndroid.show('unauthenticated', ToastAndroid.SHORT)
+      //     : Alert.alert('unauthenticated');
+      // }
+    }
+  };
 
   useEffect(() => {
     dispatch(setSelectedRole(selectedRole));
@@ -154,7 +168,7 @@ const LoginScreen = () => {
             />
           </View>
 
-          <DropDownSingleSelect
+          {/* <DropDownSingleSelect
             array={servicesArray}
             item={selectedRole}
             setItem={setSelectedType}
@@ -166,7 +180,7 @@ const LoginScreen = () => {
               borderBottomWidth: 0,
               marginTop: moderateScale(30, 0.6),
             }}
-          />
+          /> */}
 
           <TextInputWithTitle
             titleText={'Enter your Email'}
@@ -204,7 +218,9 @@ const LoginScreen = () => {
             onPress={() => {
               navigationService.navigate('EnterPhone', {fromForgot: true});
             }}
-            style={styles.txt3}>
+            style={[styles.txt3,{
+             color: Color.white
+            }]}>
             {'Forgot Password?'}
           </CustomText>
 
@@ -222,8 +238,8 @@ const LoginScreen = () => {
             marginTop={moderateScale(10, 0.3)}
             onPress={() => {
               // navigation.navigate('Tabnavigation');
-              navigation.navigate('MyDrawer');
-              // Login();
+              // navigation.navigate('MyDrawer');
+              Login();
             }}
             bgColor={Color.black}
             borderRadius={moderateScale(30, 0.3)}
@@ -289,8 +305,10 @@ const styles = ScaledSheet.create({
 
   txt3: {
     fontSize: moderateScale(10, 0.6),
-    alignSelf: 'center',
+    alignSelf: 'left',
+    width:windowWidth*0.8123456789,
     fontWeight: '600',
+    color:Color.white
   },
   container: {
     flex: 1,
