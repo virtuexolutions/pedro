@@ -1,9 +1,10 @@
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {getDistance} from 'geolib';
-import {Icon} from 'native-base';
+import {Icon, ScrollView} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
+  FlatList,
   ImageBackground,
   Linking,
   Platform,
@@ -56,7 +57,17 @@ const DetailScreen = props => {
   console.log('🚀 ~ DetailScreen ~ latitude:', latitude);
   console.log('🚀 ~ DetailScreen ~ longitude:', longitude);
 
+  const status = [
+    {id: 1, status: 'Waiting For Approval'},
+    {id: 2, status: 'Approved'},
+    {id: 3, status: 'Pending'},
+    {id: 4, status: 'Accept'},
+  ];
+
   const isfocused = useIsFocused();
+  useEffect(() => {
+    jobDetail();
+  }, [isfocused]);
 
   const jobDetail = async () => {
     const url = `vendor/manage_work_orders/${job_id}`;
@@ -207,13 +218,9 @@ const DetailScreen = props => {
     }
   };
 
-  useEffect(() => {
-    jobDetail();
-  }, [isfocused]);
-
-  setInterval(() => {
-    getCurrentLocation();
-  }, 60000);
+  // setInterval(() => {
+  //   getCurrentLocation();
+  // }, 60000);
 
   return (
     <>
@@ -221,271 +228,212 @@ const DetailScreen = props => {
         backgroundColor={Color.black}
         barStyle={'light-content'}
       />
-      <ImageBackground
-        style={{
-          height: windowHeight,
-          flex: 1,
-          alignItems: 'center',
-        }}
-        resizeMode={'stretch'}
-        source={
-          userRole == 'User'
-            ? require('../Assets/Images/bg3.png')
-            : userRole == 'vendor'
-            ? require('../Assets/Images/bg2.png')
-            : require('../Assets/Images/bg1.png')
-        }>
-        <View style={styles.header_Row}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.goBack();
-            }}
-            style={styles.backbutton}>
-            <Icon
+      <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
+        <ImageBackground
+          style={{
+            height: windowHeight,
+            flex: 1,
+            alignItems: 'center',
+          }}
+          resizeMode={'stretch'}
+          source={
+            userRole == 'User'
+              ? require('../Assets/Images/bg3.png')
+              : userRole == 'vendor'
+              ? require('../Assets/Images/bg2.png')
+              : require('../Assets/Images/bg1.png')
+          }>
+          <View style={styles.header_Row}>
+            <TouchableOpacity
               onPress={() => {
                 navigation.goBack();
               }}
-              name="arrow-back"
-              as={Ionicons}
-              size={moderateScale(20, 0.6)}
-              color={Color.black}
-            />
-          </TouchableOpacity>
-        </View>
-        <View
-          style={{
-            marginTop: moderateScale(13, 0.6),
-            height: windowHeight * 0.3,
-            width: '100%',
-          }}>
-          <CustomImage
-            source={{uri: JobDetailData?.image}}
-            style={{width: '100%', height: '100%'}}
-          />
-          <View
-            style={{
-              paddingHorizontal: moderateScale(15, 0.6),
-              paddingVertical: moderateScale(8, 0.6),
-            }}>
-            <View style={styles.text_view}>
-              <View>
-                <CustomText style={styles.txtname} isBold={true}>
-                  {`${JobDetailData?.first_name}${'  '}${
-                    JobDetailData?.last_name
-                  }`}
-                </CustomText>
-              </View>
-              <CustomText isBold style={styles.price}>
-                $ 20
-              </CustomText>
-            </View>
-            <CustomText
-              style={{
-                color: 'white',
-                fontSize: moderateScale(13, 0.6),
-                width: windowWidth * 0.9,
-              }}>
-              {JobDetailData?.job_sub_description}
-            </CustomText>
-          </View>
-
-          <CustomText isBold style={styles.job_status_text}>
-            Job Status
-          </CustomText>
-          <View style={styles.status_row}>
-            <CustomText
-              style={[
-                styles.job_status,
-                {
-                  backgroundColor:
-                    work_status != 'accepted'
-                      ? Color.themelightGreen
-                      : 'transparent',
-                },
-              ]}>
-              {work_status != 'accepted' ? 'pending' : 'accepted'}
-            </CustomText>
-            <CustomText
-              style={[
-                styles.job_status,
-                {
-                  backgroundColor:
-                    work_status == 'accepted' &&
-                    checkin == true &&
-                    workdone == false
-                      ? Color.themelightGreen
-                      : 'transparent',
-                },
-              ]}>
-              inprocess
-            </CustomText>
-            <CustomText
-              style={[
-                styles.job_status,
-                {
-                  backgroundColor:
-                    work_status == 'accepted' &&
-                    checkin == true &&
-                    workdone == true
-                      ? Color.themelightGreen
-                      : 'transparent',
-                },
-              ]}>
-              waiting for approval
-            </CustomText>
-            <CustomText
-              style={[
-                styles.job_status,
-                {
-                  backgroundColor: 'transparent',
-                },
-              ]}>
-              approved
-            </CustomText>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              paddingRight: moderateScale(15, 0.6),
-              paddingHorizontal: moderateScale(10, 0.6),
-              paddingTop: moderateScale(20, 0.6),
-            }}>
-            <CustomText isBold style={styles.job_Detail_text}>
-              Job Detail
-            </CustomText>
-            <TouchableOpacity
-              onPress={() => {
-                quickPay();
-              }}>
+              style={styles.backbutton}>
               <Icon
                 onPress={() => {
-                  quickPay();
+                  navigation.goBack();
                 }}
-                style={{
-                  width: windowWidth * 0.1,
-                  marginTop: moderateScale(-5, 0.6),
-                }}
-                as={FontAwesome5}
-                name={'hand-holding-usd'}
-                color={'white'}
-                size={moderateScale(27, 0.6)}
+                name="arrow-back"
+                as={Ionicons}
+                size={moderateScale(20, 0.6)}
+                color={Color.black}
               />
             </TouchableOpacity>
           </View>
           <View
             style={{
-              paddingHorizontal: moderateScale(8, 0.6),
+              marginTop: moderateScale(13, 0.6),
+              height: windowHeight * 0.3,
+              width: '100%',
             }}>
-            <View style={styles.row}>
-              <CustomText isBold style={styles.title}>
-                job name :
-              </CustomText>
-              <CustomText style={styles.title2}>
-                {JobDetailData?.name}
-              </CustomText>
-            </View>
-            <View style={styles.row}>
-              <CustomText isBold style={styles.title}>
-                assigned tech :
-              </CustomText>
-              <CustomText style={styles.title2}>
-                {JobDetailData?.assigned_tech}
-              </CustomText>
-            </View>
-            <View style={styles.row}>
-              <CustomText isBold style={styles.title}>
-                agent :
-              </CustomText>
-              <CustomText style={styles.title2}>
-                {JobDetailData?.agent}
-              </CustomText>
-            </View>
-            <View style={styles.row}>
-              <CustomText isBold style={styles.title}>
-                start date :
-              </CustomText>
-              <CustomText style={styles.title2}>
-                {JobDetailData?.start_date}
+            <CustomImage
+              source={{uri: JobDetailData?.image}}
+              style={{width: '100%', height: '100%'}}
+            />
+            <View
+              style={{
+                paddingHorizontal: moderateScale(15, 0.6),
+                paddingVertical: moderateScale(8, 0.6),
+              }}>
+              <View style={styles.text_view}>
+                <View>
+                  <CustomText style={styles.txtname} isBold={true}>
+                    {`${JobDetailData?.first_name}${'  '}${
+                      JobDetailData?.last_name
+                    }`}
+                  </CustomText>
+                </View>
+                <CustomText isBold style={styles.price}>
+                  $ 20
+                </CustomText>
+              </View>
+              <CustomText
+                style={{
+                  color: 'white',
+                  fontSize: moderateScale(13, 0.6),
+                  width: windowWidth * 0.9,
+                }}>
+                {JobDetailData?.job_sub_description}
               </CustomText>
             </View>
-            <View style={styles.row}>
-              <CustomText isBold style={styles.title}>
-                end date :
-              </CustomText>
-              <CustomText style={styles.title2}>
-                {JobDetailData?.end_date}
-              </CustomText>
-            </View>
-            <CustomText isBold style={styles.job_Des_text}>
-              Job description
+
+            <CustomText isBold style={styles.job_status_text}>
+              Job Status
             </CustomText>
-            <CustomText style={styles.detail_text}>
-              {JobDetailData?.job_description}
-            </CustomText>
-          </View>
-          {work_status == 'pending' && (
+
+            <View style={styles.status_row}>
+              <CustomText
+                style={[
+                  styles.job_status,
+                  {
+                    backgroundColor:
+                      work_status != 'accepted'
+                        ? Color.themelightGreen
+                        : 'transparent',
+                  },
+                ]}>
+                {work_status != 'accepted' ? 'pending' : 'accepted'}
+              </CustomText>
+              <CustomText
+                style={[
+                  styles.job_status,
+                  {
+                    backgroundColor:
+                      work_status == 'accepted' &&
+                      checkin == true &&
+                      workdone == false
+                        ? Color.themelightGreen
+                        : 'transparent',
+                  },
+                ]}>
+                inprocess
+              </CustomText>
+              <CustomText
+                style={[
+                  styles.job_status,
+                  {
+                    backgroundColor:
+                      work_status == 'accepted' &&
+                      checkin == true &&
+                      workdone == true
+                        ? Color.themelightGreen
+                        : 'transparent',
+                  },
+                ]}>
+                waiting for approval
+              </CustomText>
+              <CustomText
+                style={[
+                  styles.job_status,
+                  {
+                    backgroundColor: 'transparent',
+                  },
+                ]}>
+                approved
+              </CustomText>
+            </View>
             <View
               style={{
                 flexDirection: 'row',
-                width: windowWidth,
                 justifyContent: 'space-between',
+                paddingRight: moderateScale(15, 0.6),
                 paddingHorizontal: moderateScale(10, 0.6),
+                paddingTop: moderateScale(20, 0.6),
               }}>
-              <CustomButton
+              <CustomText isBold style={styles.job_Detail_text}>
+                Job Detail
+              </CustomText>
+              <TouchableOpacity
                 onPress={() => {
-                  jobAccept();
-                }}
-                text={
-                  isLoading ? (
-                    <ActivityIndicator size={'small'} color={Color.white} />
-                  ) : (
-                    'accept'
-                  )
-                }
-                textColor={Color.white}
-                width={windowWidth * 0.45}
-                height={windowHeight * 0.065}
-                marginTop={moderateScale(35, 0.3)}
-                bgColor={Color.black}
-                borderRadius={moderateScale(30, 0.3)}
-              />
-
-              <CustomButton
-                onPress={() => {
-                  jobdecline();
-                }}
-                text={
-                  loading ? (
-                    <ActivityIndicator size={'small'} color={Color.white} />
-                  ) : (
-                    'decline'
-                  )
-                }
-                textColor={Color.white}
-                width={windowWidth * 0.45}
-                height={windowHeight * 0.065}
-                marginTop={moderateScale(35, 0.3)}
-                bgColor={Color.black}
-                borderRadius={moderateScale(30, 0.3)}
-              />
+                  quickPay();
+                }}>
+                <Icon
+                  onPress={() => {
+                    quickPay();
+                  }}
+                  style={{
+                    width: windowWidth * 0.1,
+                    marginTop: moderateScale(-5, 0.6),
+                  }}
+                  as={FontAwesome5}
+                  name={'hand-holding-usd'}
+                  color={'white'}
+                  size={moderateScale(27, 0.6)}
+                />
+              </TouchableOpacity>
             </View>
-          )}
-
-          {userRole != 'vendor' ? (
-            <CustomButton
-              onPress={() => {}}
-              text={'Contact now'}
-              textColor={Color.white}
-              width={windowWidth * 0.9}
-              height={windowHeight * 0.07}
-              marginTop={moderateScale(35, 0.3)}
-              bgColor={Color.black}
-              borderRadius={moderateScale(30, 0.3)}
-            />
-          ) : (
-            accept == true ||
-            (work_status == 'accepted' && (
+            <View
+              style={{
+                paddingHorizontal: moderateScale(8, 0.6),
+              }}>
+              <View style={styles.row}>
+                <CustomText isBold style={styles.title}>
+                  job name :
+                </CustomText>
+                <CustomText style={styles.title2}>
+                  {JobDetailData?.name}
+                </CustomText>
+              </View>
+              <View style={styles.row}>
+                <CustomText isBold style={styles.title}>
+                  assigned tech :
+                </CustomText>
+                <CustomText style={styles.title2}>
+                  {JobDetailData?.assigned_tech}
+                </CustomText>
+              </View>
+              <View style={styles.row}>
+                <CustomText isBold style={styles.title}>
+                  agent :
+                </CustomText>
+                <CustomText style={styles.title2}>
+                  {JobDetailData?.agent}
+                </CustomText>
+              </View>
+              <View style={styles.row}>
+                <CustomText isBold style={styles.title}>
+                  start date :
+                </CustomText>
+                <CustomText style={styles.title2}>
+                  {JobDetailData?.start_date}
+                </CustomText>
+              </View>
+              <View style={styles.row}>
+                <CustomText isBold style={styles.title}>
+                  end date :
+                </CustomText>
+                <CustomText style={styles.title2}>
+                  {JobDetailData?.end_date}
+                </CustomText>
+              </View>
+              <CustomText isBold style={styles.job_Des_text}>
+                Job description
+              </CustomText>
+              <CustomText style={styles.detail_text}>
+                {JobDetailData?.job_description}
+              </CustomText>
+            </View>
+            {work_status == 'pending' && (
               <View
                 style={{
                   flexDirection: 'row',
@@ -495,23 +443,13 @@ const DetailScreen = props => {
                 }}>
                 <CustomButton
                   onPress={() => {
-                    // onPressCheckIn();
-                    // onPressCheckIn();
-                    if (granted != granted) {
-                      console.log('you dont have access to use location');
-                      Linking.openSettings();
-                    } else {
-                      getCurrentLocation();
-                      isInRadius ? onPressCheckIn : enRoute();
-                    }
+                    jobAccept();
                   }}
                   text={
                     isLoading ? (
-                      <ActivityIndicator size={'small'} color={'white'} />
-                    ) : isInRadius ? (
-                      'check in'
+                      <ActivityIndicator size={'small'} color={Color.white} />
                     ) : (
-                      'En Route'
+                      'accept'
                     )
                   }
                   textColor={Color.white}
@@ -520,37 +458,109 @@ const DetailScreen = props => {
                   marginTop={moderateScale(35, 0.3)}
                   bgColor={Color.black}
                   borderRadius={moderateScale(30, 0.3)}
-                  disabled={inroutepress || !checkin}
                 />
 
                 <CustomButton
                   onPress={() => {
-                    setModalVisible(true);
+                    jobdecline();
                   }}
-                  text={workdone ? 'checked out ' : 'check out'}
+                  text={
+                    loading ? (
+                      <ActivityIndicator size={'small'} color={Color.white} />
+                    ) : (
+                      'decline'
+                    )
+                  }
                   textColor={Color.white}
                   width={windowWidth * 0.45}
                   height={windowHeight * 0.065}
                   marginTop={moderateScale(35, 0.3)}
                   bgColor={Color.black}
                   borderRadius={moderateScale(30, 0.3)}
-                  disabled={
-                    (checkin ? false : true) ||
-                    (checkin == true && workdone == true)
-                      ? true
-                      : false
-                  }
                 />
               </View>
-            ))
-          )}
-        </View>
-        <WorkUploadModal
-          job_id={job_id}
-          uploadModal={modal_visible}
-          setUploadModal={setModalVisible}
-        />
-      </ImageBackground>
+            )}
+
+            {userRole != 'vendor' ? (
+              <CustomButton
+                onPress={() => {}}
+                text={'Contact now'}
+                textColor={Color.white}
+                width={windowWidth * 0.9}
+                height={windowHeight * 0.07}
+                marginTop={moderateScale(35, 0.3)}
+                bgColor={Color.black}
+                borderRadius={moderateScale(30, 0.3)}
+              />
+            ) : (
+              accept == true ||
+              (work_status == 'accepted' && (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    width: windowWidth,
+                    justifyContent: 'space-between',
+                    paddingHorizontal: moderateScale(10, 0.6),
+                  }}>
+                  <CustomButton
+                    onPress={() => {
+                      // onPressCheckIn();
+                      // onPressCheckIn();
+                      if (granted != granted) {
+                        console.log('you dont have access to use location');
+                        Linking.openSettings();
+                      } else {
+                        getCurrentLocation();
+                        isInRadius ? onPressCheckIn : enRoute();
+                      }
+                    }}
+                    text={
+                      isLoading ? (
+                        <ActivityIndicator size={'small'} color={'white'} />
+                      ) : isInRadius ? (
+                        'check in'
+                      ) : (
+                        'En Route'
+                      )
+                    }
+                    textColor={Color.white}
+                    width={windowWidth * 0.45}
+                    height={windowHeight * 0.065}
+                    marginTop={moderateScale(35, 0.3)}
+                    bgColor={Color.black}
+                    borderRadius={moderateScale(30, 0.3)}
+                    disabled={inroutepress || !checkin}
+                  />
+
+                  <CustomButton
+                    onPress={() => {
+                      setModalVisible(true);
+                    }}
+                    text={workdone ? 'checked out ' : 'check out'}
+                    textColor={Color.white}
+                    width={windowWidth * 0.45}
+                    height={windowHeight * 0.065}
+                    marginTop={moderateScale(35, 0.3)}
+                    bgColor={Color.black}
+                    borderRadius={moderateScale(30, 0.3)}
+                    disabled={
+                      (checkin ? false : true) ||
+                      (checkin == true && workdone == true)
+                        ? true
+                        : false
+                    }
+                  />
+                </View>
+              ))
+            )}
+          </View>
+          <WorkUploadModal
+            job_id={job_id}
+            uploadModal={modal_visible}
+            setUploadModal={setModalVisible}
+          />
+        </ImageBackground>
+      </ScrollView>
     </>
   );
 };
@@ -566,6 +576,7 @@ const styles = StyleSheet.create({
     color: Color.white,
     fontSize: moderateScale(15, 0.6),
     width: windowWidth * 0.95,
+    marginBottom: moderateScale(10, 0.6),
   },
   text_view: {
     flexDirection: 'row',

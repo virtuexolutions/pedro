@@ -66,7 +66,7 @@ const ResetPassword = props => {
     const response = await Post(url, body, apiHeader());
     setIsLoading(false);
     if (response != undefined) {
-    // return  console.log('response data =>', response?.data);
+      // return  console.log('response data =>', response?.data);
       navigationService.navigate('LoginScreen');
 
       // Platform.OS == 'android'
@@ -149,8 +149,8 @@ const ResetPassword = props => {
             setText={setPassword}
             value={password}
             viewHeight={0.07}
-            viewWidth={0.75}
-            inputWidth={0.7}
+            viewWidth={0.86}
+            inputWidth={0.8}
             // border={1}
             borderColor={'#ffffff'}
             backgroundColor={'#FFFFFF'}
@@ -166,8 +166,8 @@ const ResetPassword = props => {
             placeholder={'Confirm your new password'}
             setText={setcPassword}
             value={cPassword}
-            viewHeight={0.07}
-            viewWidth={0.75}
+            viewHeight={0.08}
+            viewWidth={0.86}
             inputWidth={0.7}
             // border={1}
             borderColor={'#ffffff'}
@@ -187,11 +187,12 @@ const ResetPassword = props => {
               )
             }
             textColor={Color.white}
-            width={windowWidth * 0.75}
-            height={windowHeight * 0.06}
+            width={windowWidth * 0.85}
+            height={windowHeight * 0.07}
+            fontSize={moderateScale(18, 0.6)}
             marginTop={moderateScale(20, 0.3)}
             onPress={() => {
-              resetPassword()
+              resetPassword();
               // dispatch(setUserToken({token: 'sadasdawdadas'}));
             }}
             bgColor={Color.black}
@@ -208,11 +209,11 @@ const ResetPassword = props => {
 const styles = ScaledSheet.create({
   txt2: {
     color: Color.white,
-    fontSize: moderateScale(25, 0.6),
+    fontSize: moderateScale(26, 0.6),
   },
   txt3: {
     color: Color.white,
-    fontSize: moderateScale(10, 0.6),
+    fontSize: moderateScale(14, 0.6),
     textAlign: 'center',
     width: '80%',
     marginTop: moderateScale(5, 0.3),

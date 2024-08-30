@@ -1,29 +1,20 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {ActivityIndicator, ImageBackground, Linking, View} from 'react-native';
-import Color from '../Assets/Utilities/Color';
-import CustomText from '../Components/CustomText';
-import CustomImage from '../Components/CustomImage';
-import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
-import {moderateScale, ScaledSheet} from 'react-native-size-matters';
-import TextInputWithTitle from '../Components/TextInputWithTitle';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { useNavigation } from '@react-navigation/native';
+import { Icon, ScrollView } from 'native-base';
+import React, { useState } from 'react';
+import { ActivityIndicator, FlatList, ImageBackground, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { moderateScale, ScaledSheet } from 'react-native-size-matters';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {Icon, ScrollView} from 'native-base';
-import {useSelector} from 'react-redux';
-import DropDownSingleSelect from '../Components/DropDownSingleSelect';
-import ImagePickerModal from '../Components/ImagePickerModal';
-import ScreenBoiler from '../Components/ScreenBoiler';
-import LinearGradient from 'react-native-linear-gradient';
-import {FlatList} from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import CustomButton from '../Components/CustomButton';
-import {Post} from '../Axios/AxiosInterceptorFunction';
-import {Platform} from 'react-native';
-import {ToastAndroid} from 'react-native';
-import {Alert} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import Header from '../Components/Header';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Inoicons from 'react-native-vector-icons/Ionicons';
+import { useSelector } from 'react-redux';
+import Color from '../Assets/Utilities/Color';
+import CustomButton from '../Components/CustomButton';
+import CustomImage from '../Components/CustomImage';
+import CustomText from '../Components/CustomText';
+import ImagePickerModal from '../Components/ImagePickerModal';
+import TextInputWithTitle from '../Components/TextInputWithTitle';
+import { windowHeight, windowWidth } from '../Utillity/utils';
 
 const CreateNew = props => {
   const hire = props?.route?.params?.hire;
@@ -38,6 +29,7 @@ const CreateNew = props => {
   const [state, setState] = useState('');
   const [vendorQoutedPrice, setVendorQoutedPrice] = useState(0);
   const [askingPrice, setAskingPrice] = useState(0);
+  const [deadline, setDeadline] = useState(0);
   const [offeringPercent, setOfferingPercent] = useState(0);
   const [selectedService, setSelectedService] = useState('');
   const [description, setDescription] = useState('');
@@ -223,11 +215,6 @@ const CreateNew = props => {
         }}
         resizeMode={'stretch'}
         source={require('../Assets/Images/bg3.png')}>
-        {/* <Header
-      showList={true}
-      title={'logo here'}
-      headerColor={['#FFFFFF00', '#FFFFFF00', '#FFFFFF00']}
-    /> */}
         <View
           style={{
             width: windowWidth,
@@ -249,12 +236,10 @@ const CreateNew = props => {
           <ScrollView
             contentContainerStyle={{
               alignItems: 'center',
-              // backgroundColor: 'red',
               paddingBottom: windowHeight * 0.2,
-              // paddingTop: moderateScale(40, 0.3),
             }}>
             <CustomText isBold style={styles.header}>
-              Vendor Qoutes price
+              Create new job
             </CustomText>
 
             <TextInputWithTitle
@@ -312,6 +297,25 @@ const CreateNew = props => {
             />
 
             <TextInputWithTitle
+              titleText={'dead line'}
+              secureText={false}
+              placeholder={'Dead line'}
+              setText={setDeadline}
+              value={deadline}
+              viewHeight={0.07}
+              viewWidth={0.9}
+              inputWidth={0.86}
+              // border={1}
+              borderColor={'#ffffff'}
+              backgroundColor={'#FFFFFF'}
+              marginTop={moderateScale(15, 0.3)}
+              color={Color.themeColor}
+              placeholderColor={Color.themeLightGray}
+              borderRadius={moderateScale(25, 0.3)}
+              keyboardType={'numeric'}
+            />
+
+            <TextInputWithTitle
               titleText={'Vendor Qouted Price'}
               secureText={false}
               placeholder={'Vendor Qouted Price'}
@@ -330,24 +334,6 @@ const CreateNew = props => {
               keyboardType={'numeric'}
             />
 
-            <TextInputWithTitle
-              titleText={'Asking Price '}
-              secureText={false}
-              placeholder={'Asking Price'}
-              setText={setAskingPrice}
-              value={askingPrice}
-              viewHeight={0.07}
-              viewWidth={0.9}
-              inputWidth={0.86}
-              // border={1}
-              borderColor={'#ffffff'}
-              backgroundColor={'#FFFFFF'}
-              marginTop={moderateScale(15, 0.3)}
-              color={Color.themeColor}
-              placeholderColor={Color.themeLightGray}
-              borderRadius={moderateScale(25, 0.3)}
-              keyboardType={'numeric'}
-            />
             {/* 
           <TextInputWithTitle
             titleText={'Offering percent to negotiator from saving'}
@@ -367,22 +353,6 @@ const CreateNew = props => {
             borderRadius={moderateScale(25, 0.3)}
             keyboardType={'numeric'}
           /> */}
-
-            {!hire && (
-              <DropDownSingleSelect
-                array={servicesArray.filter(x => x?.name)}
-                item={selectedService}
-                setItem={setSelectedService}
-                placeholder={'Service preference'}
-                width={windowWidth * 0.9}
-                dropDownHeight={windowHeight * 0.06}
-                dropdownStyle={{
-                  width: windowWidth * 0.9,
-                  borderBottomWidth: 0,
-                  marginTop: moderateScale(15, 0.3),
-                }}
-              />
-            )}
             <CustomText
               isBold
               style={[
@@ -452,11 +422,11 @@ const CreateNew = props => {
                   }}
                 />
               </View>
-            </View>
+            </View> 
             <TextInputWithTitle
-              titleText={'Special Notes for negotiators'}
+              titleText={'job description'}
               secureText={false}
-              placeholder={'Special Notes for negotiators'}
+              placeholder={'Job Description'}
               setText={setDescription}
               value={description}
               viewHeight={0.2}
@@ -543,7 +513,6 @@ const styles = ScaledSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: moderateScale(10, 0.3),
-    // marginTop: moderateScale(5, 0.3),
     shadowColor: Color.themeColor,
     shadowOffset: {
       width: 0,

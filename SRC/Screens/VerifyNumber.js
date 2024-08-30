@@ -35,14 +35,11 @@ const VerifyNumber = props => {
   const SelecteduserRole = useSelector(
     state => state.commonReducer.selectedRole,
   );
-  console.log('🚀 ~ VerifyNumber ~ SelecteduserRole:', SelecteduserRole);
   const navigationN = useNavigation();
 
   //params
   const fromForgot = props?.route?.params?.fromForgot;
   const phoneNumber = props?.route?.params?.phoneNumber;
-  console.log("🚀 ~ VerifyNumber ~ phoneNumber:", phoneNumber)
-
   //states
   const [code, setCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -151,27 +148,32 @@ const VerifyNumber = props => {
               </CustomText>
             }
           </CustomText>
-          <CodeField
-            placeholder={'0'}
-            ref={ref}
-            value={code}
-            onChangeText={setCode}
-            cellCount={CELL_COUNT}
-            rootStyle={styles.codeFieldRoot}
-            keyboardType="number-pad"
-            textContentType="oneTimeCode"
-            renderCell={({index, symbol, isFocused}) => (
-              <View
-                onLayout={getCellOnLayoutHandler(index)}
-                key={index}
-                style={[styles.cellRoot, isFocused && styles.focusCell]}>
-                <CustomText
-                  style={[styles.cellText, isFocused && {color: Color.black}]}>
-                  {symbol || (isFocused ? <Cursor /> : null)}
-                </CustomText>
-              </View>
-            )}
-          />
+          <View style={{width: windowWidth * 0.8}}>
+            <CodeField
+              placeholder={'0'}
+              ref={ref}
+              value={code}
+              onChangeText={setCode}
+              cellCount={CELL_COUNT}
+              rootStyle={styles.codeFieldRoot}
+              keyboardType="number-pad"
+              textContentType="oneTimeCode"
+              renderCell={({index, symbol, isFocused}) => (
+                <View
+                  onLayout={getCellOnLayoutHandler(index)}
+                  key={index}
+                  style={[styles.cellRoot, isFocused && styles.focusCell]}>
+                  <CustomText
+                    style={[
+                      styles.cellText,
+                      isFocused && {color: Color.black},
+                    ]}>
+                    {symbol || (isFocused ? <Cursor /> : null)}
+                  </CustomText>
+                </View>
+              )}
+            />
+          </View>
           <CustomText style={[styles.txt3, {width: windowWidth * 0.6}]}>
             Haven't Recieved Verification Code ?{' '}
             {
@@ -197,7 +199,8 @@ const VerifyNumber = props => {
             isBold
             textColor={Color.white}
             width={windowWidth * 0.8}
-            height={windowHeight * 0.06}
+            height={windowHeight * 0.07}
+            fontSize={moderateScale(17, 0.6)}
             marginTop={moderateScale(20, 0.3)}
             onPress={() => {
               VerifyOTP();
@@ -217,20 +220,20 @@ const VerifyNumber = props => {
 const styles = ScaledSheet.create({
   txt2: {
     color: Color.white,
-    fontSize: moderateScale(25, 0.6),
+    fontSize: moderateScale(26, 0.6),
     textTransform: 'uppercase',
   },
   txt3: {
     color: Color.white,
-    fontSize: moderateScale(11, 0.6),
+    fontSize: moderateScale(14, 0.6),
     textAlign: 'center',
-    width: '90%',
+    width: '80%',
     marginTop: moderateScale(10, 0.3),
     lineHeight: moderateScale(20, 0.3),
   },
   txt4: {
     color: Color.themeColor,
-    fontSize: moderateScale(14, 0.6),
+    fontSize: moderateScale(16, 0.6),
     borderBottomWidth: 1,
     borderColor: Color.white,
     // alignSelf : 'center'
@@ -249,8 +252,8 @@ const styles = ScaledSheet.create({
     marginRight: 'auto',
   },
   cellRoot: {
-    width: moderateScale(40, 0.3),
-    height: moderateScale(40, 0.3),
+    width: moderateScale(54, 0.3),
+    height: moderateScale(55, 0.3),
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: '#ccc',
@@ -270,9 +273,9 @@ const styles = ScaledSheet.create({
     position: 'absolute',
     top: moderateScale(20, 0.3),
     left: moderateScale(20, 0.3),
-    height: moderateScale(35, 0.3),
-    width: moderateScale(35, 0.3),
-    borderRadius: moderateScale(50, 0.3),
+    height: moderateScale(30, 0.3),
+    width: moderateScale(30, 0.3),
+    borderRadius: moderateScale(5, 0.3),
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',

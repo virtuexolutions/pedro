@@ -30,7 +30,7 @@ import DropDownSingleSelect from '../Components/DropDownSingleSelect';
 import navigationService from '../navigationService';
 import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
-import { color } from 'native-base/lib/typescript/theme/styled-system';
+import {color} from 'native-base/lib/typescript/theme/styled-system';
 
 const LoginScreen = () => {
   const dispatch = useDispatch();
@@ -50,7 +50,7 @@ const LoginScreen = () => {
     const body = {
       email: email,
       password: password,
-      // userRole:
+      // userRole: selectedRole,
     };
 
     for (let key in body) {
@@ -78,11 +78,11 @@ const LoginScreen = () => {
     const url = 'login';
     setIsLoading(true);
     const response = await Post(url, body, apiHeader());
-    
+
     setIsLoading(false);
     if (response != undefined) {
-    console.log("🚀 ~ Login ~ body:", body ,response?.data?.token) 
-      console.log("🚀 ~ Login ~ response:", response?.data)
+      console.log('🚀 ~ Login ~ body:', body, response?.data?.token);
+      console.log('🚀 ~ Login ~ response:', response?.data);
       if (response != undefined) {
         dispatch(setUserData(response?.data?.user_info));
         dispatch(setSelectedRole(response?.data?.role));
@@ -168,7 +168,7 @@ const LoginScreen = () => {
             />
           </View>
 
-          {/* <DropDownSingleSelect
+          <DropDownSingleSelect
             array={servicesArray}
             item={selectedRole}
             setItem={setSelectedType}
@@ -180,8 +180,7 @@ const LoginScreen = () => {
               borderBottomWidth: 0,
               marginTop: moderateScale(30, 0.6),
             }}
-          /> */}
-
+          />
           <TextInputWithTitle
             titleText={'Enter your Email'}
             secureText={false}
@@ -218,9 +217,12 @@ const LoginScreen = () => {
             onPress={() => {
               navigationService.navigate('EnterPhone', {fromForgot: true});
             }}
-            style={[styles.txt3,{
-             color: Color.white
-            }]}>
+            style={[
+              styles.txt3,
+              {
+                color: Color.white,
+              },
+            ]}>
             {'Forgot Password?'}
           </CustomText>
 
@@ -235,7 +237,9 @@ const LoginScreen = () => {
             textColor={Color.white}
             width={windowWidth * 0.9}
             height={windowHeight * 0.07}
+            isBold={true}
             marginTop={moderateScale(10, 0.3)}
+            fontSize={moderateScale(17, 0.6)}
             onPress={() => {
               // navigation.navigate('Tabnavigation');
               // navigation.navigate('MyDrawer');
@@ -244,7 +248,7 @@ const LoginScreen = () => {
             bgColor={Color.black}
             borderRadius={moderateScale(30, 0.3)}
           />
-
+          {/* 
           <View style={styles.container2}>
             <CustomText style={styles.txt5}>
               {"Don't have an account? "}
@@ -264,7 +268,7 @@ const LoginScreen = () => {
                 {'Sign Up'}
               </CustomText>
             </TouchableOpacity>
-          </View>
+          </View> */}
         </ScrollView>
       </ImageBackground>
       {/* 
@@ -304,11 +308,12 @@ const styles = ScaledSheet.create({
   },
 
   txt3: {
-    fontSize: moderateScale(10, 0.6),
+    fontSize: moderateScale(13, 0.6),
     alignSelf: 'left',
-    width:windowWidth*0.8123456789,
+    width: windowWidth * 0.8123456789,
     fontWeight: '600',
-    color:Color.white
+    color: Color.white,
+    textDecoration: 'underline',
   },
   container: {
     flex: 1,

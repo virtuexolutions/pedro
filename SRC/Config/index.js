@@ -1,5 +1,5 @@
 // export const baseUrl = "ecstatic-buck.23-106-85-134.plesk.page";
-export const baseUrl = 'https://94ec-103-138-50-45.ngrok-free.app';
+export const baseUrl = 'https://d6af-103-138-50-45.ngrok-free.app';
 console.log('🚀 ~ baseUrl:', baseUrl);
 export const imageUrl = `${baseUrl}/api/images/`;
 export const profilePicUrl = `${baseUrl}/uploads`;

@@ -35,13 +35,9 @@ const EnterPhone = props => {
   const fromForgot = props?.route?.params?.fromForgot;
   console.log('here=>', fromForgot);
   const [phone, setPhone] = useState('');
-  console.log("🚀 ~ EnterPhone ~ phone:", phone)
+  console.log('🚀 ~ EnterPhone ~ phone:', phone);
   const [isLoading, setIsLoading] = useState(false);
   const navigationN = useNavigation();
-
-
-
-
 
   const sendOTP = async () => {
     const url = 'password/email';
@@ -66,7 +62,7 @@ const EnterPhone = props => {
             phoneNumber: `${phone}`,
           })
         : navigationService.navigate('VerifyNumber', {
-            phoneNumber: `${phone}`, 
+            phoneNumber: `${phone}`,
           });
     }
   };
@@ -105,9 +101,9 @@ const EnterPhone = props => {
                 position: 'absolute',
                 top: moderateScale(20, 0.3),
                 left: moderateScale(20, 0.3),
-                height: moderateScale(35, 0.3),
-                width: moderateScale(35, 0.3),
-                borderRadius: moderateScale(50, 0.3),
+                height: moderateScale(30, 0.3),
+                width: moderateScale(30, 0.3),
+                borderRadius: moderateScale(5, 0.3),
                 justifyContent: 'center',
                 alignItems: 'center',
                 backgroundColor: 'white',
@@ -129,68 +125,70 @@ const EnterPhone = props => {
                 paddingVertical: moderateScale(30, 0.3),
                 alignItems: 'center',
               }}> */}
-              <CustomText isBold style={styles.txt2}>
-                Forget Password
+            <CustomText isBold style={styles.txt2}>
+              Forget Password
+            </CustomText>
+            <CustomText style={styles.txt3}>
+              Forgot your password ? don't worry, jsut take a simple step and
+              create your new password!
+            </CustomText>
+
+            <TextInputWithTitle
+              titleText={'Enter your Email'}
+              secureText={false}
+              placeholder={'Enter your Email'}
+              setText={setPhone}
+              value={phone}
+              viewHeight={0.07}
+              viewWidth={0.9}
+              inputWidth={0.82}
+              // border={1}
+              borderColor={'#ffffff'}
+              backgroundColor={'#FFFFFF'}
+              marginTop={moderateScale(35, 0.3)}
+              color={Color.themeColor}
+              placeholderColor={Color.themeLightGray}
+              borderRadius={moderateScale(25, 0.3)}
+              elevation
+            />
+            <CustomButton
+              text={
+                isLoading ? (
+                  <ActivityIndicator color={'#FFFFFF'} size={'small'} />
+                ) : (
+                  'Submit'
+                )
+              }
+              textColor={Color.white}
+              width={windowWidth * 0.9}
+              isBold={true}
+              fontSize={moderateScale(17, 0.6)}
+              height={windowHeight * 0.07}
+              marginTop={moderateScale(20, 0.3)}
+              onPress={() => {
+                sendOTP();
+                //  navigationService.navigate('VerifyNumber', {phoneNumber : phone})
+              }}
+              bgColor={
+                SelecteduserRole == 'Qbid member' ? Color.blue : Color.black
+              }
+              // borderColor={Color.white}
+              // borderWidth={2}
+              borderRadius={moderateScale(30, 0.3)}
+            />
+
+            <View style={styles.container2}>
+              <CustomText style={styles.txt5}>
+                {'Already have an account? '}
               </CustomText>
-              <CustomText style={styles.txt3}>
-                Forgot your password ? don't worry, jsut take a simple step and
-                create your new password!
-              </CustomText>
 
-              <TextInputWithTitle
-                titleText={'Enter your Email'}
-                secureText={false}
-                placeholder={'Enter your Email'}
-                setText={setPhone}
-                value={phone}
-                viewHeight={0.07}
-                viewWidth={0.75}
-                inputWidth={0.7}
-                // border={1}
-                borderColor={'#ffffff'}
-                backgroundColor={'#FFFFFF'}
-                marginTop={moderateScale(35, 0.3)}
-                color={Color.themeColor}
-                placeholderColor={Color.themeLightGray}
-                borderRadius={moderateScale(25, 0.3)}
-                elevation
-              />
-              <CustomButton
-                text={
-                  isLoading ? (
-                    <ActivityIndicator color={'#FFFFFF'} size={'small'} />
-                  ) : (
-                    'Submit'
-                  )
-                }
-                textColor={Color.white}
-                width={windowWidth * 0.75}
-                height={windowHeight * 0.06}
-                marginTop={moderateScale(20, 0.3)}
-                onPress={() => {
-                  sendOTP();
-                  //  navigationService.navigate('VerifyNumber', {phoneNumber : phone})
-                }}
-                bgColor={
-                  SelecteduserRole == 'Qbid member' ? Color.blue : Color.black
-                }
-                // borderColor={Color.white}
-                // borderWidth={2}
-                borderRadius={moderateScale(30, 0.3)}
-              />
-
-              <View style={styles.container2}>
-                <CustomText style={styles.txt5}>
-                  {'Already have an account? '}
-                </CustomText>
-
-                <TouchableOpacity
-                  activeOpacity={0.8}
-                  style={{marginLeft: moderateScale(1, 0.3)}}
-                  onPress={() => navigationService.navigate('LoginScreen')}>
-                  <CustomText style={styles.txt4}>{'Sign In'}</CustomText>
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                style={{marginLeft: moderateScale(1, 0.3)}}
+                onPress={() => navigationService.navigate('LoginScreen')}>
+                <CustomText style={styles.txt4}>{'Sign In'}</CustomText>
+              </TouchableOpacity>
+            </View>
             {/* </CardContainer> */}
           </KeyboardAwareScrollView>
         </ScrollView>
@@ -202,11 +200,11 @@ const EnterPhone = props => {
 const styles = ScaledSheet.create({
   txt2: {
     color: Color.white,
-    fontSize: moderateScale(25, 0.6),
+    fontSize: moderateScale(26, 0.6),
   },
   txt3: {
     color: Color.white,
-    fontSize: moderateScale(10, 0.6),
+    fontSize: moderateScale(13, 0.6),
     textAlign: 'center',
     width: '80%',
     marginTop: moderateScale(5, 0.3),
@@ -228,14 +226,14 @@ const styles = ScaledSheet.create({
   },
   txt4: {
     color: Color.themeColor,
-    fontSize: moderateScale(14, 0.6),
+    fontSize: moderateScale(15, 0.6),
     marginTop: moderateScale(8, 0.3),
     fontWeight: 'bold',
   },
   txt5: {
     color: Color.themeLightGray,
     marginTop: moderateScale(10, 0.3),
-    fontSize: moderateScale(12, 0.6),
+    fontSize: moderateScale(13, 0.6),
   },
 });
 

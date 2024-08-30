@@ -102,15 +102,36 @@ const Header = props => {
         ) : (
           <View
             style={{
-              width: moderateScale(40, 0.3),
-            }}></View>
+              height: moderateScale(35, 0.3),
+              width: moderateScale(35, 0.3),
+              borderRadius: moderateScale(25, 0.3),
+              marginHorizontal: moderateScale(10, 0.3),
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: showBack || showList ? 'white' : 'transparent',
+            }}>
+            <Icon
+              name={'arrowleft'}
+              as={AntDesign}
+              size={moderateScale(22, 0.3)}
+              color={
+                userRole == 'Qbid Member'
+                  ? Color.blue
+                  : userRole == 'Qbid Negotiator'
+                  ? Color.themeColor
+                  : Color.black
+              }
+              onPress={() => {
+                navigationN.goBack();
+              }}
+            />
+          </View>
         )}
 
         <CustomImage
           resizeMode={'contain'}
           style={{
             width: windowWidth * 0.21,
-            // backgroundColor : 'red' ,
             height: windowHeight * 0.05,
           }}
           source={require('../Assets/Images/logo.png')}
@@ -186,9 +207,7 @@ const styles = ScaledSheet.create({
     paddingVertical: moderateScale(15, 0.3),
     paddingHorizontal: moderateScale(10, 0.3),
     backgroundColor: Color.white,
-    // borderRadius: moderateScale(5, 0.3),
     marginTop: moderateScale(60, 0.3),
-    // borderWidth: 1,
     borderColor: Color.green,
     shadowColor: '#000',
     shadowOffset: {

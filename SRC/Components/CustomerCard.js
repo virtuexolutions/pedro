@@ -10,14 +10,19 @@ import CustomImage from './CustomImage';
 import CustomText from './CustomText';
 import RatingComponent from './RatingComponent';
 import {position} from 'native-base/lib/typescript/theme/styled-system';
+import {imageUrl} from '../Config';
+import moment from 'moment';
 
 const CustomerCard = ({fromSeeAll, style, onPress, item, getProposal}) => {
   const navigation = useNavigation();
   const userRole = useSelector(state => state.commonReducer.selectedRole);
   return (
     <TouchableOpacity
-      //   style={styles.container}
-      onPress={() => navigation.navigate('JobDetail')}>
+      onPress={() =>
+        navigation.navigate('JobDetail', {
+          id: item?.item?.user_id,
+        })
+      }>
       <LinearGradient
         start={{x: 0.0, y: 0.25}}
         end={{x: 0.5, y: 1.0}}
@@ -30,7 +35,7 @@ const CustomerCard = ({fromSeeAll, style, onPress, item, getProposal}) => {
               width: '100%',
               overflow: 'hidden',
             }}
-            source={require('../Assets/Images/dummyman1.png')}
+            source={{uri: item?.item?.image}}
           />
         </View>
         {/* <View style={styles.status}> */}
@@ -47,7 +52,7 @@ const CustomerCard = ({fromSeeAll, style, onPress, item, getProposal}) => {
             right: 10,
             top: 10,
           }}>
-          accpet
+          {item?.item?.parsedStatus}
         </CustomText>
         {/* </View> */}
         <View
@@ -61,7 +66,7 @@ const CustomerCard = ({fromSeeAll, style, onPress, item, getProposal}) => {
               fontSize: moderateScale(13, 0.6),
               color: Color.black,
             }}>
-            job title
+            {item?.item?.name}
           </CustomText>
           <CustomText
             numberOfLines={2}
@@ -70,27 +75,51 @@ const CustomerCard = ({fromSeeAll, style, onPress, item, getProposal}) => {
               width: windowWidth * 0.6,
               fontSize: moderateScale(10, 0.6),
             }}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s,
+            {item?.item?.job_sub_description}
           </CustomText>
-          <View style={styles.row}>
-            <CustomText
-              isBold
-              style={{
-                color: Color.black,
-                fontSize: moderateScale(10, 0.6),
-              }}>
-              price :
-            </CustomText>
-            <CustomText
-              isBold
-              style={{
-                fontSize: moderateScale(10, 0.6),
-                color: Color.black,
-              }}>
-              $500.00
-            </CustomText>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginTop: 6,
+            }}>
+            <View style={styles.row}>
+              <CustomText
+                isBold
+                style={{
+                  color: Color.black,
+                  fontSize: moderateScale(10, 0.6),
+                }}>
+                price :
+              </CustomText>
+              <CustomText
+                isBold
+                style={{
+                  fontSize: moderateScale(10, 0.6),
+                  color: Color.black,
+                }}>
+                $500.00
+              </CustomText>
+            </View>
+            <View style={styles.row}>
+              <CustomText
+                isBold
+                style={{
+                  color: Color.black,
+                  fontSize: moderateScale(10, 0.6),
+                }}>
+                Date :
+              </CustomText>
+              <CustomText
+                isBold
+                style={{
+                  fontSize: moderateScale(10, 0.6),
+                  color: Color.black,
+                  marginLeft: 2,
+                }}>
+                {moment(item?.item?.created_at).format('DD MM YYYY')}
+              </CustomText>
+            </View>
           </View>
           {/* <View style={styles.row}>
             <CustomText

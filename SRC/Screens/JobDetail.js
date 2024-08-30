@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {FlatList, ImageBackground, View} from 'react-native';
 import Color from '../Assets/Utilities/Color';
 import CustomStatusBar from '../Components/CustomStatusBar';
@@ -19,13 +19,17 @@ import ReviewModal from '../Components/ReviewModal';
 import WorkUploadModal from '../Components/WorkUploadModal';
 import {setUserCheckin, setUserchekin} from '../Store/slices/auth';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import CustomHeader from '../Components/CustomHeader';
+import {Get} from '../Axios/AxiosInterceptorFunction';
 
-const JobDetail = () => {
+const JobDetail = ({route}) => {
+  const id = route.params;
   const dispatch = useDispatch();
   const userRole = useSelector(state => state.commonReducer.selectedRole);
   const checkin = useSelector(state => state.authReducer.checkin);
   const workdone = useSelector(state => state.commonReducer.workUpload);
   const RBSheet = useRef();
+  const token = useSelector(state => state.authReducer.token);
 
   const [isLoading, setIsLoading] = useState(false);
   const [selectedRole, setSelectedType] = useState(
@@ -35,6 +39,7 @@ const JobDetail = () => {
   const [searchData, setSearchData] = useState('');
   const [modal_visible, setModalVisible] = useState(false);
   const [rbRef, setRef] = useState(null);
+  const [details, setDetails] = useState(null);
 
   const dummyArray = [
     'in tempor turpis eget lorem mollis',
@@ -43,6 +48,21 @@ const JobDetail = () => {
     'Sed Fringilla Arcu Eleifend Condimentum',
     'Ut Dapibus Lacus Sit Amet Aliquet Convallis',
   ];
+
+  useEffect(() => {
+    UserJobDetails();
+  }, []);
+
+  const UserJobDetails = async () => {
+    const url = `user/joblist${id?.id}`;
+    setIsLoading(true);
+    const response = await Get(url, token);
+    setIsLoading(false);
+    console.log(response?.data, 'responseeeeeeeeee');
+    if (response != undefined) {
+      setDetails(response?.data);
+    }
+  };
 
   return (
     <>
@@ -84,7 +104,7 @@ const JobDetail = () => {
                 width: '100%',
                 overflow: 'hidden',
               }}
-              source={require('../Assets/Images/workImage.jpg')}
+              source={{uri: details?.image}}
             />
           </View>
           <View style={styles.row}>
@@ -101,13 +121,14 @@ const JobDetail = () => {
             <View
               style={{
                 paddingTop: moderateScale(3, 0.6),
-                // backgroundColor:'red',
                 width: windowWidth * 0.32,
               }}>
               <CustomText isBold={true} style={styles.txtname}>
-                Charles A. Lee
+                {details?.first_name}
               </CustomText>
-              <CustomText style={styles.txt1}>Lorem ipsum dolor</CustomText>
+              <CustomText style={styles.txt1}>
+                {details?.assigned_tech}
+              </CustomText>
             </View>
             <View style={{alignItems: 'center'}}>
               <Icon
@@ -143,17 +164,15 @@ const JobDetail = () => {
                   styles.txt1,
                   {
                     width: windowWidth * 0.15,
-                    // backgroundColor:'red',
                     textAlign: 'center',
-                    // alignItem:'center'
                   },
                 ]}>
-                assitent vendor{' '}
+                assitent vendor
               </CustomText>
             </View>
           </View>
         </View>
-        {userRole == 'Vendor' && (
+        {/* {userRole == 'Vendor' && (
           <View
             style={{
               flexDirection: 'row',
@@ -194,7 +213,7 @@ const JobDetail = () => {
               </CustomText>
             </View>
           </View>
-        )}
+        )} */}
         <View
           style={[
             styles.card,
@@ -372,15 +391,12 @@ const JobDetail = () => {
           /> */}
         </View>
         <CustomText style={[styles.des, {paddingTop: moderateScale(10, 0.6)}]}>
-          Donec Imperdiet Ipsum At Volutpat Interdum. Morbi Ante Nulla, Tempor
-          Id Magna Ac, Ultrices Dignissim Felis. Donec In Dignissim Nibh, Sed
-          Malesuada Ena.
+          {details?.job_description}
         </CustomText>
         {userRole != 'Vendor' ? (
           <CustomButton
             onPress={() => {
               setModalVisible(true);
-              // rbRef.open()
             }}
             text={'Contact now'}
             textColor={Color.white}
@@ -469,7 +485,7 @@ const styles = StyleSheet.create({
   des: {
     color: Color.white,
     fontSize: moderateScale(12, 0.6),
-    paddingHorizontal: moderateScale(15, 0.6),
+    paddingHorizontal: moderateScale(10, 0.6),
     paddingTop: moderateScale(0, 0.6),
   },
   txt: {

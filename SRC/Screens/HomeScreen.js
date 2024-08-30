@@ -39,6 +39,7 @@ const HomeScreen = () => {
   const [selectedData, setSelectedData] = useState('');
   const [searchData, setSearchData] = useState('');
   const [jobData, setJobData] = useState([]);
+  const [userJobList, setUserJobList] = useState([]);
 
   const dummyArray = [
     {
@@ -110,20 +111,29 @@ const HomeScreen = () => {
     },
   ];
 
-  const getJobList = async () => {
+  const getWordOrders = async () => {
     const url = 'vendor/manage_work_orders';
     setIsLoading(true);
     const response = await Get(url, token);
-    console.log('🚀 ~ getJobList ~ response:', response?.data);
+    console.log('🚀 ~ getWordOrders ~ response:', response?.data);
     setIsLoading(false);
     if (response != undefined) {
       setJobData(response?.data);
     }
   };
 
+  const userJObList = async () => {
+    const url = 'user/joblist';
+    setIsLoading(true);
+    const response = await Get(url, token);
+    setIsLoading(false);
+    if (response != undefined) {
+      setUserJobList(response?.data?.job);
+    }
+  };
+
   useEffect(() => {
-    userRole == 'vendor' &&
-    getJobList();
+    userRole == 'vendor' ? getWordOrders() : userJObList();
   }, []);
 
   return (
@@ -158,7 +168,7 @@ const HomeScreen = () => {
             height: windowHeight * 0.05,
           }}
           style={{
-            height: windowHeight * 0.05,
+            height: windowHeight * 0.06,
             marginBottom: moderateScale(10, 0.3),
             borderRadius: moderateScale(25, 0.3),
             marginTop: moderateScale(25, 0.6),
@@ -198,14 +208,14 @@ const HomeScreen = () => {
 
         <View style={styles.row}>
           <CustomText isBold style={styles.heading}>
-            {userRole == 'account manager' ? 'user proposals' : 'Proposals'}
+            {userRole == 'User' ? 'jobs' : 'Proposals'}
           </CustomText>
           <CustomText
             style={[
               styles.text,
               {color: 'white', paddingTop: moderateScale(3, 0.6)},
             ]}>
-            view all
+                  11view all
           </CustomText>
         </View>
 
@@ -301,7 +311,7 @@ const HomeScreen = () => {
               />
             ) : (
               <FlatList
-                data={userRole != 'vendor' ? dummyArray : jobData}
+                data={userRole != 'vendor' ? userJobList : jobData}
                 // data={dummyArray}
                 showsVerticalScrollIndicator={false}
                 numColumns={1}
@@ -313,7 +323,7 @@ const HomeScreen = () => {
                 }}
                 renderItem={(item, index) => {
                   return userRole == 'User' ? (
-                    <CustomerCard />
+                    <CustomerCard item={item} />
                   ) : (
                     <JobCard item={item?.item} />
                   );
@@ -354,6 +364,8 @@ const styles = ScaledSheet.create({
     justifyContent: 'space-between',
     paddingVertical: moderateScale(10, 0.6),
     paddingHorizontal: moderateScale(10, 0.6),
+
+    alignItems: 'center',
   },
   heading: {
     letterSpacing: 1,
@@ -367,7 +379,7 @@ const styles = ScaledSheet.create({
   },
   card_view: {
     width: windowWidth * 0.9,
-    height: windowHeight * 0.15,
+    height: windowHeight * 0.17,
     backgroundColor: Color.white,
     justifyContent: 'center',
     alignItems: 'center',

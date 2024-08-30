@@ -107,7 +107,7 @@ const JobCard = ({fromSeeAll, style, onPress, item, getProposal}) => {
                 marginHorizontal: moderateScale(5, 0.3),
                 fontSize: moderateScale(14, 0.6),
                 color: Color.black,
-                width: windowWidth * 0.2,
+                width: windowWidth * 0.3,
               }}>
               {item?.payment_info}
             </CustomText>
@@ -168,7 +168,7 @@ const JobCard = ({fromSeeAll, style, onPress, item, getProposal}) => {
               note :
             </CustomText>
             <CustomText
-              numberOfLines={2}
+              numberOfLines={1}
               style={{
                 width: windowWidth * 0.45,
                 color: Color.black,
@@ -210,7 +210,6 @@ const styles = ScaledSheet.create({
   },
   row: {
     flexDirection: 'row',
-    // justifyContent: 'space-between',
     paddingHorizontal: moderateScale(2, 0.6),
   },
   timeRow: {

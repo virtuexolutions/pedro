@@ -1,21 +1,20 @@
-import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {FlatList} from 'native-base';
-import CustomText from './CustomText';
-import Color from '../Assets/Utilities/Color';
-import {moderateScale} from 'react-native-size-matters';
-import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
+import {FlatList, Icon} from 'native-base';
+import React, {useState} from 'react';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import Modal from 'react-native-modal';
-import ImagePickerModal from './ImagePickerModal';
-import {Icon} from 'native-base';
+import {moderateScale} from 'react-native-size-matters';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import CustomImage from './CustomImage';
-import CustomButton from './CustomButton';
-import TimingModal from './TimingModal';
 import {useDispatch, useSelector} from 'react-redux';
+import Color from '../Assets/Utilities/Color';
+import {Put} from '../Axios/AxiosInterceptorFunction';
 import {setworkUpload} from '../Store/slices/common';
-import {Post, Put} from '../Axios/AxiosInterceptorFunction';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
+import CustomButton from './CustomButton';
+import CustomImage from './CustomImage';
+import CustomText from './CustomText';
+import ImagePickerModal from './ImagePickerModal';
+import TimingModal from './TimingModal';
 
 const WorkUploadModal = ({
   title,
@@ -77,7 +76,7 @@ const WorkUploadModal = ({
           width: windowWidth * 0.9,
           backgroundColor: 'white',
           alignItems: 'center',
-          
+
           paddingBottom: moderateScale(10, 0.3),
         }}>
         <View style={styles.header}>
@@ -234,13 +233,7 @@ const styles = StyleSheet.create({
     marginLeft: moderateScale(10, 0.3),
     flexWrap: 'wrap',
     flexDirection: 'row',
-    paddingVertical:moderateScale(5,.6)
-    // borderWidth: 1,
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    // // borderRadius: moderateScale(5, 0.6),
-    // // borderColor: Color.green,
-    // backgroundColor:'red'
+    paddingVertical: moderateScale(5, 0.6),
   },
   addImageContainer: {
     width: windowWidth * 0.25,
@@ -252,7 +245,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: moderateScale(10, 0.3),
-    // marginTop: moderateScale(5, 0.3),
     shadowColor: Color.themeColor,
     shadowOffset: {
       width: 0,

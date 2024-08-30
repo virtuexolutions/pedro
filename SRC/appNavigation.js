@@ -58,9 +58,7 @@ const AppNavigator = () => {
     const firstScreen =
       // walkThrough == false
       //   ? 'WalkThroughScreen'
-         token == null
-        ? 'LoginScreen'
-        : 'drawer';
+      token == null ? 'LoginScreen' : 'drawer';
 
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
@@ -77,8 +75,6 @@ const AppNavigator = () => {
           <RootNav.Screen name="EnterPhone" component={EnterPhone} />
           <RootNav.Screen name="VerifyNumber" component={VerifyNumber} />
           <RootNav.Screen name="ResetPassword" component={ResetPassword} />
-
-
         </RootNav.Navigator>
       </NavigationContainer>
     );
