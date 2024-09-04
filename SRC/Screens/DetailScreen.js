@@ -27,6 +27,9 @@ import CustomText from '../Components/CustomText';
 import WorkUploadModal from '../Components/WorkUploadModal';
 import {setUserCheckin} from '../Store/slices/auth';
 import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
+import CheckListModal from '../Components/CheckListModal';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import CheckListStartModal from '../Components/CheckListStartModal';
 
 const DetailScreen = props => {
   const job_id = props?.route?.params?.job_id;
@@ -41,6 +44,11 @@ const DetailScreen = props => {
   const workdone = useSelector(state => state.commonReducer.workUpload);
   const checkin = useSelector(state => state.authReducer.checkin);
   const [JobDetailData, setJobDetailData] = useState({});
+  console.log(
+    '🚀 ~ DetailScreen ~ JobDetailData:',
+    JSON.stringify(JobDetailData, null, 2),
+  );
+  const [CheckListModalVisible, setCheckListModalVisible] = useState(false);
   const [isLoading, setisLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [modal_visible, setModalVisible] = useState(false);
@@ -50,13 +58,9 @@ const DetailScreen = props => {
   const [inroutepress, setinroutepress] = useState(false);
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
-  console.log('🚀 ~ DetailScreen ~ token:', token);
-  console.log('🚀 ~ DetailScreen ~ granted:', granted);
-  console.log('🚀 ~ DetailScreen ~ checkin:', checkin);
-  console.log('🚀 ~ DetailScreen ~ address:', address);
-  console.log('🚀 ~ DetailScreen ~ latitude:', latitude);
-  console.log('🚀 ~ DetailScreen ~ longitude:', longitude);
-
+  const [checkListStartModal, setcheckListStartModal] = useState(false);
+  const [checkListData, setCheckListData] = useState();
+  const [checklist_id, setCheckListId] = useState(null);
   const status = [
     {id: 1, status: 'Waiting For Approval'},
     {id: 2, status: 'Approved'},
@@ -73,7 +77,6 @@ const DetailScreen = props => {
     const url = `vendor/manage_work_orders/${job_id}`;
     setisLoading(true);
     const response = await Get(url, token);
-    console.log('🚀 ~ jobDetail ~ response:', response?.data);
     setisLoading(false);
     if (response != undefined) {
       setJobDetailData(response?.data);
@@ -124,8 +127,6 @@ const DetailScreen = props => {
     latitude: JobDetailData?.work_order?.job_location?.latitude,
     longitude: JobDetailData?.work_order?.job_location?.longitude,
   };
-  console.log('🚀 ~ DetailScreen ~ circleCenter:', circleCenter);
-
   const getCurrentLocation = async () => {
     try {
       const position = await new Promise((resolve, reject) => {
@@ -179,7 +180,6 @@ const DetailScreen = props => {
       const data = await response.json();
       if (data.status === 'OK') {
         const givenaddress = data.results[0].formatted_address;
-        console.log('🚀 ~ getAddressFromCoordinates ~ address:', givenaddress);
         setAddress(givenaddress);
         // dispatch(setAddress());
       } else {
@@ -212,7 +212,6 @@ const DetailScreen = props => {
     setisLoading(true);
     const response = await Post(url, body, apiHeader(token));
     setisLoading(false);
-    console.log('🚀 ~ enRoute ~ response:', response?.data);
     if (response != undefined) {
       dispatch(setUserCheckin(true));
     }
@@ -228,21 +227,29 @@ const DetailScreen = props => {
         backgroundColor={Color.black}
         barStyle={'light-content'}
       />
-      <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
-        <ImageBackground
+      <ImageBackground
+        style={{
+          height: windowHeight,
+          flex: 1,
+          alignItems: 'center',
+        }}
+        resizeMode={'stretch'}
+        source={
+          userRole == 'User'
+            ? require('../Assets/Images/bg3.png')
+            : userRole == 'vendor'
+            ? require('../Assets/Images/bg2.png')
+            : require('../Assets/Images/bg1.png')
+        }>
+        <ScrollView
           style={{
-            height: windowHeight,
-            flex: 1,
-            alignItems: 'center',
+            width: windowWidth,
+            zIndex: 1,
           }}
-          resizeMode={'stretch'}
-          source={
-            userRole == 'User'
-              ? require('../Assets/Images/bg3.png')
-              : userRole == 'vendor'
-              ? require('../Assets/Images/bg2.png')
-              : require('../Assets/Images/bg1.png')
-          }>
+          contentContainerStyle={{
+            paddingBottom: moderateScale(50, 0.6),
+          }}
+          showsVerticalScrollIndicator={false}>
           <View style={styles.header_Row}>
             <TouchableOpacity
               onPress={() => {
@@ -259,6 +266,26 @@ const DetailScreen = props => {
                 color={Color.black}
               />
             </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setcheckListStartModal(true);
+              }}
+              style={styles.backbutton}>
+              <Icon
+                onPress={() => {
+                  setcheckListStartModal(true);
+                }}
+                style={{
+                  width: windowWidth * 0.1,
+                  // backgroundColor:'red',
+                  textAlign: 'center',
+                }}
+                name="hands"
+                as={FontAwesome5}
+                size={moderateScale(20, 0.6)}
+                color={Color.black}
+              />
+            </TouchableOpacity>
           </View>
           <View
             style={{
@@ -270,32 +297,32 @@ const DetailScreen = props => {
               source={{uri: JobDetailData?.image}}
               style={{width: '100%', height: '100%'}}
             />
-            <View
-              style={{
-                paddingHorizontal: moderateScale(15, 0.6),
-                paddingVertical: moderateScale(8, 0.6),
-              }}>
-              <View style={styles.text_view}>
-                <View>
-                  <CustomText style={styles.txtname} isBold={true}>
-                    {`${JobDetailData?.first_name}${'  '}${
-                      JobDetailData?.last_name
-                    }`}
-                  </CustomText>
-                </View>
-                <CustomText isBold style={styles.price}>
-                  $ 20
+          </View>
+          <View
+            style={{
+              paddingHorizontal: moderateScale(10, 0.6),
+            }}>
+            <View style={styles.text_view}>
+              <View>
+                <CustomText style={styles.txtname} isBold={true}>
+                  {`${JobDetailData?.first_name}${'  '}${
+                    JobDetailData?.last_name
+                  }`}
                 </CustomText>
               </View>
-              <CustomText
-                style={{
-                  color: 'white',
-                  fontSize: moderateScale(13, 0.6),
-                  width: windowWidth * 0.9,
-                }}>
-                {JobDetailData?.job_sub_description}
+              <CustomText isBold style={styles.price}>
+                $ 20
               </CustomText>
             </View>
+            <CustomText
+              style={{
+                color: 'white',
+                fontSize: moderateScale(13, 0.6),
+                width: windowWidth * 0.93,
+                // backgroundColor:'red'
+              }}>
+              {JobDetailData?.job_sub_description}
+            </CustomText>
 
             <CustomText isBold style={styles.job_status_text}>
               Job Status
@@ -340,7 +367,7 @@ const DetailScreen = props => {
                         : 'transparent',
                   },
                 ]}>
-                waiting for approval
+                on feedback
               </CustomText>
               <CustomText
                 style={[
@@ -352,14 +379,7 @@ const DetailScreen = props => {
                 approved
               </CustomText>
             </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                paddingRight: moderateScale(15, 0.6),
-                paddingHorizontal: moderateScale(10, 0.6),
-                paddingTop: moderateScale(20, 0.6),
-              }}>
+            <View style={styles.jobDetailBox}>
               <CustomText isBold style={styles.job_Detail_text}>
                 Job Detail
               </CustomText>
@@ -372,7 +392,7 @@ const DetailScreen = props => {
                     quickPay();
                   }}
                   style={{
-                    width: windowWidth * 0.1,
+                    // width: windowWidth * 0.1,
                     marginTop: moderateScale(-5, 0.6),
                   }}
                   as={FontAwesome5}
@@ -382,65 +402,56 @@ const DetailScreen = props => {
                 />
               </TouchableOpacity>
             </View>
-            <View
-              style={{
-                paddingHorizontal: moderateScale(8, 0.6),
-              }}>
-              <View style={styles.row}>
-                <CustomText isBold style={styles.title}>
-                  job name :
-                </CustomText>
-                <CustomText style={styles.title2}>
-                  {JobDetailData?.name}
-                </CustomText>
-              </View>
-              <View style={styles.row}>
-                <CustomText isBold style={styles.title}>
-                  assigned tech :
-                </CustomText>
-                <CustomText style={styles.title2}>
-                  {JobDetailData?.assigned_tech}
-                </CustomText>
-              </View>
-              <View style={styles.row}>
-                <CustomText isBold style={styles.title}>
-                  agent :
-                </CustomText>
-                <CustomText style={styles.title2}>
-                  {JobDetailData?.agent}
-                </CustomText>
-              </View>
-              <View style={styles.row}>
-                <CustomText isBold style={styles.title}>
-                  start date :
-                </CustomText>
-                <CustomText style={styles.title2}>
-                  {JobDetailData?.start_date}
-                </CustomText>
-              </View>
-              <View style={styles.row}>
-                <CustomText isBold style={styles.title}>
-                  end date :
-                </CustomText>
-                <CustomText style={styles.title2}>
-                  {JobDetailData?.end_date}
-                </CustomText>
-              </View>
-              <CustomText isBold style={styles.job_Des_text}>
-                Job description
+
+            <View style={styles.row}>
+              <CustomText isBold style={styles.title}>
+                job name :
               </CustomText>
-              <CustomText style={styles.detail_text}>
-                {JobDetailData?.job_description}
+              <CustomText style={styles.title2}>
+                {JobDetailData?.name}
               </CustomText>
             </View>
+            <View style={styles.row}>
+              <CustomText isBold style={styles.title}>
+                assigned tech :
+              </CustomText>
+              <CustomText style={styles.title2}>
+                {JobDetailData?.assigned_tech}
+              </CustomText>
+            </View>
+            <View style={styles.row}>
+              <CustomText isBold style={styles.title}>
+                agent :
+              </CustomText>
+              <CustomText style={styles.title2}>
+                {JobDetailData?.agent}
+              </CustomText>
+            </View>
+            <View style={styles.row}>
+              <CustomText isBold style={styles.title}>
+                start date :
+              </CustomText>
+              <CustomText style={styles.title2}>
+                {JobDetailData?.start_date}
+              </CustomText>
+            </View>
+            <View style={styles.row}>
+              <CustomText isBold style={styles.title}>
+                end date :
+              </CustomText>
+              <CustomText style={styles.title2}>
+                {JobDetailData?.end_date}
+              </CustomText>
+            </View>
+            <CustomText isBold style={styles.job_Des_text}>
+              Job description
+            </CustomText>
+            <CustomText style={styles.detail_text}>
+              {JobDetailData?.job_description}
+            </CustomText>
+
             {work_status == 'pending' && (
-              <View
-                style={{
-                  flexDirection: 'row',
-                  width: windowWidth,
-                  justifyContent: 'space-between',
-                  paddingHorizontal: moderateScale(10, 0.6),
-                }}>
+              <View style={styles.buttonRow}>
                 <CustomButton
                   onPress={() => {
                     jobAccept();
@@ -495,17 +506,9 @@ const DetailScreen = props => {
             ) : (
               accept == true ||
               (work_status == 'accepted' && (
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    width: windowWidth,
-                    justifyContent: 'space-between',
-                    paddingHorizontal: moderateScale(10, 0.6),
-                  }}>
+                <View style={styles.btnrow}>
                   <CustomButton
                     onPress={() => {
-                      // onPressCheckIn();
-                      // onPressCheckIn();
                       if (granted != granted) {
                         console.log('you dont have access to use location');
                         Linking.openSettings();
@@ -525,8 +528,8 @@ const DetailScreen = props => {
                     }
                     textColor={Color.white}
                     width={windowWidth * 0.45}
-                    height={windowHeight * 0.065}
-                    marginTop={moderateScale(35, 0.3)}
+                    height={windowHeight * 0.06}
+                    marginTop={moderateScale(20, 0.3)}
                     bgColor={Color.black}
                     borderRadius={moderateScale(30, 0.3)}
                     disabled={inroutepress || !checkin}
@@ -539,8 +542,8 @@ const DetailScreen = props => {
                     text={workdone ? 'checked out ' : 'check out'}
                     textColor={Color.white}
                     width={windowWidth * 0.45}
-                    height={windowHeight * 0.065}
-                    marginTop={moderateScale(35, 0.3)}
+                    height={windowHeight * 0.06}
+                    marginTop={moderateScale(20, 0.3)}
                     bgColor={Color.black}
                     borderRadius={moderateScale(30, 0.3)}
                     disabled={
@@ -559,8 +562,29 @@ const DetailScreen = props => {
             uploadModal={modal_visible}
             setUploadModal={setModalVisible}
           />
-        </ImageBackground>
-      </ScrollView>
+          {JobDetailData?.inspection_response == null && (
+            <CheckListStartModal
+              data={JobDetailData?.inspection_checklists}
+              modal_visible={checkListStartModal}
+              setModalVisible={setcheckListStartModal}
+              onpressItem={data => {
+                setCheckListData(data);
+                setCheckListModalVisible(true);
+                setcheckListStartModal(false);
+              }}
+            />
+          )}
+          {CheckListModalVisible && (
+            <CheckListModal
+              job_id={job_id}
+              modal_visible={CheckListModalVisible}
+              setModalVisible={setCheckListModalVisible}
+              data={checkListData}
+              checklist_id={checklist_id}
+            />
+          )}
+        </ScrollView>
+      </ImageBackground>
     </>
   );
 };
@@ -587,15 +611,19 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(25, 0.6),
     color: Color.white,
   },
+  jobDetailBox: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingTop: moderateScale(15, 0.6),
+  },
   job_status_text: {
     fontSize: moderateScale(22, 0, 6),
     letterSpacing: 1.5,
     color: 'white',
-    paddingHorizontal: moderateScale(10, 0.6),
     paddingVertical: moderateScale(5, 0.6),
   },
   job_status: {
-    padding: moderateScale(5, 0.6),
+    padding: moderateScale(8, 0.6),
     borderWidth: 1,
     borderRadius: moderateScale(15, 0.6),
     borderColor: 'white',
@@ -605,7 +633,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: windowWidth,
     justifyContent: 'space-between',
-    paddingHorizontal: moderateScale(10, 0.6),
   },
   job_Detail_text: {
     fontSize: moderateScale(22, 0.6),
@@ -635,7 +662,6 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   title: {
-    paddingHorizontal: moderateScale(5, 0.6),
     color: Color.white,
     fontSize: moderateScale(15, 0.6),
   },
@@ -643,6 +669,7 @@ const styles = StyleSheet.create({
     color: Color.white,
     paddingHorizontal: moderateScale(0, 0.6),
     width: windowWidth * 0.73,
+    paddingHorizontal: moderateScale(5, 0.6),
     fontSize: moderateScale(15, 0.6),
   },
   job_Des_text: {
@@ -655,13 +682,26 @@ const styles = StyleSheet.create({
     width: windowWidth,
     paddingTop: moderateScale(20, 0.6),
     paddingHorizontal: moderateScale(13, 0.5),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   backbutton: {
     height: windowWidth * 0.1,
-    width: windowWidth * 0.1,
+    width: windowWidth * 0.12,
     backgroundColor: 'white',
     borderRadius: moderateScale(5, 0.6),
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  btnrow: {
+    flexDirection: 'row',
+    width: windowWidth * 0.95,
+    justifyContent: 'space-between',
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    width: windowWidth,
+    justifyContent: 'space-between',
+    paddingHorizontal: moderateScale(0, 0.6),
   },
 });

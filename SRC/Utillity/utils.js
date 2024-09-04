@@ -20,10 +20,12 @@ const requestLocationPermission = async () => {
     console.log("🚀 ~ ====== >>>>>> >> >>>>> >> > >granted:", granted)
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
       console.log('You can use the Location');
+    dispatch(setLocationPermission(granted));
+
     } else {
       console.log('Location permission denied');
+      dispatch(setLocationPermission(granted));
     }
-    dispatch(setLocationPermission(granted));
   } catch (err) {
     console.warn(err);
   }

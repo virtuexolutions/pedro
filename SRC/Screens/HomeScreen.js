@@ -39,6 +39,7 @@ const HomeScreen = () => {
   const [selectedData, setSelectedData] = useState('');
   const [searchData, setSearchData] = useState('');
   const [jobData, setJobData] = useState([]);
+  console.log("🚀 ~ HomeScreen ~ jobData:", JSON.stringify(jobData , null ,2))
   const [userJobList, setUserJobList] = useState([]);
 
   const dummyArray = [
@@ -321,11 +322,11 @@ const HomeScreen = () => {
                   paddingHorizontal: moderateScale(15, 0.3),
                   width: windowWidth,
                 }}
-                renderItem={(item, index) => {
+                renderItem={({item, index}) => {
                   return userRole == 'User' ? (
                     <CustomerCard item={item} />
                   ) : (
-                    <JobCard item={item?.item} />
+                    <JobCard item={item} />
                   );
                 }}
               />
