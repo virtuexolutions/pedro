@@ -21,9 +21,12 @@ import {setUserCheckin, setUserchekin} from '../Store/slices/auth';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CustomHeader from '../Components/CustomHeader';
 import {Get} from '../Axios/AxiosInterceptorFunction';
+import { useIsFocused } from '@react-navigation/native';
 
 const JobDetail = ({route}) => {
   const id = route.params;
+  console.log("🚀 ~ JobDetail ~ id:", id)
+  const isFocused = useIsFocused()
   const dispatch = useDispatch();
   const userRole = useSelector(state => state.commonReducer.selectedRole);
   const checkin = useSelector(state => state.authReducer.checkin);
@@ -51,10 +54,10 @@ const JobDetail = ({route}) => {
 
   useEffect(() => {
     UserJobDetails();
-  }, []);
+  }, [isFocused]);
 
   const UserJobDetails = async () => {
-    const url = `user/joblist${id?.id}`;
+    const url = `user/joblist/${id?.id}`;
     setIsLoading(true);
     const response = await Get(url, token);
     setIsLoading(false);

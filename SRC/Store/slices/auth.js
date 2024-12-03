@@ -29,10 +29,7 @@ const AuthSlice = createSlice({
     setUserLogoutAuth(state, action) {
       state.token = null;
       state.fcmToken = null;
-      console.log(
-        '🚀 ~ logout from auth ~ action.payload: ================>',
-        action.payload,
-      );
+ 
     },
     setWalkThrough(state, action) {
       state.userWalkThrough = action.payload;

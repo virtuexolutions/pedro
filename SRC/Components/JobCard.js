@@ -28,7 +28,7 @@ const JobCard = ({fromSeeAll, style, onPress, item, getProposal}) => {
         }}
         onPress={() =>
           navigation.navigate('DetailScreen', {
-            job_id: item?.id,
+            job_id: item?.job_id,
             jobStatus: item?.status,
           })
         }>

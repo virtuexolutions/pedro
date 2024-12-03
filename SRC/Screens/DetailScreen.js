@@ -33,6 +33,7 @@ import CheckListStartModal from '../Components/CheckListStartModal';
 
 const DetailScreen = props => {
   const job_id = props?.route?.params?.job_id;
+  console.log('🚀 ~ DetailScreen ~ job_id:', job_id);
   const work_status = props?.route?.params?.jobStatus;
 
   const navigation = useNavigation();
@@ -44,13 +45,11 @@ const DetailScreen = props => {
   const workdone = useSelector(state => state.commonReducer.workUpload);
   const checkin = useSelector(state => state.authReducer.checkin);
   const [JobDetailData, setJobDetailData] = useState({});
-  console.log(
-    '🚀 ~ DetailScreen ~ JobDetailData:',
-    JSON.stringify(JobDetailData, null, 2),
-  );
+
   const [CheckListModalVisible, setCheckListModalVisible] = useState(false);
   const [isLoading, setisLoading] = useState(false);
   const [loading, setLoading] = useState(false);
+  console.log("🚀 ~ DetailScreen ~ loading:", loading)
   const [modal_visible, setModalVisible] = useState(false);
   const [accept, setaccpet] = useState(false);
   const [address, setAddress] = useState('');
@@ -77,6 +76,10 @@ const DetailScreen = props => {
     const url = `vendor/manage_work_orders/${job_id}`;
     setisLoading(true);
     const response = await Get(url, token);
+    console.log(
+      '🚀 ~ jobDetail ~ response=-============================== :',
+      JSON.stringify(response?.data, null, 2),
+    );
     setisLoading(false);
     if (response != undefined) {
       setJobDetailData(response?.data);
@@ -85,9 +88,9 @@ const DetailScreen = props => {
 
   const jobAccept = async () => {
     const url = `vendor/manage_work_orders/accept/${job_id}`;
-    setisLoading(true);
+    setLoading(true);
     const response = await Get(url, token);
-    setisLoading(false);
+    setLoading(false);
     if (response != undefined) {
       setaccpet(true);
     }
@@ -193,9 +196,9 @@ const DetailScreen = props => {
   // api for on the way
   const enRoute = async () => {
     const url = `vendor/alert/${job_id}`;
-    setisLoading(true);
+    setLoading(true);
     const response = await Get(url, token);
-    setisLoading(false);
+    setLoading(false);
     if (response != undefined) {
       setinroutepress(true);
     }

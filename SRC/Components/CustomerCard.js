@@ -14,13 +14,14 @@ import {imageUrl} from '../Config';
 import moment from 'moment';
 
 const CustomerCard = ({fromSeeAll, style, onPress, item, getProposal}) => {
+  console.log('🚀 ~ CustomerCard ~ item: ===================', item);
   const navigation = useNavigation();
   const userRole = useSelector(state => state.commonReducer.selectedRole);
   return (
     <TouchableOpacity
       onPress={() =>
         navigation.navigate('JobDetail', {
-          id: item?.item?.user_id,
+          id: item?.id,
         })
       }>
       <LinearGradient
@@ -35,7 +36,7 @@ const CustomerCard = ({fromSeeAll, style, onPress, item, getProposal}) => {
               width: '100%',
               overflow: 'hidden',
             }}
-            source={{uri: item?.item?.image}}
+            source={{uri: item?.image}}
           />
         </View>
         {/* <View style={styles.status}> */}
@@ -52,7 +53,7 @@ const CustomerCard = ({fromSeeAll, style, onPress, item, getProposal}) => {
             right: 10,
             top: 10,
           }}>
-          {item?.item?.parsedStatus}
+          {item?.parsedStatus}
         </CustomText>
         {/* </View> */}
         <View
@@ -66,7 +67,7 @@ const CustomerCard = ({fromSeeAll, style, onPress, item, getProposal}) => {
               fontSize: moderateScale(13, 0.6),
               color: Color.black,
             }}>
-            {item?.item?.name}
+            {item?.name}
           </CustomText>
           <CustomText
             numberOfLines={2}
@@ -75,7 +76,7 @@ const CustomerCard = ({fromSeeAll, style, onPress, item, getProposal}) => {
               width: windowWidth * 0.6,
               fontSize: moderateScale(10, 0.6),
             }}>
-            {item?.item?.job_sub_description}
+            {item?.job_sub_description}
           </CustomText>
           <View
             style={{
@@ -117,7 +118,7 @@ const CustomerCard = ({fromSeeAll, style, onPress, item, getProposal}) => {
                   color: Color.black,
                   marginLeft: 2,
                 }}>
-                {moment(item?.item?.created_at).format('DD MM YYYY')}
+                {moment(item?.created_at).format('DD MM YYYY')}
               </CustomText>
             </View>
           </View>

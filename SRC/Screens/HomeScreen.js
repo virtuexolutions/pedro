@@ -39,7 +39,6 @@ const HomeScreen = () => {
   const [selectedData, setSelectedData] = useState('');
   const [searchData, setSearchData] = useState('');
   const [jobData, setJobData] = useState([]);
-  console.log("🚀 ~ HomeScreen ~ jobData:", JSON.stringify(jobData , null ,2))
   const [userJobList, setUserJobList] = useState([]);
 
   const dummyArray = [
@@ -112,11 +111,11 @@ const HomeScreen = () => {
     },
   ];
 
-  const getWordOrders = async () => {
+  const getWorkOrders = async () => {
     const url = 'vendor/manage_work_orders';
     setIsLoading(true);
     const response = await Get(url, token);
-    console.log('🚀 ~ getWordOrders ~ response:', response?.data);
+    console.log('🚀 ~ getWordOrders ~ response ======================:', response?.data);
     setIsLoading(false);
     if (response != undefined) {
       setJobData(response?.data);
@@ -127,6 +126,7 @@ const HomeScreen = () => {
     const url = 'user/joblist';
     setIsLoading(true);
     const response = await Get(url, token);
+    console.log("🚀 ~ userJObList ~ response:", response?.data)
     setIsLoading(false);
     if (response != undefined) {
       setUserJobList(response?.data?.job);
@@ -134,7 +134,7 @@ const HomeScreen = () => {
   };
 
   useEffect(() => {
-    userRole == 'vendor' ? getWordOrders() : userJObList();
+    userRole == 'vendor' ? getWorkOrders() : userJObList();
   }, []);
 
   return (
@@ -216,11 +216,11 @@ const HomeScreen = () => {
               styles.text,
               {color: 'white', paddingTop: moderateScale(3, 0.6)},
             ]}>
-                  11view all
+            view all
           </CustomText>
         </View>
 
-        {userRole == 'account anager' ? (
+        {userRole == 'accountmanager' ? (
           <>
             <FlatList
               horizontal
@@ -323,6 +323,7 @@ const HomeScreen = () => {
                   width: windowWidth,
                 }}
                 renderItem={({item, index}) => {
+                  console.log("🚀 ~ HomeScreen ~ item:", item)
                   return userRole == 'User' ? (
                     <CustomerCard item={item} />
                   ) : (

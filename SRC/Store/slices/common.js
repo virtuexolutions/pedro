@@ -66,10 +66,6 @@ const CommonSlice = createSlice({
     setUserLogOut(state, action) {
       state.userData = {};
       // state.selectedRole = '';
-      console.log(
-        '🚀 ~ logout from common ~ action.payload: ================>',
-        action.payload,
-      );
     },
     setServiceCategories(state, action) {
       state.categories = action?.payload;
