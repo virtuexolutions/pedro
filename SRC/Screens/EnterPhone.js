@@ -50,8 +50,6 @@ const EnterPhone = props => {
     const response = await Post(url, {email: phone}, apiHeader());
     setIsLoading(false);
     if (response != undefined) {
-      // console.log("🚀 ~ sendOTP ~ email:", email)
-      // return console.log("🚀 ~ sendOTP ~ response:", response?.data?.data)
       console.log('response data =>', response?.data?.data);
       Platform.OS == 'android'
         ? ToastAndroid.show(`OTP sent to ${phone}`, ToastAndroid.SHORT)
@@ -79,11 +77,12 @@ const EnterPhone = props => {
           width: windowWidth,
         }}
         source={
-          SelecteduserRole == 'User'
-            ? require('../Assets/Images/bg3.png')
-            : SelecteduserRole == 'vendor'
-            ? require('../Assets/Images/bg2.png')
-            : require('../Assets/Images/bg1.png')
+          // SelecteduserRole == 'User'
+          //   ? require('../Assets/Images/bg3.png')
+          //   : SelecteduserRole == 'vendor'
+          //   ?
+          require('../Assets/Images/bg2.png')
+          // : require('../Assets/Images/bg1.png')
         }>
         <ScrollView>
           <KeyboardAwareScrollView
@@ -231,7 +230,7 @@ const styles = ScaledSheet.create({
     fontWeight: 'bold',
   },
   txt5: {
-    color: Color.themeLightGray,
+    color: Color.white,
     marginTop: moderateScale(10, 0.3),
     fontSize: moderateScale(13, 0.6),
   },

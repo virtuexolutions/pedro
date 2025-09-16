@@ -61,22 +61,22 @@ const VerifyNumber = props => {
     time == 0 && (settimerLabel('Resend Code '), settime(''));
   };
 
-  // const sendOTP = async () => {
-  //   const url = 'password/code/check';
-  //   setIsLoading(true);
-  //   const response = await Post(url, {email: phoneNumber}, apiHeader());
-  //   setIsLoading(false);
-  //   if (response != undefined) {
-  //     Platform.OS == 'android'
-  //       ? ToastAndroid.show(`OTP sent to ${phoneNumber}`, ToastAndroid.SHORT)
-  //       : alert(`OTP sent to ${phoneNumber}`);
-  //   }
-  // };
+  const sendOTP = async () => {
+    const url = 'password/code/check';
+    setIsLoading(true);
+    const response = await Post(url, {email: phoneNumber}, apiHeader());
+    setIsLoading(false);
+    if (response != undefined) {
+      Platform.OS == 'android'
+        ? ToastAndroid.show(`OTP sent to ${phoneNumber}`, ToastAndroid.SHORT)
+        : alert(`OTP sent to ${phoneNumber}`);
+    }
+  };
 
   const VerifyOTP = async () => {
     const url = 'password/code/check';
     setIsLoading(true);
-    console.log(code);
+    console.log('.====================> otp code hereeeeeeeeee' ,code);
     const response = await Post(url, {code: code}, apiHeader());
     setIsLoading(false);
     if (response != undefined) {
@@ -109,18 +109,19 @@ const VerifyNumber = props => {
           width: windowWidth,
         }}
         source={
-          SelecteduserRole == 'User'
-            ? require('../Assets/Images/bg3.png')
-            : SelecteduserRole == 'vendor'
-            ? require('../Assets/Images/bg2.png')
-            : require('../Assets/Images/bg1.png')
+          // SelecteduserRole == 'User'
+          //   ? require('../Assets/Images/bg3.png')
+          //   : SelecteduserRole == 'vendor'
+          //   ?
+          require('../Assets/Images/bg2.png')
+          // : require('../Assets/Images/bg1.png')
         }>
         <TouchableOpacity activeOpacity={0.8} style={styles.backbtn}>
           <Icon
             name={'arrowleft'}
             as={AntDesign}
             size={moderateScale(22, 0.3)}
-            color={Color.themeColor}
+            color={Color.black}
             onPress={() => {
               navigationN.goBack();
             }}
@@ -180,7 +181,7 @@ const VerifyNumber = props => {
               <TouchableOpacity
                 disabled={timerLabel == 'Resend Code ' ? false : true}
                 onPress={() => {
-                  settimerLabel('ReSend in '), settime(120);
+                  sendOTP(), settimerLabel('ReSend in '), settime(120);
                 }}>
                 <CustomText style={[styles.txt4]}>
                   {timerLabel} {time}
@@ -232,8 +233,8 @@ const styles = ScaledSheet.create({
     lineHeight: moderateScale(20, 0.3),
   },
   txt4: {
-    color: Color.themeColor,
-    fontSize: moderateScale(16, 0.6),
+    color: Color.darkGray,
+    fontSize: moderateScale(13, 0.6),
     borderBottomWidth: 1,
     borderColor: Color.white,
     // alignSelf : 'center'

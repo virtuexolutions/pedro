@@ -36,7 +36,6 @@
     "react-native-app-intro-slider": "^4.0.4",
     "react-native-confirmation-code-field": "^7.3.0",
     "react-native-draggable-reanimated": "^1.0.5",
-    "react-native-fast-image": "^8.6.3",
     "react-native-geolocation-service": "^5.3.1",
     "react-native-gesture-handler": "^2.4.2",
     "react-native-get-location": "^3.0.1",

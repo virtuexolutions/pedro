@@ -1,41 +1,32 @@
 import React, {useEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  FlatList,
-  ImageBackground,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {ActivityIndicator, FlatList, ImageBackground, RefreshControl, ScrollView, View} from 'react-native';
 import Color from '../Assets/Utilities/Color';
 import CustomStatusBar from '../Components/CustomStatusBar';
 
+import {useNavigation} from '@react-navigation/native';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import {useDispatch, useSelector} from 'react-redux';
+import {Get} from '../Axios/AxiosInterceptorFunction';
 import CustomText from '../Components/CustomText';
 import Header from '../Components/Header';
 import JobCard from '../Components/JobCard';
-import SearchContainer from '../Components/SearchContainer';
 import {windowHeight, windowWidth} from '../Utillity/utils';
-import CustomerCard from '../Components/CustomerCard';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {Icon} from 'native-base';
-import Entypo from 'react-native-vector-icons/Entypo';
-import {useNavigation} from '@react-navigation/native';
-import CustomImage from '../Components/CustomImage';
-import LinearGradient from 'react-native-linear-gradient';
-import {Get, Post} from '../Axios/AxiosInterceptorFunction';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
   const userRole = useSelector(state => state.commonReducer.selectedRole);
+  const userData = useSelector(state => state.commonReducer.userData);
+
   const token = useSelector(state => state.authReducer.token);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedRole, setSelectedType] = useState(
-    userRole ? userRole : 'Vendor',
-  );
+  // const [selectedRole, setSelectedType] = useState(
+  //   userRole ? userRole : 'Vendor',
+  // );
+  
+  const [refreshing, setRefreshing] = useState(false);
   const [selectedData, setSelectedData] = useState('');
   const [searchData, setSearchData] = useState('');
   const [jobData, setJobData] = useState([]);
@@ -115,26 +106,41 @@ const HomeScreen = () => {
     const url = 'vendor/manage_work_orders';
     setIsLoading(true);
     const response = await Get(url, token);
-    console.log('🚀 ~ getWordOrders ~ response ======================:', response?.data);
+    console.log(
+      '🚀 ~ getWorkOrders ~ response:',
+      JSON.stringify(response?.data, null, 2),
+    );
     setIsLoading(false);
     if (response != undefined) {
       setJobData(response?.data);
     }
   };
 
-  const userJObList = async () => {
-    const url = 'user/joblist';
-    setIsLoading(true);
-    const response = await Get(url, token);
-    console.log("🚀 ~ userJObList ~ response:", response?.data)
-    setIsLoading(false);
-    if (response != undefined) {
-      setUserJobList(response?.data?.job);
-    }
+
+    const onRefresh = () => {
+    console.log('oonnnnnnnnnnn refersh ========== >>>>>>>');
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+      getWorkOrders()
+      
+    }, 2000);
   };
+  // const userJObList = async () => {
+  //   const url = 'user/joblist';
+  //   setIsLoading(true);
+  //   const response = await Get(url, token);
+  //   console.log('🚀 ~ userJObList ~ response:',JSON.stringify(response ,null ,2));
+  //   setIsLoading(false);
+  //   if (response != undefined) {
+  //     setUserJobList(response?.data?.job);
+  //   }
+  // };
 
   useEffect(() => {
-    userRole == 'vendor' ? getWorkOrders() : userJObList();
+    getWorkOrders();
+    // userRole == 'vendor' ? getWorkOrders()
+    // : userJObList();
   }, []);
 
   return (
@@ -151,19 +157,21 @@ const HomeScreen = () => {
         }}
         resizeMode={'stretch'}
         source={
-          userRole == 'User'
-            ? require('../Assets/Images/bg3.png')
-            : userRole == 'vendor'
-            ? require('../Assets/Images/bg2.png')
-            : require('../Assets/Images/bg1.png')
+          // userRole == 'User'
+          //   ? require('../Assets/Images/bg3.png')
+          //   : userRole == 'vendor'
+          //   : require('../Assets/Images/bg1.png')
+          //   ?
+          require('../Assets/Images/bg2.png')
         }>
         <Header
           showList={true}
-          title={'logo here'}
+          title={' '}
+          Isme
           headerColor={['#FFFFFF00', '#FFFFFF00', '#FFFFFF00']}
         />
 
-        <SearchContainer
+        {/* <SearchContainer
           width={windowWidth * 0.92}
           inputStyle={{
             height: windowHeight * 0.05,
@@ -177,9 +185,9 @@ const HomeScreen = () => {
           data={searchData}
           setData={setSearchData}
           input={true}
-        />
+        /> */}
 
-        {userRole == 'vendor' && (
+        {/* {userRole == 'vendor' && (
           <View style={styles.card_view}>
             <CustomText style={styles.today_text}>total earning</CustomText>
             <CustomText isBold={true} style={styles.price_text}>
@@ -205,22 +213,27 @@ const HomeScreen = () => {
               </View>
             </View>
           </View>
-        )}
-
+        )} */}
+          <ScrollView
+           refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }>
         <View style={styles.row}>
           <CustomText isBold style={styles.heading}>
-            {userRole == 'User' ? 'jobs' : 'Proposals'}
+            Proposals
+            {/* {userRole == 
+            'User' ? 'jobs' : 'Proposals'} */}
           </CustomText>
-          <CustomText
+          {/* <CustomText
             style={[
               styles.text,
               {color: 'white', paddingTop: moderateScale(3, 0.6)},
             ]}>
             view all
-          </CustomText>
+          </CustomText> */}
         </View>
 
-        {userRole == 'accountmanager' ? (
+        {/* {userRole == 'accountmanager' ? (
           <>
             <FlatList
               horizontal
@@ -272,6 +285,7 @@ const HomeScreen = () => {
                   </TouchableOpacity>
                 );
               }}
+              ListEmptyComponent={<CustomText>nodata found</CustomText>}
             />
             <View style={styles.row}>
               <CustomText isBold style={styles.heading}>
@@ -298,42 +312,57 @@ const HomeScreen = () => {
               renderItem={(item, index) => {
                 return <JobCard item={item?.item} />;
               }}
+                 ListEmptyComponent={<CustomText>nodata found</CustomText>}
             />
           </>
-        ) : (
-          <>
-            {isLoading ? (
-              <ActivityIndicator
-                style={{
-                  height: '50%',
-                }}
-                size={'large'}
-                color={Color.white}
-              />
-            ) : (
-              <FlatList
-                data={userRole != 'vendor' ? userJobList : jobData}
-                // data={dummyArray}
-                showsVerticalScrollIndicator={false}
-                numColumns={1}
-                keyExtractor={item => item?.id}
-                contentContainerStyle={{
-                  paddingTop: moderateScale(5, 0.6),
-                  paddingHorizontal: moderateScale(15, 0.3),
-                  width: windowWidth,
-                }}
-                renderItem={({item, index}) => {
-                  console.log("🚀 ~ HomeScreen ~ item:", item)
-                  return userRole == 'User' ? (
-                    <CustomerCard item={item} />
-                  ) : (
-                    <JobCard item={item} />
-                  );
-                }}
-              />
-            )}
-          </>
-        )}
+        ) : ( */}
+        <>
+          {isLoading ? (
+            <ActivityIndicator
+              style={{
+                height: '50%',
+              }}
+              size={'large'}
+              color={Color.white}
+            />
+          ) : (
+            <FlatList
+              // data={userRole != 'vendor' ? userJobList : jobData}
+              data={jobData}
+              showsVerticalScrollIndicator={false}
+              numColumns={1}
+              key={key => key?.id}
+              keyExtractor={item => item?.id}
+              contentContainerStyle={{
+                paddingTop: moderateScale(5, 0.6),
+                paddingHorizontal: moderateScale(15, 0.3),
+                width: windowWidth,
+              }}
+              renderItem={({item, index}) => {
+                console.log('🚀 ~ item=========================== Faltlist', JSON.stringify(item?.jobname ,null, 2));
+                // return userRole == 'User' ? (
+                //   <CustomerCard item={item} />
+                // ) : (
+                return <JobCard item={item} />;
+                // );
+              }}
+              ListEmptyComponent={
+                <CustomText
+                  isBold
+                  style={{
+                    color: Color.white,
+                    alignSelf: 'center',
+                    fontSize: moderateScale(14, 0.6),
+                    marginTop: windowHeight * 0.2,
+                  }}>
+                  no data found !
+                </CustomText>
+              }
+            />
+          )}
+        </>
+        </ScrollView>
+        {/* // )} */}
       </ImageBackground>
     </>
   );
@@ -364,7 +393,7 @@ const styles = ScaledSheet.create({
     flexDirection: 'row',
     width: windowWidth * 0.9,
     justifyContent: 'space-between',
-    paddingVertical: moderateScale(10, 0.6),
+    paddingVertical: moderateScale(20, 0.6),
     paddingHorizontal: moderateScale(10, 0.6),
 
     alignItems: 'center',
@@ -394,6 +423,7 @@ const styles = ScaledSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4.84,
     elevation: 7,
+    marginTop: moderateScale(15, 0.6),
   },
   lines: {
     backgroundColor: Color.lightGrey,

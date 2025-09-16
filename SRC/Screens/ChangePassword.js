@@ -109,56 +109,15 @@ const ChangePassword = props => {
           height: windowHeight,
         }}
         source={
-          userRole == 'account manager'
-            ? require('../Assets/Images/bg1.png')
-            : userRole == 'User'
-            ? require('../Assets/Images/bg3.png')
-            : require('../Assets/Images/bg2.png')
+          
+          require('../Assets/Images/bg2.png')
         }>
-        <View
-          style={{
-            flexDirection: 'row',
-            width: windowWidth,
-            paddingHorizontal: moderateScale(10, 0.6),
-          }}>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            style={[
-              styles.Rounded,
-              {
-                left: 10,
-              },
-            ]}
-            onPress={() => {
-              navigation.goBack();
-            }}>
-            <Icon
-              onPress={() => {
-                navigation.goBack();
-              }}
-              name="arrowleft"
-              as={AntDesign}
-              size={moderateScale(25)}
-              color={Color.black}
-            />
-          </TouchableOpacity>
-          {/* <TouchableOpacity
-          activeOpacity={0.8}
-          style={styles.Rounded}
-          onPress={() => {
-            navigation.toggleDrawer();
-          }}>
-          <Icon
-            onPress={() => {
-              navigation.toggleDrawer();
-            }}
-            name="menu"
-            as={Ionicons}
-            size={moderateScale(25)}
-            color={Color.black}
+      <Header
+          showList
+            title={'change password'}
+            textstyle={{color: Color.white}}
+            headerColor={['#FFFFFF00', '#FFFFFF00', '#FFFFFF00']}
           />
-        </TouchableOpacity> */}
-        </View>
         <KeyboardAwareScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{

@@ -1,24 +1,11 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
-import ScreenBoiler from '../Components/ScreenBoiler';
-import LinearGradient from 'react-native-linear-gradient';
-import {ScrollView} from 'react-native';
-import {moderateScale, ScaledSheet} from 'react-native-size-matters';
-import {useSelector} from 'react-redux';
-import {windowHeight, windowWidth} from '../Utillity/utils';
-import CustomImage from '../Components/CustomImage';
-import CustomText from '../Components/CustomText';
+import { Icon } from 'native-base';
+import React from 'react';
+import { View } from 'react-native';
+import { moderateScale } from 'react-native-size-matters';
+import { useSelector } from 'react-redux';
 import Color from '../Assets/Utilities/Color';
-import ShowMoreAndShowLessText from '../Components/ShowMoreAndShowLessText';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Entypo from 'react-native-vector-icons/Entypo';
-import {Icon} from 'native-base';
-import MarkCheckWithText from '../Components/MarkCheckWithText';
-import TextInputWithTitle from '../Components/TextInputWithTitle';
-import CustomButton from '../Components/CustomButton';
-import {ActivityIndicator} from 'react-native';
-import ReviewCard from '../Components/ReviewCard';
-import BidderDetail from '../Components/BidderDetail';
+import CustomText from '../Components/CustomText';
+import { windowWidth } from '../Utillity/utils';
 
 const Detailcards = ({title, data, iconName, iconType , marginTop , containerStyle , textColor}) => {
     const userRole = useSelector(state => state.commonReducer.selectedRole);

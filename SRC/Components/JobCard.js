@@ -1,4 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
+import moment from 'moment';
 import React from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -8,11 +9,9 @@ import Color from '../Assets/Utilities/Color';
 import {windowHeight, windowWidth} from '../Utillity/utils';
 import CustomImage from './CustomImage';
 import CustomText from './CustomText';
-import RatingComponent from './RatingComponent';
-import {color} from 'native-base/lib/typescript/theme/styled-system';
-import moment from 'moment';
 
 const JobCard = ({fromSeeAll, style, onPress, item, getProposal}) => {
+  console.log('🚀 ~ JobCard ~ item:ssssssssssssssssssssssss', item?.jobname?.document);
   const navigation = useNavigation();
   const userRole = useSelector(state => state.commonReducer.selectedRole);
 
@@ -45,7 +44,11 @@ const JobCard = ({fromSeeAll, style, onPress, item, getProposal}) => {
               width: '100%',
               overflow: 'hidden',
             }}
-            source={require('../Assets/Images/dummyman1.png')}
+            source={
+              item?.jobname?.document
+                ? {uri: item?.jobname?.document}
+                : require('../Assets/Images/user.png')
+            }
           />
         </View>
         {/* <View
@@ -92,6 +95,27 @@ const JobCard = ({fromSeeAll, style, onPress, item, getProposal}) => {
           style={{
             paddingTop: moderateScale(25, 0.6),
           }}>
+            <View style={styles.row}>
+            <CustomText
+              isBold
+              style={{
+                color: Color.black,
+                fontSize: moderateScale(14, 0.6),
+              }}>
+              title :
+            </CustomText>
+            <CustomText
+            numberOfLines={1}
+              isBold
+              style={{
+                marginHorizontal: moderateScale(5, 0.3),
+                fontSize: moderateScale(14, 0.6),
+                color: Color.black,
+                width: windowWidth * 0.3,
+              }}>
+              {item?.jobname?.location_name}
+            </CustomText>
+          </View>
           <View style={styles.row}>
             <CustomText
               isBold
@@ -112,7 +136,7 @@ const JobCard = ({fromSeeAll, style, onPress, item, getProposal}) => {
               {item?.payment_info}
             </CustomText>
           </View>
-          <View style={styles.row}>
+          {/* <View style={styles.row}>
             <CustomText
               isBold
               style={{
@@ -131,7 +155,7 @@ const JobCard = ({fromSeeAll, style, onPress, item, getProposal}) => {
               }}>
               {item?.priority}
             </CustomText>
-          </View>
+          </View> */}
           <View style={styles.timeRow}>
             <CustomText
               isBold
@@ -174,7 +198,7 @@ const JobCard = ({fromSeeAll, style, onPress, item, getProposal}) => {
                 color: Color.black,
                 fontSize: moderateScale(14, 0.6),
               }}>
-              {item?.note}
+              {item?.jobname?.job_sub_description}
             </CustomText>
           </View>
           {/* <RatingComponent
@@ -246,6 +270,8 @@ const styles = ScaledSheet.create({
     marginBottom: moderateScale(15, 0.3),
     borderTopRightRadius: moderateScale(5, 0.6),
     borderBottomRightRadius: moderateScale(5, 0.6),
+    paddingHorizontal: moderateScale(10, 0.6),
+    // alignItems :'flex-end'
     // flexDirection: 'row',
     // justifyContent:'center'
   },

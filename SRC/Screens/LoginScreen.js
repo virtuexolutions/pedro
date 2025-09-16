@@ -118,20 +118,14 @@ const LoginScreen = () => {
     }
   };
 
-  useEffect(() => {
-    dispatch(setSelectedRole(selectedRole));
-  }, [selectedRole]);
+  // useEffect(() => {
+  //   dispatch(setSelectedRole(selectedRole));
+  // }, [selectedRole]);
 
   return (
     <>
       <CustomStatusBar
-        backgroundColor={
-          userRole == 'Qbid Member'
-            ? Color.blue
-            : userRole == 'Qbid Negotiator'
-            ? Color.themeColor
-            : Color.black
-        }
+        backgroundColor={Color.black}
         barStyle={'light-content'}
       />
 
@@ -141,13 +135,7 @@ const LoginScreen = () => {
           alignItems: 'center',
         }}
         resizeMode={'stretch'}
-        source={
-          selectedRole == 'Customer'
-            ? require('../Assets/Images/bg3.png')
-            : userRole == 'Vendor'
-            ? require('../Assets/Images/bg2.png')
-            : require('../Assets/Images/bg1.png')
-        }>
+        source={require('../Assets/Images/bg2.png')}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           removeClippedSubviews={true}
@@ -157,7 +145,7 @@ const LoginScreen = () => {
           }}
           style={{
             width: '100%',
-            paddingTop: windowHeight * 0.1,
+            // paddingTop: windowHeight * 0.1,
             // flexGrow: 0,
           }}>
           <View style={[styles?.textContainer]}>
@@ -167,7 +155,7 @@ const LoginScreen = () => {
               style={[styles.bottomImage]}
             />
           </View>
-
+          {/* 
           <DropDownSingleSelect
             array={servicesArray}
             item={selectedRole}
@@ -180,7 +168,7 @@ const LoginScreen = () => {
               borderBottomWidth: 0,
               marginTop: moderateScale(30, 0.6),
             }}
-          />
+          /> */}
           <TextInputWithTitle
             titleText={'Enter your Email'}
             secureText={false}
@@ -193,7 +181,7 @@ const LoginScreen = () => {
             borderColor={'#ffffff'}
             backgroundColor={'#FFFFFF'}
             marginTop={moderateScale(15, 0.6)}
-            color={Color.themeColor}
+            color={Color.black}
             placeholderColor={Color.themeLightGray}
             borderRadius={moderateScale(25, 0.3)}
           />
@@ -208,7 +196,7 @@ const LoginScreen = () => {
             inputWidth={0.86}
             backgroundColor={'#FFFFFF'}
             marginTop={moderateScale(15, 0.6)}
-            color={Color.themeColor}
+            color={Color.black}
             placeholderColor={Color.themeLightGray}
             borderRadius={moderateScale(25, 0.3)}
             marginBottom={moderateScale(10, 0.3)}
@@ -241,8 +229,6 @@ const LoginScreen = () => {
             marginTop={moderateScale(10, 0.3)}
             fontSize={moderateScale(17, 0.6)}
             onPress={() => {
-              // navigation.navigate('Tabnavigation');
-              // navigation.navigate('MyDrawer');
               Login();
             }}
             bgColor={Color.black}
@@ -271,17 +257,6 @@ const LoginScreen = () => {
           </View> */}
         </ScrollView>
       </ImageBackground>
-      {/* 
-     <LinearGradient
-        start={{x: 0.0, y: 0.25}}
-        end={{x: 0.5, y: 1.0}}
-        colors={selectedRole == 'Customer' ?[ '#16222A','#3A6073',]:selectedRole == 'Vendor' ? ['#1f4037'   ,'#99f2c8' ] : ['#000046' , '#1CB5E0' , ]}
-        style={styles.container}>
-
-
-
-
-        </LinearGradient> */}
     </>
   );
 };
@@ -293,11 +268,16 @@ const styles = ScaledSheet.create({
     width: windowWidth,
   },
   bottomImage: {
-    width: windowWidth * 0.4,
+    height: '100%',
+    width: '100%',
+    // width: windowWidth * 0.4,
   },
 
   textContainer: {
-    marginTop: moderateScale(20, 0.3),
+    height: windowHeight * 0.3,
+    width: windowWidth * 0.4,
+
+    // marginTop: moderateScale(20, 0.3),
   },
 
   Heading: {

@@ -1,4 +1,4 @@
-package com.pedro
+package com.pedrofacilit8
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

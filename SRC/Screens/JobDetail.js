@@ -1,27 +1,22 @@
-import {StyleSheet} from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
-import {FlatList, ImageBackground, View} from 'react-native';
-import Color from '../Assets/Utilities/Color';
-import CustomStatusBar from '../Components/CustomStatusBar';
-import {Icon} from 'native-base';
-import {moderateScale, ScaledSheet} from 'react-native-size-matters';
+import { useIsFocused } from '@react-navigation/native';
+import { Icon } from 'native-base';
+import React, { useEffect, useRef, useState } from 'react';
+import { ImageBackground, StyleSheet, View } from 'react-native';
+import { moderateScale } from 'react-native-size-matters';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {useDispatch, useSelector} from 'react-redux';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { useDispatch, useSelector } from 'react-redux';
+import Color from '../Assets/Utilities/Color';
+import { Get } from '../Axios/AxiosInterceptorFunction';
 import CustomButton from '../Components/CustomButton';
 import CustomImage from '../Components/CustomImage';
+import CustomStatusBar from '../Components/CustomStatusBar';
 import CustomText from '../Components/CustomText';
 import Header from '../Components/Header';
-import TimingModal from '../Components/TimingModal';
-import {windowHeight, windowWidth} from '../Utillity/utils';
 import NotificationModal from '../Components/NotificationModal';
-import ReviewModal from '../Components/ReviewModal';
-import WorkUploadModal from '../Components/WorkUploadModal';
-import {setUserCheckin, setUserchekin} from '../Store/slices/auth';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import CustomHeader from '../Components/CustomHeader';
-import {Get} from '../Axios/AxiosInterceptorFunction';
-import { useIsFocused } from '@react-navigation/native';
+import { setUserCheckin } from '../Store/slices/auth';
+import { windowHeight, windowWidth } from '../Utillity/utils';
 
 const JobDetail = ({route}) => {
   const id = route.params;
@@ -43,6 +38,7 @@ const JobDetail = ({route}) => {
   const [modal_visible, setModalVisible] = useState(false);
   const [rbRef, setRef] = useState(null);
   const [details, setDetails] = useState(null);
+  console.log("🚀 ~ JobDetail ~ details:", details?.image)
 
   const dummyArray = [
     'in tempor turpis eget lorem mollis',
@@ -118,7 +114,7 @@ const JobDetail = ({route}) => {
                   width: '100%',
                   overflow: 'hidden',
                 }}
-                source={require('../Assets/Images/dummyman1.png')}
+                source={details?.image ? {uri : details?.image } :require('../Assets/Images/user.png')}
               />
             </View>
             <View
@@ -130,7 +126,7 @@ const JobDetail = ({route}) => {
                 {details?.first_name}
               </CustomText>
               <CustomText style={styles.txt1}>
-                {details?.assigned_tech}
+                {details?.assigned_tech} ghgh hj
               </CustomText>
             </View>
             <View style={{alignItems: 'center'}}>
