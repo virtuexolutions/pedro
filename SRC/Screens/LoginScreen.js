@@ -7,6 +7,8 @@ import {
   View,
   PanResponder,
   ImageBackground,
+  Alert,
+  Linking,
 } from 'react-native';
 import Color from '../Assets/Utilities/Color';
 import CustomStatusBar from '../Components/CustomStatusBar';
@@ -40,9 +42,7 @@ const LoginScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [selectedRole, setSelectedType] = useState(
-    userRole ? userRole : 'Customer',
-  );
+  const [selectedRole, setSelectedType] = useState('Customer');
 
   const servicesArray = ['Manager', 'Vendor', 'Customer'];
 
@@ -118,21 +118,27 @@ const LoginScreen = () => {
     }
   };
 
-  useEffect(() => {
-    dispatch(setSelectedRole(selectedRole));
-  }, [selectedRole]);
+  // useEffect(() => {
+  //   dispatch(setSelectedRole(selectedRole));
+  // }, [selectedRole]);
 
   return (
     <>
       <CustomStatusBar
         backgroundColor={
-          userRole == 'Qbid Member'
-            ? Color.blue
-            : userRole == 'Qbid Negotiator'
-            ? Color.themeColor
+          selectedRole == 'Customer'
+            ? Color.black
+            : selectedRole == 'Vendor'
+            ? Color.white
             : Color.black
         }
-        barStyle={'light-content'}
+        barStyle={
+          selectedRole == 'Customer'
+          ? 'light-content'
+          : selectedRole == 'Vendor'
+          ? 'dark-content'
+          : 'light-content'        
+          }
       />
 
       <ImageBackground
@@ -144,7 +150,7 @@ const LoginScreen = () => {
         source={
           selectedRole == 'Customer'
             ? require('../Assets/Images/bg3.png')
-            : userRole == 'Vendor'
+            : selectedRole == 'Vendor'
             ? require('../Assets/Images/bg2.png')
             : require('../Assets/Images/bg1.png')
         }>
@@ -193,7 +199,7 @@ const LoginScreen = () => {
             borderColor={'#ffffff'}
             backgroundColor={'#FFFFFF'}
             marginTop={moderateScale(15, 0.6)}
-            color={Color.themeColor}
+            color={Color.black}
             placeholderColor={Color.themeLightGray}
             borderRadius={moderateScale(25, 0.3)}
           />
@@ -248,7 +254,7 @@ const LoginScreen = () => {
             bgColor={Color.black}
             borderRadius={moderateScale(30, 0.3)}
           />
-          {/* 
+          
           <View style={styles.container2}>
             <CustomText style={styles.txt5}>
               {"Don't have an account? "}
@@ -257,7 +263,17 @@ const LoginScreen = () => {
             <TouchableOpacity
               activeOpacity={0.8}
               style={{marginLeft: windowWidth * 0.01}}
-              onPress={() => navigationService.navigate('Signup')}>
+              onPress={() => 
+                Alert.alert('Almost There!', '"You’re about to leave the app and continue to our website to complete the sign-up process."', [
+                  {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                  },
+                  {text: 'Leave', onPress: () => Linking.openURL('https://facilit8system.com/signup')},
+                ])
+              
+              }>
               <CustomText
                 style={[
                   styles.txt4,
@@ -268,7 +284,7 @@ const LoginScreen = () => {
                 {'Sign Up'}
               </CustomText>
             </TouchableOpacity>
-          </View> */}
+          </View>
         </ScrollView>
       </ImageBackground>
       {/* 
