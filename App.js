@@ -7,12 +7,14 @@ import {Provider, useDispatch, useSelector} from 'react-redux';
 // import PushNotification, {Notifications} from 'react-native-push-notification'
 import {PermissionsAndroid} from 'react-native';
 import {NativeBaseProvider} from 'native-base';
+
+import {LogBox} from 'react-native';
 import {store, persistor} from './SRC/Store/index';
 // import {stripeKey} from './SRC/Config';
 import {
   requestCameraPermission,
   requestLocationPermission,
-  requestManagePermission,
+  // requestManagePermission,
   requestNotificationPermission,
   requestReadPermission,
   requestWritePermission,
@@ -50,6 +52,13 @@ const App = () => {
   //   requestUserPermission()
   // },[])
 
+  // Hide specific warnings
+  LogBox.ignoreLogs([
+    'Warning: ...',
+    'VirtualizedLists should never be nested',
+  ]);
+  LogBox.ignoreAllLogs();
+  // Hide all warnings
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>

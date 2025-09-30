@@ -1,4 +1,4 @@
-package com.pedro
+package com.pedrofacilit8
 
 import android.app.Application
 import com.facebook.react.PackageList

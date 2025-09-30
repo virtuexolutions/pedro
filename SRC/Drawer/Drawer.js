@@ -28,6 +28,7 @@ const Drawer = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const userData = useSelector(state => state.commonReducer.userData);
+  console.log("🚀 ~ Drawer ~ userData:", userData)
 
   const userRole = useSelector(state => state.commonReducer.selectedRole);
 
@@ -51,22 +52,23 @@ const Drawer = () => {
     //     navigation.navigate('CreateNew');
     //   },
     // },
-    {
-      id: 3,
-      name: 'profile',
-      iconName: 'user',
-      iconType: FontAwesome,
-      onPress: () => {
-        // navigation.navigate('Profile');
-      },
-    },
+    // {
+    //   id: 3,
+    //   name: 'profile',
+    //   iconName: 'user',
+    //   iconType: FontAwesome,
+    //   onPress: () => {
+    //     // navigation.navigate('Profile');
+    //   },
+    // },
     {
       id: 4,
       name: 'Change Password',
       iconName: 'key',
       iconType: Entypo,
       onPress: () => {
-        navigation.navigate('ChangePassword');
+          navigation.navigate('MyDrawer', {screen: 'ChangePassword'});
+        // navigation.navigate('ChangePassword');
       },
     },
     {
@@ -75,6 +77,7 @@ const Drawer = () => {
       iconName: 'privacy-tip',
       iconType: MaterialIcons,
       onPress: () => {
+           navigation.navigate('MyDrawer', {screen: 'PrivacyPolicy'});
         // navigation.navigate('PrivacyPolicy');
       },
     },
@@ -84,6 +87,7 @@ const Drawer = () => {
       iconName: 'file-text',
       iconType: Feather,
       onPress: () => {
+          navigation.navigate('MyDrawer', {screen: 'TermsAndConditions'});
         // navigation.navigate('TermsAndConditions');
       },
     },
@@ -145,11 +149,11 @@ const Drawer = () => {
 
               <View style={{marginLeft: moderateScale(10, 0.3)}}>
                 <CustomText style={styles.text1} isBold>
-                  Arron john
+                  {userData?.name}
                 </CustomText>
 
                 <CustomText isBold style={styles.text3}>
-                  Arron@gmail.com
+                  {userData?.email}
                 </CustomText>
               </View>
             </View>

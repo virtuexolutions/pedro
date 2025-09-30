@@ -26,7 +26,7 @@ const SplashScreen = () => {
          
         }}
         resizeMode={'stretch'}
-        source={require('../Assets/Images/bg3.png')}>
+        source={require('../Assets/Images/bg2.png')}>
      
         <Animatable.View
           animation="zoomInUp"

@@ -89,24 +89,24 @@ const requestReadPermission = async () => {
     console.warn(err);
   }
 };
-const requestManagePermission = async () => {
-  try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.MANAGE_EXTERNAL_STORAGE,
-      {
-        title: 'Storage Access Required',
-        message: 'This App needs to Access your Storage',
-      },
-    );
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log('MANAGE_EXTERNAL_STORAGE permission granted');
-    } else {
-      console.log('Error requesting permission:', error);
-    }
-  } catch (err) {
-    console.warn(err);
-  }
-};
+// const requestManagePermission = async () => {
+//   try {
+//     const granted = await PermissionsAndroid.request(
+//       PermissionsAndroid.PERMISSIONS.MANAGE_EXTERNAL_STORAGE,
+//       {
+//         title: 'Storage Access Required',
+//         message: 'This App needs to Access your Storage',
+//       },
+//     );
+//     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+//       console.log('MANAGE_EXTERNAL_STORAGE permission granted');
+//     } else {
+//       console.log('Error requesting permission:', error);
+//     }
+//   } catch (err) {
+//     console.warn(err);
+//   }
+// };
 
 const requestNotificationPermission = async () => {
   try {
@@ -180,7 +180,7 @@ export {
   requestLocationPermission,
   requestCameraPermission,
   requestWritePermission,
-  requestManagePermission,
+  // requestManagePermission,
   requestReadPermission,
   requestNotificationPermission,
   apiHeader,

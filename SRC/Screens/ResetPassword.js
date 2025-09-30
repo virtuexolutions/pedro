@@ -1,36 +1,30 @@
 import React, {useState} from 'react';
 import {
-  Image,
   Dimensions,
   ImageBackground,
   Platform,
   ToastAndroid,
   TouchableOpacity,
-  View,
 } from 'react-native';
 import {ScaledSheet, moderateScale} from 'react-native-size-matters';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-import {useDispatch, useSelector} from 'react-redux';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {useDispatch, useSelector} from 'react-redux';
 
 import navigationService from '../navigationService';
 
-import TextInputWithTitle from '../Components/TextInputWithTitle';
 import Color from '../Assets/Utilities/Color';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import CustomText from '../Components/CustomText';
+import TextInputWithTitle from '../Components/TextInputWithTitle';
 
-import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
-import CustomButton from '../Components/CustomButton';
 import {ActivityIndicator} from 'react-native';
 import {Post} from '../Axios/AxiosInterceptorFunction';
-import CardContainer from '../Components/CardContainer';
-// import CustomHeader from '../Components/CustomHeader';
-import {Icon} from 'native-base';
+import CustomButton from '../Components/CustomButton';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import {useNavigation} from '@react-navigation/native';
-import {setUserToken} from '../Store/slices/auth';
-import LinearGradient from 'react-native-linear-gradient';
+import {Icon} from 'native-base';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
@@ -42,7 +36,6 @@ const ResetPassword = props => {
   const dispatch = useDispatch();
   const navigationN = useNavigation();
   const email = props?.route?.params?.phoneNumber;
-  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [cPassword, setcPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -66,20 +59,7 @@ const ResetPassword = props => {
     const response = await Post(url, body, apiHeader());
     setIsLoading(false);
     if (response != undefined) {
-      // return  console.log('response data =>', response?.data);
       navigationService.navigate('LoginScreen');
-
-      // Platform.OS == 'android'
-      //   ? ToastAndroid.show(`OTP sent to ${email}`, ToastAndroid.SHORT)
-      //   : alert(`OTP sent to ${email}`);
-      // fromForgot
-      //   ? navigationService.navigate('VerifyNumber', {
-      //       fromForgot: fromForgot,
-      //       phoneNumber: `${email}`,
-      //     })
-      //   : navigationService.navigate('VerifyNumber', {
-      //       phoneNumber: `${email}`,
-      //     });
     }
   };
 
@@ -95,31 +75,19 @@ const ResetPassword = props => {
           width: windowWidth,
         }}
         source={
-          userRole == 'account manager'
-            ? require('../Assets/Images/bg1.png')
-            : userRole == 'User'
-            ? require('../Assets/Images/bg3.png')
-            : require('../Assets/Images/bg2.png')
+          // userRole == 'account manager'
+          //   ? require('../Assets/Images/bg1.png')
+          //   : userRole == 'User'
+          //   ? require('../Assets/Images/bg3.png')
+          //   :
+          require('../Assets/Images/bg2.png')
         }>
-        <TouchableOpacity
-          activeOpacity={0.8}
-          style={{
-            position: 'absolute',
-            top: moderateScale(20, 0.3),
-            left: moderateScale(20, 0.3),
-            height: moderateScale(30, 0.3),
-            width: moderateScale(30, 0.3),
-            borderRadius: moderateScale(5, 0.3),
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: 'white',
-            zIndex: 1,
-          }}>
+        <TouchableOpacity activeOpacity={0.8} style={styles.back_btn}>
           <Icon
             name={'arrowleft'}
             as={AntDesign}
             size={moderateScale(22, 0.3)}
-            color={Color.themeColor}
+            color={Color.black}
             onPress={() => {
               navigationN.goBack();
             }}
@@ -231,7 +199,18 @@ const styles = ScaledSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: windowWidth * 0.9,
-    // marginTop: moderateScale(10,0.3),
+  },
+  back_btn: {
+    position: 'absolute',
+    top: moderateScale(20, 0.3),
+    left: moderateScale(20, 0.3),
+    height: moderateScale(30, 0.3),
+    width: moderateScale(30, 0.3),
+    borderRadius: moderateScale(5, 0.3),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    zIndex: 1,
   },
   txt4: {
     color: Color.purple,

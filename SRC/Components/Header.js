@@ -35,6 +35,7 @@ const Header = props => {
     navigateTO,
     headerType,
     Notify,
+    Ismenu,
     hideUser,
   } = props;
 
@@ -68,16 +69,16 @@ const Header = props => {
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={() => {
-              userRole == 'Qbid Member'
-                ? navigationN.navigate('MyAccounts')
-                : navigationN.navigate('NegotiatorPortfolio');
+              // userRole == 'Qbid Member'
+              //   ? navigationN.navigate('MyAccounts')
+              //   : navigationN.navigate('NegotiatorPortfolio');
             }}
             style={{
               width: moderateScale(40, 0.3),
               height: moderateScale(40, 0.3),
               borderRadius: moderateScale(20, 0.3),
               backgroundColor: Color.white,
-              overflow: userRole == 'Qbid Member' ? 'visible' : 'hidden',
+              // overflow: userRole == 'Qbid Member' ? 'visible' : 'hidden',
             }}>
             <CustomImage
               // onPress={() => {
@@ -86,11 +87,11 @@ const Header = props => {
               //     : navigationN.navigate('NegotiatorPortfolio');
               // }}
               source={
-                userRole == 'Qbid Member'
-                  ? require('../Assets/Images/Group.png')
-                  : user?.photo
+                // userRole == 'Qbid Member'
+                //   ? require('../Assets/Images/user.png')
+                user?.photo
                   ? {uri: `${user?.photo}`}
-                  : require('../Assets/Images/man1.jpg')
+                  : require('../Assets/Images/user.png')
               }
               resizeMode={'cover'}
               style={{
@@ -115,11 +116,7 @@ const Header = props => {
               as={AntDesign}
               size={moderateScale(22, 0.3)}
               color={
-                userRole == 'Qbid Member'
-                  ? Color.blue
-                  : userRole == 'Qbid Negotiator'
-                  ? Color.themeColor
-                  : Color.black
+                Color.black
               }
               onPress={() => {
                 navigationN.goBack();
@@ -132,11 +129,35 @@ const Header = props => {
           resizeMode={'contain'}
           style={{
             width: windowWidth * 0.21,
-            height: windowHeight * 0.05,
+            height: windowHeight * 0.1,
           }}
           source={require('../Assets/Images/logo.png')}
         />
-
+          {
+            Ismenu &&
+               <View
+            style={{
+              height: moderateScale(35, 0.3),
+              width: moderateScale(35, 0.3),
+              borderRadius: moderateScale(25, 0.3),
+              marginHorizontal: moderateScale(10, 0.3),
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: showBack || showList ? 'white' : 'transparent',
+            }}>
+            <Icon
+              name={'menu'}
+              as={Entypo}
+              size={moderateScale(22, 0.3)}
+              color={
+                Color.black
+              }
+              onPress={() => {
+                navigationN.goBack();
+              }}
+            />
+          </View>
+          }
         <View
           style={{
             height: moderateScale(35, 0.3),
@@ -152,13 +173,7 @@ const Header = props => {
               name={'arrowleft'}
               as={AntDesign}
               size={moderateScale(22, 0.3)}
-              color={
-                userRole == 'Qbid Member'
-                  ? Color.blue
-                  : userRole == 'Qbid Negotiator'
-                  ? Color.themeColor
-                  : Color.black
-              }
+              color={Color.white}
               onPress={() => {
                 navigationN.goBack();
               }}
@@ -168,19 +183,15 @@ const Header = props => {
               name={'menu'}
               as={Entypo}
               size={moderateScale(22, 0.3)}
-              color={
-                userRole == 'Qbid Member'
-                  ? Color.blue
-                  : userRole == 'Qbid Negotiator'
-                  ? Color.themeColor
-                  : Color.black
-              }
+              color={Color.black}
               onPress={() => navigationN.toggleDrawer()}
             />
           ) : (
             <View></View>
           )}
         </View>
+
+
       </View>
     </LinearGradient>
   );

@@ -1,44 +1,45 @@
-import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import navigationService from './navigationService';
+import React from 'react';
 import {useSelector} from 'react-redux';
-import LoginScreen from './Screens/LoginScreen';
-import Walkthrough from './Screens/Walkthrough';
-import Signup from './Screens/Signup';
-import Drawer from './Drawer/Drawer';
-import HomeScreen from './Screens/HomeScreen';
-import JobDetails from './Screens/JobDetails';
 import Color from './Assets/Utilities/Color';
+import Drawer from './Drawer/Drawer';
+import navigationService from './navigationService';
+import HomeScreen from './Screens/HomeScreen';
+import LoginScreen from './Screens/LoginScreen';
+import Signup from './Screens/Signup';
 // import ContactNow from './Screens/ContactNow';
-import {createDrawerNavigator} from '@react-navigation/drawer';
-import CreateNew from './Screens/CreateNew';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import {moderateScale} from 'react-native-size-matters';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import CreateNew from './Screens/CreateNew';
 
 import {Icon} from 'native-base';
 import {View} from 'react-native';
-import {windowHeight} from './Utillity/utils';
 import LinearGradient from 'react-native-linear-gradient';
-import NotificationsScreen from './Screens/NotificationsScreen';
-import ChatScreen from './Screens/ChatScreen';
-import Settings from './Screens/Settings';
-import JobDetail from './Screens/JobDetail';
 import ChangePassword from './Screens/ChangePassword';
-import EnterPhone from './Screens/EnterPhone';
-import VerifyNumber from './Screens/VerifyNumber';
-import ResetPassword from './Screens/ResetPassword';
+import ChatScreen from './Screens/ChatScreen';
 import DetailScreen from './Screens/DetailScreen';
+import EnterPhone from './Screens/EnterPhone';
+import JobDetail from './Screens/JobDetail';
+import NotificationsScreen from './Screens/NotificationsScreen';
+import ResetPassword from './Screens/ResetPassword';
+import Settings from './Screens/Settings';
+import VerifyNumber from './Screens/VerifyNumber';
+import {windowHeight} from './Utillity/utils';
+import Walkthrough from './Screens/Walkthrough';
+import PrivacyPolicy from './Screens/PrivacyPolicy';
+import TermsAndConditions from './Screens/TermsAndConditions';
 
 const AppNavigator = () => {
   // const isLogin = false;
   const isGoalCreated = useSelector(state => state.authReducer.isGoalCreated);
   const walkThrough = useSelector(state => state.authReducer.userWalkThrough);
   const isVerified = useSelector(state => state.authReducer.isVerified);
-  const token = useSelector(state => state.authReducer.token);
+  const token =  useSelector(state => state.authReducer.token);
   const selectedRole = useSelector(state => state.commonReducer.selectedRole);
 
   const RootNav = createNativeStackNavigator();
@@ -56,10 +57,13 @@ const AppNavigator = () => {
     //   ? ''
     //   : 'LoginScreen';
     const firstScreen =
-      // walkThrough == false
-      //   ? 'WalkThroughScreen'
-      token == null ? 'LoginScreen' : 'drawer';
-
+    walkThrough == false
+    ? 'WalkThroughScreen'
+    : [null ,undefined ,].includes(token) 
+    ? 'LoginScreen'
+    : 'MyDrawer';
+    console.log("🚀 ~ AppNavigatorContainer ~ firstScreen:", firstScreen)
+    
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
@@ -75,6 +79,7 @@ const AppNavigator = () => {
           <RootNav.Screen name="EnterPhone" component={EnterPhone} />
           <RootNav.Screen name="VerifyNumber" component={VerifyNumber} />
           <RootNav.Screen name="ResetPassword" component={ResetPassword} />
+          <RootNav.Screen name="WalkThroughScreen" component={Walkthrough}/>
         </RootNav.Navigator>
       </NavigationContainer>
     );
@@ -240,6 +245,12 @@ export const MyDrawer = () => {
       <DrawerNavigation.Screen name={'DetailScreen'} component={DetailScreen} />
       <DrawerNavigation.Screen name={'JobDetail'} component={JobDetail} />
       <DrawerNavigation.Screen name={'CreateNew'} component={CreateNew} />
+      <DrawerNavigation.Screen name={'PrivacyPolicy'} component={PrivacyPolicy} />
+      <DrawerNavigation.Screen name={'TermsAndConditions'} component={TermsAndConditions} />
+      {/* <DrawerNavigation.Screen name={'ChangePassword'} component={ChangePassword} /> */}
+
+
+
 
       {/* {/* <DrawerNavigation.Screen name={'Signup'} component={Signup} /> */}
       <DrawerNavigation.Screen

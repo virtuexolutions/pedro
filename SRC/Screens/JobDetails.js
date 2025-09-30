@@ -35,7 +35,6 @@ const JobDetails = props => {
   const data1 = props?.route?.params?.item;
   const type = props?.route?.params?.type;
   const user = useSelector(state => state.commonReducer.userData);
-  // console.log('🚀 ~ JobDetails ~ user:', user);
   const token = useSelector(state => state.authReducer.token);
   const userRole = useSelector(state => state.commonReducer.selectedRole);
   const UserCoverLetterArray = useSelector(
@@ -226,12 +225,7 @@ const JobDetails = props => {
                       width: moderateScale(6, 0.6),
                       height: moderateScale(6, 0.6),
                       borderRadius: moderateScale(3, 0.6),
-                      backgroundColor:
-                        userRole == 'Qbid Member'
-                          ? Color.blue
-                          : userRole == 'Qbid Negotiator'
-                          ? Color.themeColor
-                          : Color.black,
+                    
                     }}
                   />
                   <CustomText
@@ -634,10 +628,6 @@ const JobDetails = props => {
                     flexGrow: 0,
                   }}
                   renderItem={({item, index}) => {
-                    console.log(
-                      '🚀 ~ JobDetails ~ item ================= < here :',
-                      item,
-                    );
                     return (
                       <View
                         style={[
