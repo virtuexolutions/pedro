@@ -2,6 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -36,6 +37,11 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>pedro wants to know your location</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+<string>This app requires access to your photo library to let you upload and share images.</string>
+ 
+<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+<string>This app requires your location to provide accurate service and nearby results.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
