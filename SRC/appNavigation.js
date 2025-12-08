@@ -33,6 +33,8 @@ import {windowHeight} from './Utillity/utils';
 import Walkthrough from './Screens/Walkthrough';
 import PrivacyPolicy from './Screens/PrivacyPolicy';
 import TermsAndConditions from './Screens/TermsAndConditions';
+import RequestAccountDeletion from './Screens/RequestAccountDeletion';
+import ConfirmAccountDeletion from './Screens/ConfirmAccountDeletion';
 
 const AppNavigator = () => {
   // const isLogin = false;
@@ -59,20 +61,24 @@ const AppNavigator = () => {
     const firstScreen =
     walkThrough == false
     ? 'WalkThroughScreen'
-    : [null ,undefined ,].includes(token) 
+    : [null ,undefined ,""].includes(token) 
     ? 'LoginScreen'
     : 'MyDrawer';
-    console.log("🚀 ~ AppNavigatorContainer ~ firstScreen:", firstScreen)
+    console.log("🚀 ~ AppNavigatorContainer ~ firstScreen:", token,firstScreen)
     
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
           initialRouteName={firstScreen}
+          // initialRouteName={"ConfirmAccountDeletion"}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="MyDrawer" component={MyDrawer} />
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
           <RootNav.Screen name="Signup" component={Signup} />
           <RootNav.Screen name="DetailScreen" component={DetailScreen} />
+
+          <RootNav.Screen name="ConfirmAccountDeletion" component={ConfirmAccountDeletion} />
+          
           <RootNav.Screen name="JobDetail" component={JobDetail} />
           <RootNav.Screen name="CreateNew" component={CreateNew} />
           <RootNav.Screen name="ChangePassword" component={ChangePassword} />
@@ -244,6 +250,8 @@ export const MyDrawer = () => {
       <DrawerNavigation.Screen name={'HomeScreen'} component={HomeScreen} />
       <DrawerNavigation.Screen name={'DetailScreen'} component={DetailScreen} />
       <DrawerNavigation.Screen name={'JobDetail'} component={JobDetail} />
+      <DrawerNavigation.Screen name="RequestAccountDeletion" component={RequestAccountDeletion} />
+
       <DrawerNavigation.Screen name={'CreateNew'} component={CreateNew} />
       <DrawerNavigation.Screen name={'PrivacyPolicy'} component={PrivacyPolicy} />
       <DrawerNavigation.Screen name={'TermsAndConditions'} component={TermsAndConditions} />

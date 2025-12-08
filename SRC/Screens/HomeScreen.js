@@ -20,6 +20,7 @@ const HomeScreen = () => {
   const userData = useSelector(state => state.commonReducer.userData);
 
   const token = useSelector(state => state.authReducer.token);
+  console.log("🚀 ~ HomeScreen ~ token:", token)
 
   const [isLoading, setIsLoading] = useState(false);
   // const [selectedRole, setSelectedType] = useState(

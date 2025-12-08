@@ -19,6 +19,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {imageUrl} from '../Config';
 import {setUserLogout} from '../Store/slices/auth';
 import LinearGradient from 'react-native-linear-gradient';
+import BackButton from './BackButton';
 
 const Header = props => {
   const dispatch = useDispatch();
@@ -35,6 +36,7 @@ const Header = props => {
     navigateTO,
     headerType,
     Notify,
+    style,
     Ismenu,
     hideUser,
   } = props;
@@ -61,6 +63,7 @@ const Header = props => {
       <View
         style={[
           styles.header2,
+          style,
           headerColor && {
             backgroundColor: headerColor,
           },
@@ -101,7 +104,7 @@ const Header = props => {
             />
           </TouchableOpacity>
         ) : (
-          <View
+         Platform.OS == "android" ? <BackButton isSignUp={false}/> : <View
             style={{
               height: moderateScale(35, 0.3),
               width: moderateScale(35, 0.3),

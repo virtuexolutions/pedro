@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Icon } from 'native-base';
 import React from 'react';
 import {
+  Alert,
   ImageBackground,
   StyleSheet,
   TouchableOpacity,
@@ -11,7 +12,7 @@ import { moderateScale } from 'react-native-size-matters';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useDispatch, useSelector } from 'react-redux';
 import Color from '../Assets/Utilities/Color';
@@ -23,6 +24,7 @@ import {
 } from '../Store/slices/auth';
 import { setUserLogOut } from '../Store/slices/common';
 import { windowHeight, windowWidth } from '../Utillity/utils';
+import { Post } from '../Axios/AxiosInterceptorFunction';
 
 const Drawer = () => {
   const navigation = useNavigation();
@@ -91,6 +93,16 @@ const Drawer = () => {
         // navigation.navigate('TermsAndConditions');
       },
     },
+    {
+      id: 7,
+      name: 'Delete Account',
+      iconName: 'account-remove-outline',
+      iconType: MaterialCommunityIcons,
+      onPress: () => {
+          navigation.navigate('MyDrawer', {screen: 'RequestAccountDeletion'});
+        // navigation.navigate('TermsAndConditions');
+      },
+    },
     // {
     //   id: 7,
     //   name: 'App Guide',
@@ -111,10 +123,15 @@ const Drawer = () => {
     // },
   ];
 
+  // const deleteAccount = async () => {
+  //   const url= "data-deletion";
+  //   const response = await Post() 
+  // }
+
   return (
     <>
       <ScreenBoiler
-        style={{backgroundColor: 'red'}}
+        // style={{backgroundColor: 'red'}}
         statusBarBackgroundColor={'black'}
         statusBarContentStyle={'light-content'}>
         <ImageBackground
@@ -204,6 +221,12 @@ const Drawer = () => {
           </TouchableOpacity>
         </View>
       </ScreenBoiler>
+      {/* <ConfirmationModal
+    isVisible={confirmModalIsVisible}
+    setIsVisible={setConfirmModalIsVisible}
+    isLoading={isDeleting}
+    onDelete={deleteCOntact}
+    /> */}
     </>
   );
 };

@@ -243,17 +243,17 @@ const LoginScreen = () => {
             <TouchableOpacity
               activeOpacity={0.8}
               style={{marginLeft: windowWidth * 0.01}}
-              onPress={() => 
-                Alert.alert('Almost There!', '"You’re about to leave the app and continue to our website to complete the sign-up process."', [
-                  {
-                    text: 'Cancel',
-                    onPress: () => console.log('Cancel Pressed'),
-                    style: 'cancel',
-                  },
-                  {text: 'Leave', onPress: () => Linking.openURL('https://facilit8system.com/signup')},
-                ])
-              
-              }>
+              onPress={() => {
+              navigation.navigate("Signup")
+                // Alert.alert('Almost There!', '"You’re about to leave the app and continue to our website to complete the sign-up process."', [
+                //   {
+                //     text: 'Cancel',
+                //     onPress: () => console.log('Cancel Pressed'),
+                //     style: 'cancel',
+                //   },
+                //   {text: 'Leave', onPress: () => Linking.openURL('https://facilit8system.com/signup')},
+                // ])
+              }}>
               <CustomText
                 style={[
                   styles.txt4,
