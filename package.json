@@ -61,6 +61,7 @@
     "react-native-sms": "^1.11.0",
     "react-native-svg": "^13.8.0",
     "react-native-vector-icons": "^10.1.0",
+    "react-native-webview": "^13.16.0",
     "react-redux": "^8.0.2",
     "redux": "^4.2.0",
     "redux-persist": "^6.0.0",

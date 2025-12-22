@@ -21,6 +21,7 @@ import {
 } from './SRC/Utillity/utils';
 import SplashScreen from './SRC/Screens/SplashScreen';
 import AppNavigator from './SRC/appNavigation';
+import RequestAccountDeletion from './SRC/Screens/RequestAccountDeletion';
 
 const App = () => {
   // const [publishableKey, setPublishableKey] = useState('');
@@ -167,6 +168,7 @@ const MainContainer = () => {
   }
   // return <ContactNow/>
   return <AppNavigator />;
+  // return <RequestAccountDeletion />;
 };
 
 const useloader = value => {

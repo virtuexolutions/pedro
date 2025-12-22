@@ -7,6 +7,8 @@ import {
   View,
   PanResponder,
   ImageBackground,
+  Alert,
+  Linking,
 } from 'react-native';
 import Color from '../Assets/Utilities/Color';
 import CustomStatusBar from '../Components/CustomStatusBar';
@@ -40,9 +42,7 @@ const LoginScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [selectedRole, setSelectedType] = useState(
-    userRole ? userRole : 'Customer',
-  );
+  const [selectedRole, setSelectedType] = useState('Customer');
 
   const servicesArray = ['Manager', 'Vendor', 'Customer'];
 
@@ -234,7 +234,7 @@ const LoginScreen = () => {
             bgColor={Color.black}
             borderRadius={moderateScale(30, 0.3)}
           />
-          {/* 
+          
           <View style={styles.container2}>
             <CustomText style={styles.txt5}>
               {"Don't have an account? "}
@@ -243,7 +243,17 @@ const LoginScreen = () => {
             <TouchableOpacity
               activeOpacity={0.8}
               style={{marginLeft: windowWidth * 0.01}}
-              onPress={() => navigationService.navigate('Signup')}>
+              onPress={() => {
+              navigation.navigate("Signup")
+                // Alert.alert('Almost There!', '"You’re about to leave the app and continue to our website to complete the sign-up process."', [
+                //   {
+                //     text: 'Cancel',
+                //     onPress: () => console.log('Cancel Pressed'),
+                //     style: 'cancel',
+                //   },
+                //   {text: 'Leave', onPress: () => Linking.openURL('https://facilit8system.com/signup')},
+                // ])
+              }}>
               <CustomText
                 style={[
                   styles.txt4,
@@ -254,7 +264,7 @@ const LoginScreen = () => {
                 {'Sign Up'}
               </CustomText>
             </TouchableOpacity>
-          </View> */}
+          </View>
         </ScrollView>
       </ImageBackground>
     </>

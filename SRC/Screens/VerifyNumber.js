@@ -7,7 +7,7 @@ import {
   Platform,
   ToastAndroid,
 } from 'react-native';
-import {ScaledSheet, moderateScale} from 'react-native-size-matters';
+import {ScaledSheet, moderateScale, scale} from 'react-native-size-matters';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useDispatch, useSelector} from 'react-redux';
 import navigationService from '../navigationService';
@@ -36,14 +36,20 @@ const VerifyNumber = props => {
     state => state.commonReducer.selectedRole,
   );
   const navigationN = useNavigation();
-
-  //params
+ const fromAccountDeletion = props?.route?.params?.fromAccountDeletion;
+ 
   const fromForgot = props?.route?.params?.fromForgot;
+  const data = props?.route?.params?.data;
+  // console.log("🚀 ~ VerifyNumber ~ data:", data)
   const phoneNumber = props?.route?.params?.phoneNumber;
-  //states
+ 
+  const token = useSelector(state => state.authReducer.token);
+
   const [code, setCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const CELL_COUNT = 4;
+  // const CELL_COUNT = 4 ;
+  const CELL_COUNT = fromAccountDeletion ? data?.code?.toString().length : 4 ;
+  console.log("🚀 ~ VerifyNumber ~ CELL_COUNT:", CELL_COUNT)
   const ref = useBlurOnFulfill({code, cellCount: CELL_COUNT});
   const [abcd, getCellOnLayoutHandler] = useClearByFocusCell({
     code,
@@ -61,10 +67,12 @@ const VerifyNumber = props => {
     time == 0 && (settimerLabel('Resend Code '), settime(''));
   };
 
+
+
   const sendOTP = async () => {
     const url = 'password/code/check';
     setIsLoading(true);
-    const response = await Post(url, {email: phoneNumber}, apiHeader());
+    const response = await Post(url, {email: phoneNumber}, apiHeader(token));
     setIsLoading(false);
     if (response != undefined) {
       Platform.OS == 'android'
@@ -72,6 +80,8 @@ const VerifyNumber = props => {
         : alert(`OTP sent to ${phoneNumber}`);
     }
   };
+
+  
 
   const VerifyOTP = async () => {
     const url = 'password/code/check';
@@ -85,6 +95,23 @@ const VerifyNumber = props => {
         : alert(`otp verified`);
 
       navigationService.navigate('ResetPassword', {phoneNumber: phoneNumber});
+    }
+  };
+  const VerifyDeletion = async () => {
+    const url = 'data-deletion/verify';
+    const body={
+      email: data?.email, verification_code: code 
+    };
+    setIsLoading(true);
+    console.log('.====================> otp code hereeeeeeeeee' ,code);
+    const response = await Post(url, body, apiHeader(token));
+    setIsLoading(false);
+    if (response != undefined) {
+      Platform.OS == 'android'
+        ? ToastAndroid.show(`otp verified`, ToastAndroid.SHORT)
+        : alert(`otp verified`);
+
+      navigationService.navigate('ConfirmAccountDeletion', {data: data});
     }
   };
 
@@ -140,7 +167,13 @@ const VerifyNumber = props => {
           <CustomText isBold style={styles.txt2}>
             Enter OTP
           </CustomText>
-          <CustomText style={styles.txt3}>
+{fromAccountDeletion ? 
+(
+  <CustomText 
+  style={styles.txt3}
+  children={"We Have sent an OTP on your email. Please check your gmail."}/>
+)
+:(          <CustomText style={styles.txt3}>
             Enter the email address and we'll send and email with instructions
             to reset your password{' '}
             {
@@ -148,7 +181,12 @@ const VerifyNumber = props => {
                 {phoneNumber}
               </CustomText>
             }
-          </CustomText>
+          </CustomText>)}
+          <CustomText
+          style={styles.code}
+          isBold
+          children={data?.code?.toString() }
+          />
           <View style={{width: windowWidth * 0.8}}>
             <CodeField
               placeholder={'0'}
@@ -204,7 +242,8 @@ const VerifyNumber = props => {
             fontSize={moderateScale(17, 0.6)}
             marginTop={moderateScale(20, 0.3)}
             onPress={() => {
-              VerifyOTP();
+             fromAccountDeletion ? VerifyDeletion() : 
+              VerifyOTP() 
               // navigationService.navigate('ResetPassword', {
               //   phone: phoneNumber,
               // });
@@ -244,13 +283,18 @@ const styles = ScaledSheet.create({
 
     fontSize: moderateScale(12, 0.6),
   },
-
+  code:{
+    color:Color.white,
+    fontSize:moderateScale(24,0.2)
+  },
   codeFieldRoot: {
     marginTop: moderateScale(20, 0.3),
     marginBottom: moderateScale(15, 0.3),
-    width: windowWidth * 0.6,
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    width: windowWidth * 0.9,
+    gap:scale(5),
+    alignSelf:"center"
+    // marginLeft: 'auto',
+    // marginRight: 'auto',
   },
   cellRoot: {
     width: moderateScale(54, 0.3),
