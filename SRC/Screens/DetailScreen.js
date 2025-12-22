@@ -50,6 +50,8 @@ const DetailScreen = props => {
   const [CheckListModalVisible, setCheckListModalVisible] = useState(false);
   const [isLoading, setisLoading] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [accpetLoading, setAccpetLoading] = useState(false);
+
   const [modal_visible, setModalVisible] = useState(false);
   const [accept, setaccpet] = useState(false);
   const [address, setAddress] = useState('');
@@ -85,9 +87,10 @@ const DetailScreen = props => {
 
   const jobAccept = async () => {
     const url = `vendor/manage_work_orders/accept/${job_id}`;
-    setLoading(true);
+    setAccpetLoading(true);
     const response = await Get(url, token);
-    setLoading(false);
+    console.log("🚀 ~ jobAccept ~ response:", response?.data)
+    setAccpetLoading(false);
     if (response != undefined) {
       setaccpet(true);
     }
@@ -476,7 +479,7 @@ const DetailScreen = props => {
                     jobAccept();
                   }}
                   text={
-                    isLoading ? (
+                    accpetLoading ? (
                       <ActivityIndicator size={'small'} color={Color.white} />
                     ) : (
                       'accept'
