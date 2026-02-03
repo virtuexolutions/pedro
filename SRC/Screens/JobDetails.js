@@ -64,8 +64,8 @@ const JobDetails = props => {
   return (
     <>
       <CustomStatusBar
-        backgroundColor={Color.black}
-        barStyle={'light-content'}
+        backgroundColor={Color.white}
+        barStyle={'dark-content'}
       />
       <LinearGradient
         style={{

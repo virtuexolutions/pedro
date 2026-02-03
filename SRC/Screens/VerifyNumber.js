@@ -127,8 +127,8 @@ const VerifyNumber = props => {
   return (
     <>
       <CustomStatusBar
-        backgroundColor={Color.black}
-        barStyle={'light-content'}
+        backgroundColor={Color.white}
+        barStyle={'dark-content'}
       />
       <ImageBackground
         style={{

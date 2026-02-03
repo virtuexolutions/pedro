@@ -5,16 +5,17 @@ import CustomStatusBar from '../Components/CustomStatusBar'
 import Header from '../Components/Header'
 import Color from '../Assets/Utilities/Color'
 import {WebView} from "react-native-webview";
-import { windowWidth } from '../Utillity/utils'
-import { scale, verticalScale } from 'react-native-size-matters'
+import { windowHeight, windowWidth } from '../Utillity/utils'
+import { moderateScale, scale, verticalScale } from 'react-native-size-matters'
 import BackButton from '../Components/BackButton'
+import { SafeAreaView } from 'react-native-safe-area-context'
 const Signup = () => {
   return (
     <>
-    {/* <CustomStatusBar 
-    
-    backgroundColor={Color.black}
-    /> */}
+    <CustomStatusBar 
+   backgroundColor={Color.white}
+   barStyle={'dark-content'}
+    />
     {/* <Header/>
      */}
     <View style={styles.header}>
@@ -32,8 +33,8 @@ export default Signup
 const styles = StyleSheet.create({
  header:{
   width: windowWidth,
-  paddingVertical:verticalScale(5),
-  paddingHorizontal:scale(10),
-  backgroundColor:Color.black
+  paddingVertical:moderateScale(10,.6),
+  paddingHorizontal:moderateScale(10,.6),
+  backgroundColor:Color.black,
  }
 })

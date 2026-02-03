@@ -132,8 +132,8 @@ const Drawer = () => {
     <>
       <ScreenBoiler
         // style={{backgroundColor: 'red'}}
-        statusBarBackgroundColor={'black'}
-        statusBarContentStyle={'light-content'}>
+        statusBarBackgroundColor={'white'}
+        statusBarContentStyle={'dark-content'}>
         <ImageBackground
           style={{
             height: windowHeight * 0.25,

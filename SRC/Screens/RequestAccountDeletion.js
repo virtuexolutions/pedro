@@ -44,8 +44,8 @@ const RequestAccountDeletion = ({navigation, route}) => {
   return (
     <>
     <CustomStatusBar
-      backgroundColor={Color.black}
-      barStyle={'light-content'}
+     backgroundColor={Color.white}
+     barStyle={'dark-content'}
     />
           <Header
         //   showBack

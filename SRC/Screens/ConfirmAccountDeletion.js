@@ -47,7 +47,8 @@ const ConfirmAccountDeletion = ({navigation, route}) => {
   return (
      <>
      <CustomStatusBar
-       backgroundColor={["#204639cf", "#204639ec"]}     
+       backgroundColor={Color.white}
+       barStyle={'dark-content'}    
      />
            <ImageBackground
         style={{

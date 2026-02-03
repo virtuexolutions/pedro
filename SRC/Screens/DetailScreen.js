@@ -224,8 +224,8 @@ const DetailScreen = props => {
   return (
     <SafeAreaView>
       <CustomStatusBar
-        backgroundColor={Color.black}
-        barStyle={'light-content'}
+        backgroundColor={Color.white}
+        barStyle={'dark-content'}
       />
       <ImageBackground
         style={{

@@ -110,8 +110,8 @@ const Walkthrough = props => {
   return (
     <ScreenBoiler
       showHeader={false}
-      statusBarBackgroundColor={[Color.black, Color.black]}
-      statusBarContentStyle={'light-content'}>
+      statusBarBackgroundColor={[Color.white, Color.white]}
+      statusBarContentStyle={'dark-content'}>
       <AppIntroSlider
         renderItem={RenderSlider}
         data={slides}
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     width: moderateScale(60, 0.6),
     height: moderateScale(60, 0.6),
     borderRadius: moderateScale(30, 0.6),
-    backgroundColor: 'rgba(255,255,255,0.7)',
+    // backgroundColor: 'rgba(255,255,255,0.7)',
     textAlign: 'center',
     marginTop: moderateScale(-20, 0.3),
   },
